@@ -3,7 +3,10 @@ A module for things that don't fit anywhere else.
 """
 
 
+from itertools import chain
 from pathlib import Path
+
+
 import yaml
 
 
@@ -11,6 +14,16 @@ from sw.const.misc import INSTALLDIR
 
 
 #--------- main things ---------#
+
+
+def enumerate_with_letters(iterator):
+    """
+    Return an iterator of things from the given iterator zipped with lowercase
+    letters a-z followed by uppercase letters A-Z.
+    """
+    lower = (chr(i) for i in range(ord('a'), ord('z') + 1))
+    upper = (chr(i) for i in range(ord('A'), ord('Z') + 1))
+    return zip(chain(lower, upper), iterator)
 
 
 def read(*filename):
