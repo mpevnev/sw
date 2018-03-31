@@ -6,6 +6,10 @@ them.
 """
 
 
+from collections import deque
+from itertools import chain
+
+
 import sw.const.modifier as modconst
 import sw.const.stat as stat
 
@@ -67,7 +71,7 @@ class HasStats():
         """ Remove an innate modifier or several from the character. """
         for mod in modifiers:
             try:
-                self.temp_innate_modifiers.remove(mod)
+                self.innate_modifiers.remove(mod)
                 self._sorted_modifiers = None
             except ValueError:
                 pass
