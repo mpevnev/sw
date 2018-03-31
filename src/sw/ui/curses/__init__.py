@@ -8,6 +8,7 @@ Provides the usual ASCII interface.
 import curses
 
 
+import sw.ui.curses.main_menu as mm
 import sw.ui as ui
 
 
@@ -28,7 +29,6 @@ class CursesSpawner(ui.UISpawner):
         curses.endwin()
 
     def spawn_main_menu(self, data):
-        import sw.ui.curses.main_menu as mm
         return mm.MainMenu(self.screen, data)
 
 

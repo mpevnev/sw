@@ -7,6 +7,7 @@ import mofloc
 
 
 from sw.gamedata import GameData
+import sw.stage.main_menu as mm
 from sw.ui import make_spawner
 
 
@@ -23,7 +24,6 @@ class Startup(mofloc.Flow):
 
 def init_game(ui_type):
     """ Initialize the game. """
-    import sw.stage.main_menu as mm
     data = GameData()
     spawner = make_spawner(ui_type)
     raise mofloc.ChangeFlow(mm.MainMenu(data, spawner), mm.ENTRY_POINT)

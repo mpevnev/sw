@@ -7,6 +7,7 @@ import mofloc
 
 
 import sw.event.main_menu as event
+import sw.stage.quit as quit_stage
 
 
 ENTRY_POINT = "the-only"
@@ -46,6 +47,5 @@ class MainMenu(mofloc.Flow):
         """ Process a 'quit' event. """
         if ev[0] != event.QUIT:
             return False
-        import sw.stage.quit as q
-        new_flow = q.Quit(self.ui_spawner)
-        raise mofloc.ChangeFlow(new_flow, q.ENTRY_POINT)
+        new_flow = quit_stage.Quit(self.ui_spawner)
+        raise mofloc.ChangeFlow(new_flow, quit_stage.ENTRY_POINT)
