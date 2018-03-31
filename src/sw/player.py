@@ -15,7 +15,7 @@ class Player(Character):
         super().__init__()
         self.name = name
         self.species = None
-        self.background = Noneo
+        self.background = None
 
     #--------- species manipulation ---------#
 
@@ -43,8 +43,8 @@ class Player(Character):
 
     def _apply_background(self):
         """ Apply background's modifiers. """
-        pass
+        self.add_temp_modifiers(*self.background.modifiers)
 
     def _undo_background(self):
         """ Undo background's modifiers. """
-        pass
+        self.remove_temp_modifiers(*self.background.modifiers)

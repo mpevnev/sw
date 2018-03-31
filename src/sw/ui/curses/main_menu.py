@@ -7,16 +7,17 @@ import mofloc
 
 
 import sw.const as const
-import sw.const.main_menu as mm
+import sw.const.ui.main_menu as mm
 import sw.ui as ui
 import sw.ui.curses as curses
 import sw.event.main_menu as event
 
 
-class MainMenu(ui.MainMenuUI):
+class MainMenu(ui.MainMenu):
     """ The main menu UI. """
 
     def __init__(self, screen, data):
+        super().__init__()
         self.screen = screen
         self.data = data
 

@@ -6,6 +6,7 @@ Provides the usual ASCII interface.
 
 
 from curses import *
+from curses.textpad import *
 
 
 def print_centered(screen, y, msg, attr=None):

@@ -32,7 +32,15 @@ class UISpawner():
         """ Terminate the UI. """
         raise NotImplementedError
 
-    def spawn_main_menu(self):
+    def spawn_background_selection(self, data):
+        """ Spawn a menu with background selection. """
+        raise NotImplementedError
+
+    def spawn_char_name_prompt(self, data):
+        """ Spawn a propmt for character's name. """
+        raise NotImplementedError
+
+    def spawn_main_menu(self, data):
         """ Spawn the main menu UI piece. """
         raise NotImplementedError
 
@@ -40,7 +48,29 @@ class UISpawner():
 #--------- concrete UI pieces ---------#
 
 
-class MainMenuUI(mofloc.EventSource):
+class BackgroundSelection(mofloc.EventSource):
+    """ Background selection UI. """
+
+    def draw(self):
+        """ Draw the menu. """
+        raise NotImplementedError
+
+    def get_event(self):
+        raise NotImplementedError
+
+
+class CharNamePrompt(mofloc.EventSource):
+    """ Character name prompt. """
+
+    def draw(self):
+        """ Draw the prompt. """
+        raise NotImplementedError
+
+    def get_event(self):
+        raise NotImplementedError
+
+
+class MainMenu(mofloc.EventSource):
     """ Main menu. """
 
     def draw(self):

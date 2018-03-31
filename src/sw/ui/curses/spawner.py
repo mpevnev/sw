@@ -23,6 +23,14 @@ class CursesSpawner(ui.UISpawner):
         curses.curs_set(1)
         curses.endwin()
 
+    def spawn_background_selection(self, data):
+        from sw.ui.curses.background_selection import BackgroundSelection
+        return BackgroundSelection(self.screen, data)
+
+    def spawn_char_name_prompt(self, data, default_name=""):
+        from sw.ui.curses.char_name_prompt import CharNamePrompt
+        return CharNamePrompt(self.screen, data, default_name)
+
     def spawn_main_menu(self, data):
         from sw.ui.curses.main_menu import MainMenu
         return MainMenu(self.screen, data)
