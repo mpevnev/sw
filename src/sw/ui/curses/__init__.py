@@ -5,10 +5,9 @@ Provides the usual ASCII interface.
 """
 
 
-import curses
+from curses import *
 
 
-import sw.ui.curses.main_menu as mm
 import sw.ui as ui
 
 
@@ -16,20 +15,21 @@ class CursesSpawner(ui.UISpawner):
     """ A curses-based UI spawner. """
 
     def __init__(self):
-        self.screen = curses.initscr()
+        self.screen = initscr()
         self.screen.keypad(True)
-        curses.cbreak()
-        curses.curs_set(0)
-        curses.noecho()
-        curses.start_color()
+        cbreak()
+        curs_set(0)
+        noecho()
+        start_color()
 
     def finish(self):
-        curses.nocbreak()
-        curses.curs_set(1)
-        curses.endwin()
+        nocbreak()
+        curs_set(1)
+        endwin()
 
     def spawn_main_menu(self, data):
-        return mm.MainMenu(self.screen, data)
+        from sw.ui.curses.main_menu import MainMenu
+        return MainMenu(self.screen, data)
 
 
 #--------- helper things ---------#
@@ -41,5 +41,5 @@ def print_centered(screen, y, msg, attr=None):
     row.
     """
     _, w = screen.getmaxyx()
-    attr = attr or curses.A_NORMAL
+    attr = attr or A_NORMAL
     screen.addstr(y, w // 2 - len(msg) // 2, msg, attr)
