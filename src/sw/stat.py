@@ -120,21 +120,21 @@ class HasStats():
     def update_stat_totals(self):
         """ Update total statistics of the character. """
         # apply changes to primary statistics
-        collector = {}
+        new_primary_dict = self.base_primary.copy()
         for mod in self.all_modifiers():
-            mod.apply_primary(collector)
-        self.total_stats[stat.StatGroup.PRIMARY] = self.base_primary.copy()
+            mod.apply_primary(new_primary_dict, old_primary)
+        self.total_stats[stat.StatGroup.PRIMARY] = new_primary_dict
         # TODO: actually apply the collected changes
         # apply changes to secondary statistics
-        collector = {}
+        new_secondary_dict = self.base_secondary.copy()
         for mod in self.all_modifiers():
             mod.apply_secondary(collector, self.total_primary)
-        self.total_stats[stat.StatGroup.PRIMARY] = self.base_secondary.copy()
+        self.total_stats[stat.StatGroup.PRIMARY] = new_secondary_dict
         # apply changes to tertiary statistics
-        collector = {}
+        new_tertiary_dict = self.base_tertiary.copy()
         for mod in self.all_modifiers():
             mod.apply_primary(collector, self.total_primary, self.total_secondary)
-        self.total_stats[stat.StatGroup.PRIMARY] = self.base_tertiary.copy()
+        self.total_stats[stat.StatGroup.PRIMARY] = new_tertiary_dict
 
 
 #--------- convenience things ---------#
