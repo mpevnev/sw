@@ -20,8 +20,8 @@ CURSES = "curses"
 def make_spawner(ui_type):
     """ Create a UI spawner of appropriate type. """
     if ui_type == CURSES:
-        import sw.ui.curses as curses
-        return curses.CursesSpawner()
+        from sw.ui.curses.spawner import CursesSpawner
+        return CursesSpawner()
     raise NotImplementedError
 
 
