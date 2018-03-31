@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 
 
-INSTALLDIR = "severed-world"
+from sw.const.misc import INSTALLDIR
 
 
 #--------- main things ---------#
