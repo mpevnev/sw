@@ -7,6 +7,9 @@ from pathlib import Path
 import yaml
 
 
+INSTALLDIR = "severed-world"
+
+
 #--------- main things ---------#
 
 
@@ -27,7 +30,7 @@ def read(*filename):
         return _try_read(".." / f)
     except FileNotFoundError:
         pass
-    return _try_read(Path("/", "usr", "share", "severed-world", f))
+    return _try_read(Path("/", "usr", "share", INSTALLDIR, f))
 
 
 #--------- helper things ---------#
