@@ -30,6 +30,7 @@ class SecondaryStat(Enum):
     DODGE = "dodge"
     HEALTH = "health"
     MAGIC_POWER = "magic power"
+    MAGIC_KNOWLEDGE = "magic knowledge"
     RESIST = "resist"
     TO_HIT = "to hit"
 
