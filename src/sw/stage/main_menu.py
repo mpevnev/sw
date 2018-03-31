@@ -19,7 +19,7 @@ class MainMenu(mofloc.Flow):
         super().__init__()
         self.data = data
         self.ui_spawner = ui_spawner
-        self.ui = ui_spawner.spawn_main_menu()
+        self.ui = ui_spawner.spawn_main_menu(data)
         self.register_entry_point(ENTRY_POINT, self.run_menu)
         self.register_event_source(self.ui)
         self.register_preevent_action(self.draw)
