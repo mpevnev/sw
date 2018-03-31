@@ -47,6 +47,31 @@ class HasStats():
         self._sorted_modifiers = res
         return res
 
+    def clear_all_modifiers(self):
+        """ Remove all modifiers. """
+        self.innate_modifiers = deque()
+        self.temp_modifiers = deque()
+        self._sorted_modifiers = []
+
+    def clear_innate_modifiers(self):
+        """ Remove all innate modifiers. """
+        self.innate_modifiers = deque()
+        self._sorted_modifiers = None
+
+    def clear_temp_modifiers(self):
+        """ Remove all temporary modifiers. """
+        self.temp_modifiers = deque()
+        self._sorted_modifiers = None
+
+    def remove_innate_modifiers(self, *modifiers):
+        """ Remove an innate modifier or several from the character. """
+        for mod in modifiers:
+            try:
+                self.temp_innate_modifiers.remove(mod)
+                self._sorted_modifiers = None
+            except ValueError:
+                pass
+
     def remove_temp_modifiers(self, *modifiers):
         """ Remove a temporary modifier or several from the character. """
         for mod in modifiers:
