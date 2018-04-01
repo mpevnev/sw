@@ -12,7 +12,7 @@ PRIORITY = "priority"
 class ModifierType(Enum):
     """ Type of a modifier, determining its behaviour. """
 
-    FLAT_STAT_INCREASE = "flat"
+    FLAT_STAT_INCREASE = "flat stat"
 
 # Fields for Flat type
 class FlatStatFields(Enum):
