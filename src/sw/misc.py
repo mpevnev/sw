@@ -26,7 +26,7 @@ def enumerate_with_letters(iterator):
     return zip(chain(lower, upper), iterator)
 
 
-def read(*filename):
+def read(default, *filename):
     """
     Read a YAML file.
     Search for it in the following directories:
@@ -36,14 +36,14 @@ def read(*filename):
     """
     f = Path(*filename)
     try:
-        return _try_read(f)
+        return _try_read(f, default=default)
     except FileNotFoundError:
         pass
     try:
-        return _try_read(".." / f)
+        return _try_read(".." / f, default=default)
     except FileNotFoundError:
         pass
-    return _try_read(Path("/", "usr", "share", INSTALLDIR, f))
+    return _try_read(Path("/", "usr", "share", INSTALLDIR, f), default=default)
 
 
 #--------- helper things ---------#
