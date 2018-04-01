@@ -1,0 +1,20 @@
+
+# Strings
+
+header: Choose your background
+subscript: |
+    (press '!' to abort character creation process)
+    (press '<' to return to species menu)
+
+# Geometry
+
+bg per tile: 18
+header offset: 3
+list offset: 5
+num_tiles: 3
+subscript offset: 2
+
+# Keybindings
+
+abort key: '!'
+back key: '<'
