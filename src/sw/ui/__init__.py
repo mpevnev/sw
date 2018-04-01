@@ -36,7 +36,7 @@ class UISpawner():
         """ Spawn a menu with background selection. """
         raise NotImplementedError
 
-    def spawn_char_name_prompt(self, data):
+    def spawn_char_name_prompt(self):
         """ Spawn a propmt for character's name. """
         raise NotImplementedError
 

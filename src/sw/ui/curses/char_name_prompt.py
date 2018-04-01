@@ -12,7 +12,7 @@ import sw.event.char_name_prompt as event
 class CharNamePrompt(ui.CharNamePrompt):
     """ Character name prompt. """
 
-    def __init__(self, screen, uidata, data, default_name):
+    def __init__(self, screen, uidata):
         super().__init__()
         self.screen = screen
         self.uidata = uidata
@@ -21,8 +21,6 @@ class CharNamePrompt(ui.CharNamePrompt):
         self.subwin = screen.derwin(1, textwidth,
                                     uidata[cnp.OFFSET] + 1, (w - textwidth) // 2)
         self.textbox = curses.Textbox(self.subwin)
-        self.data = data
-        self.name = default_name
 
     def draw(self):
         self.screen.erase()
@@ -33,6 +31,10 @@ class CharNamePrompt(ui.CharNamePrompt):
         curses.doupdate()
 
     def get_event(self):
-        self.textbox.edit()
-        self.name = self.textbox.gather()
-        return (event.NAME_ENTERED, self.name)
+        curses.curs_set(1)
+        # I dont know why this is needed, at least on my machine backspace
+        # doesn't work as expected without this.
+        validator = lambda key: 263 if key == 127 else key
+        name = self.textbox.edit(validator)
+        curses.curs_set(0)
+        return (event.NAME_ENTERED, name)

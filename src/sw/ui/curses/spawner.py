@@ -31,10 +31,10 @@ class CursesSpawner(ui.UISpawner):
         uidata = self.uidata[const.BACKGROUND_SELECTION]
         return BackgroundSelection(self.screen, uidata, data, species)
 
-    def spawn_char_name_prompt(self, data, default_name=""):
+    def spawn_char_name_prompt(self):
         from sw.ui.curses.char_name_prompt import CharNamePrompt
         uidata = self.uidata[const.CHAR_NAME_PROMPT]
-        return CharNamePrompt(self.screen, uidata, data, default_name)
+        return CharNamePrompt(self.screen, uidata)
 
     def spawn_main_menu(self, data):
         from sw.ui.curses.main_menu import MainMenu

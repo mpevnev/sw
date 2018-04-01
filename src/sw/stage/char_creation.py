@@ -23,7 +23,7 @@ class NameInput(mofloc.Flow):
         super().__init__()
         self.data = data
         self.ui_spawner = spawner
-        self.ui = spawner.spawn_char_name_prompt(data)
+        self.ui = spawner.spawn_char_name_prompt()
         self.register_entry_point(NAME_INPUT_ENTRY_POINT, self.run_prompt)
         self.register_event_source(self.ui)
         self.register_preevent_action(self.draw)
