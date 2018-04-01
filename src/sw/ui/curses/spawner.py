@@ -3,6 +3,8 @@ Provides the CursesSpawner class.
 """
 
 
+import sw.const.ui.curses as const
+import sw.misc as misc
 import sw.ui as ui
 import sw.ui.curses as curses
 
@@ -11,6 +13,7 @@ class CursesSpawner(ui.UISpawner):
     """ A curses-based UI spawner. """
 
     def __init__(self):
+        self.uidata = _read_curses_ui_data()
         self.screen = curses.initscr()
         self.screen.keypad(True)
         curses.cbreak()
@@ -25,16 +28,37 @@ class CursesSpawner(ui.UISpawner):
 
     def spawn_background_selection(self, data, species):
         from sw.ui.curses.background_selection import BackgroundSelection
-        return BackgroundSelection(self.screen, data, species)
+        uidata = self.uidata[const.BACKGROUND_SELECTION]
+        return BackgroundSelection(self.screen, uidata, data, species)
 
     def spawn_char_name_prompt(self, data, default_name=""):
         from sw.ui.curses.char_name_prompt import CharNamePrompt
-        return CharNamePrompt(self.screen, data, default_name)
+        uidata = self.uidata[const.CHAR_NAME_PROMPT]
+        return CharNamePrompt(self.screen, uidata, data, default_name)
 
     def spawn_main_menu(self, data):
         from sw.ui.curses.main_menu import MainMenu
-        return MainMenu(self.screen, data)
+        uidata = self.uidata[const.MAIN_MENU]
+        return MainMenu(self.screen, uidata, data)
 
     def spawn_species_selection(self, data):
         from sw.ui.curses.species_selection import SpeciesSelection
-        return SpeciesSelection(self.screen, data)
+        uidata = self.uidata[const.SPECIES_SELECTION]
+        return SpeciesSelection(self.screen, uidata, data)
+
+
+#--------- helper things ---------#
+
+
+def _read_curses_ui_data():
+    """ Read configuration and strings for curses-based interface. """
+    import sw.const.ui.curses.background_selection as bs
+    import sw.const.ui.curses.char_name_prompt as cnp
+    import sw.const.ui.curses.main_menu as mm
+    import sw.const.ui.curses.species_selection as ss
+    res = {}
+    res[const.BACKGROUND_SELECTION] = misc.read({}, "ui", "curses", bs.DATA_FILE)
+    res[const.CHAR_NAME_PROMPT] = misc.read({}, "ui", "curses", cnp.DATA_FILE)
+    res[const.MAIN_MENU] = misc.read({}, "ui", "curses", mm.DATA_FILE)
+    res[const.SPECIES_SELECTION] = misc.read({}, "ui", "curses", ss.DATA_FILE)
+    return res
