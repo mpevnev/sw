@@ -11,7 +11,7 @@ subscript: |
 bg per tile: 18
 header offset: 3
 list offset: 5
-num_tiles: 3
+num tiles: 3
 subscript offset: 2
 
 # Keybindings
