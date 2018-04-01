@@ -1,0 +1,10 @@
+
+# Strings
+
+header: Enter the name of your character
+subscript: (or leave it empty to have the game generate a random name for you)
+
+# Geometry
+
+textbox_width: 40
+offset: 10
