@@ -18,4 +18,4 @@ class Species():
         self.name = data[const.NAME]
         self.shortname = data[const.SHORTNAME]
         self.forbidden_backgrounds = data[const.FORBIDDEN_BACKGROUNDS]
-        self.modifiers = [mod.Modifier(d) for d in data[const.MODIFIERS]]
+        self.modifiers = [mod.modifier_from_data((d) for d in data[const.MODIFIERS]]

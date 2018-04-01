@@ -18,4 +18,4 @@ class Background():
     def __init__(self, data):
         self.name = data[const.NAME]
         self.shortname = data[const.SHORTNAME]
-        self.modifiers = [mod.Modifier(d) for d in data[const.MODIFIERS]]
+        self.modifiers = [mod.modifier_from_data(d) for d in data[const.MODIFIERS]]
