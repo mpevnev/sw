@@ -1,4 +1,5 @@
 
-- name: Fighter
+- id: fighter
+  name: Fighter
   short name: Fi
   modifiers: []
