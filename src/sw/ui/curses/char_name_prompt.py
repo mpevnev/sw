@@ -3,7 +3,7 @@ Curses-based character name prompt.
 """
 
 
-import sw.const.ui.char_name_prompt as cnp
+import sw.const.ui.curses.char_name_prompt as cnp
 import sw.ui as ui
 import sw.ui.curses as curses
 import sw.event.char_name_prompt as event

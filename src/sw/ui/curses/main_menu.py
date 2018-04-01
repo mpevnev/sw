@@ -6,7 +6,7 @@ Curses-based main menu.
 import mofloc
 
 
-import sw.const.ui.main_menu as mm
+import sw.const.ui.curses.main_menu as mm
 import sw.ui as ui
 import sw.ui.curses as curses
 import sw.event.main_menu as event
