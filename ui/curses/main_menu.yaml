@@ -1,0 +1,11 @@
+
+# Strings
+
+header: Welcome to Severed World!
+new game: Start a new game
+quit: Quit
+
+# Geometry
+
+header offset: 5
+header gap: 7
