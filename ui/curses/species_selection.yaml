@@ -1,0 +1,14 @@
+
+# Strings
+header: Choose your species
+subscript: (press '!' to abort character creation process)
+
+# Geometry
+header offset: 3
+list offset: 5
+num tiles: 3
+species per tile: 18
+subscript offset: 2
+
+# Keybindings
+abort key: '!'
