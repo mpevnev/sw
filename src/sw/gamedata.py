@@ -37,13 +37,5 @@ def _read_species():
 
 def _read_strings():
     """ Read strings from the data files. """
-    import sw.const.ui.background_selection as bg
-    import sw.const.ui.main_menu as mm
-    import sw.const.ui.char_name_prompt as cnp
-    import sw.const.ui.species_selection as ss
     res = {}
-    res[const.BACKGROUND_SELECTION] = misc.read({}, "strings", bg.STRINGS_FILE)
-    res[const.CHAR_NAME_PROMPT] = misc.read({}, "strings", cnp.STRINGS_FILE)
-    res[const.MAIN_MENU] = misc.read({}, "strings", mm.STRINGS_FILE)
-    res[const.SPECIES_SELECTION] = misc.read({}, "strings", ss.STRINGS_FILE)
     return res
