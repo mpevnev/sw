@@ -71,7 +71,7 @@ class SpeciesSelection(mofloc.Flow):
         self.ui.draw()
 
     #--------- event handlers ---------#
-    
+
     def abort(self, ev):
         """ Process an 'abort char creation' event. """
         if ev[0] != ss_event.ABORT_SPECIES:
@@ -102,6 +102,7 @@ class BackgroundSelection(mofloc.Flow):
         self.register_event_source(self.ui)
         self.register_preevent_action(self.draw)
         self.register_event_handler(self.abort)
+        self.register_event_handler(self.back)
         self.register_event_handler(self.choose_background)
 
     def run_menu(self):
@@ -125,7 +126,7 @@ class BackgroundSelection(mofloc.Flow):
 
     def back(self, ev):
         """ Process 'return to species selection' event. """
-        if ev[0] != bs.event.BACK_TO_SPECIES:
+        if ev[0] != bs_event.BACK_TO_SPECIES:
             return False
         new_flow = SpeciesSelection(self.data, self.ui_spawner, self.name)
         raise mofloc.ChangeFlow(new_flow, SPECIES_SEL_ENTRY_POINT)

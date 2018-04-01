@@ -1,4 +1,4 @@
 
-header: Please select a background for your character
+header: Choose your background
 
-abort: Press '!' to return to the main menu
+subscript: (press '!' to abort character creation or '<' to return to species menu)
