@@ -11,5 +11,5 @@ from sw.modifiable import Modifiable
 class Character(Modifiable):
     """ An active game entity. """
 
-    def __init__(self, recipe):
+    def __init__(self):
         super().__init__()
