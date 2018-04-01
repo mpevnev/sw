@@ -26,9 +26,9 @@ class CharNamePrompt(ui.CharNamePrompt):
 
     def draw(self):
         self.screen.erase()
-        offset = uidata[cnp.OFFSET]
-        curses.print_centered(self.screen, offset, uidata[cnp.HEADER])
-        curses.print_centered(self.screen, offset + 2, strings[cnp.SUBSCRIPT])
+        offset = self.uidata[cnp.OFFSET]
+        curses.print_centered(self.screen, offset, self.uidata[cnp.HEADER])
+        curses.print_centered(self.screen, offset + 2, self.uidata[cnp.SUBSCRIPT])
         self.screen.refresh()
         curses.doupdate()
 
