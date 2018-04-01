@@ -11,40 +11,22 @@ from sw.character import Character
 class Player(Character):
     """ Player character. """
 
-    def __init__(self, name):
+    def __init__(self, name, species, background):
         super().__init__()
         self.name = name
-        self.species = None
-        self.background = None
+        self.species = species
+        self.background = background
+        self._apply_species()
+        self._apply_background()
 
     #--------- species manipulation ---------#
 
-    def set_species(self, species):
-        """ Change character's species. """
-        self._undo_species()
-        self.species = species
-        self._apply_species()
-
     def _apply_species(self):
         """ Apply species' modifiers. """
-        pass
-
-    def _undo_species(self):
-        """ Undo species' modifiers. """
-        pass
+        self.add_innate_modifiers(*self.species.modifiers)
 
     #--------- background manipulation ---------#
-
-    def set_background(self, bg):
-        """ Change character's background. """
-        self._undo_background()
-        self.background = bg
-        self._apply_background()
 
     def _apply_background(self):
         """ Apply background's modifiers. """
         self.add_temp_modifiers(*self.background.modifiers)
-
-    def _undo_background(self):
-        """ Undo background's modifiers. """
-        self.remove_temp_modifiers(*self.background.modifiers)

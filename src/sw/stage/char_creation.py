@@ -9,11 +9,13 @@ import mofloc
 import sw.event.background_selection as bs_event
 import sw.event.char_name_prompt as cnp_event
 import sw.event.species_selection as ss_event
+from sw.player import Player
 
 
 NAME_INPUT_ENTRY_POINT = "the only"
-BG_SEL_ENTRY_POINT = "the only"
 SPECIES_SEL_ENTRY_POINT = "the only"
+BG_SEL_ENTRY_POINT = "the only"
+FINAL_ENTRY_POINT = "the only"
 
 
 class NameInput(mofloc.Flow):
@@ -135,4 +137,27 @@ class BackgroundSelection(mofloc.Flow):
         """ Process a 'background chosen' event. """
         if ev[0] != bs_event.CHOOSE_BACKGROUND:
             return False
-        return True
+        new_flow = PlayerCreator(self.data, self.ui_spawner, self.name, self.species, ev[1])
+        raise mofloc.ChangeFlow(new_flow, FINAL_ENTRY_POINT)
+
+
+class PlayerCreator(mofloc.Flow):
+    """ The final flow that will create the player character. """
+
+    def __init__(self, data, spawner, name, species, background):
+        super().__init__()
+        self.data = data
+        self.ui_spawner = spawner
+        self.name = name
+        self.species = species
+        self.background = background
+        self.register_entry_point(FINAL_ENTRY_POINT, self.create_player)
+
+    def create_player(self):
+        """
+        Create the player character and transfer control to the world creator.
+        """
+        import sw.stage.world_generation as worldgen
+        player = Player(self.name, self.species, self.background)
+        new_flow = worldgen.WorldGeneration(self.data, self.ui_spawner, player)
+        raise mofloc.ChangeFlow(new_flow, worldgen.ENTRY_POINT)
