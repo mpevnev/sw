@@ -18,12 +18,6 @@ class HasSkills():
     def upgrade_skill(self, which):
         """ Increase skill's level by one. """
         self.base_skills[which] += 1
-        self.update_skill_totals()
-
-    def update_skill_totals(self):
-        """ Update total skills. """
-        # TODO: cross-training
-        self.total_skills = self.base_skills.copy()
 
 
 #--------- convenience things ---------#

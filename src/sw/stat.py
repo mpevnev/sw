@@ -6,11 +6,6 @@ them.
 """
 
 
-from collections import deque
-from itertools import chain
-
-
-import sw.const.modifier as modconst
 import sw.const.stat as stat
 
 
@@ -18,72 +13,12 @@ import sw.const.stat as stat
 
 class HasStats():
     """
-    A class for things that have statistics and can have modifiers to them.
+    A class for things that have statistics.
     """
 
     def __init__(self):
         self.base_stats = empty_stat_dict()
         self.total_stats = empty_stat_dict()
-        self.innate_modifiers = deque()
-        self.temp_modifiers = deque()
-        self._sorted_modifiers = None
-
-    #--------- modifiers manipulation ---------#
-
-    def add_innate_modifiers(self, *modifiers):
-        """ Add innate modifiers to the character. """
-        self.innate_modifiers.extend(modifiers)
-        self._sorted_modifiers = None
-
-    def add_temp_modifiers(self, *modifiers):
-        """ Add temporary modifiers to the character. """
-        self.temp_modifiers.extend(modifiers)
-        self._sorted_modifiers = None
-
-    def all_modifiers(self):
-        """
-        Return a list with all modifiers sorted by their priority.
-        """
-        if self._sorted_modifiers is not None:
-            return self._sorted_modifiers
-        res = sorted(chain(self.innate_modifiers, self.temp_modifiers),
-                     key=lambda mod: mod.priority)
-        self._sorted_modifiers = res
-        return res
-
-    def clear_all_modifiers(self):
-        """ Remove all modifiers. """
-        self.innate_modifiers = deque()
-        self.temp_modifiers = deque()
-        self._sorted_modifiers = []
-
-    def clear_innate_modifiers(self):
-        """ Remove all innate modifiers. """
-        self.innate_modifiers = deque()
-        self._sorted_modifiers = None
-
-    def clear_temp_modifiers(self):
-        """ Remove all temporary modifiers. """
-        self.temp_modifiers = deque()
-        self._sorted_modifiers = None
-
-    def remove_innate_modifiers(self, *modifiers):
-        """ Remove an innate modifier or several from the character. """
-        for mod in modifiers:
-            try:
-                self.innate_modifiers.remove(mod)
-                self._sorted_modifiers = None
-            except ValueError:
-                pass
-
-    def remove_temp_modifiers(self, *modifiers):
-        """ Remove a temporary modifier or several from the character. """
-        for mod in modifiers:
-            try:
-                self.temp_modifiers.remove(mod)
-                self._sorted_modifiers = None
-            except ValueError:
-                pass
 
     #--------- statistics manipulation ---------#
 
@@ -116,25 +51,6 @@ class HasStats():
     def total_tertiary(self):
         """ Return total tertiary statistics. """
         return self.total_stats[stat.StatGroup.TERTIARY]
-
-    def update_stat_totals(self):
-        """ Update total statistics of the character. """
-        # apply changes to primary statistics
-        new_primary_dict = self.base_primary.copy()
-        for mod in self.all_modifiers():
-            mod.apply_primary(new_primary_dict, old_primary)
-        self.total_stats[stat.StatGroup.PRIMARY] = new_primary_dict
-        # TODO: actually apply the collected changes
-        # apply changes to secondary statistics
-        new_secondary_dict = self.base_secondary.copy()
-        for mod in self.all_modifiers():
-            mod.apply_secondary(collector, self.total_primary)
-        self.total_stats[stat.StatGroup.PRIMARY] = new_secondary_dict
-        # apply changes to tertiary statistics
-        new_tertiary_dict = self.base_tertiary.copy()
-        for mod in self.all_modifiers():
-            mod.apply_primary(collector, self.total_primary, self.total_secondary)
-        self.total_stats[stat.StatGroup.PRIMARY] = new_tertiary_dict
 
 
 #--------- convenience things ---------#

@@ -19,14 +19,18 @@ class Modifier():
     def __init__(self, data):
         self.priority = data[PRIORITY]
 
-    def apply_primary(self, apply_to, old_primary):
+    def apply_skills(self, apply_to, old_skills):
+        """ Apply changes to the skills. """
+        raise NotImplementedError
+
+    def apply_primary(self, apply_to, skills, old_primary):
         """ Apply changes to the primary statistics. """
         raise NotImplementedError
 
-    def apply_secondary(self, apply_to, primary):
+    def apply_secondary(self, apply_to, skills, primary):
         """ Apply changes to the secondary statistics. """
         raise NotImplementedError
 
-    def apply_tertiary(self, apply_to, primary, secondary):
+    def apply_tertiary(self, apply_to, skills, primary, secondary):
         """ Apply changes to the tertiary statistics. """
         raise NotImplementedError
