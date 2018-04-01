@@ -20,7 +20,7 @@ class HasStats():
         self.base_stats = empty_stat_dict()
         self.total_stats = empty_stat_dict()
 
-    #--------- statistics manipulation ---------#
+    #--------- statistics manipulation - getters ---------#
 
     @property
     def base_primary(self):
@@ -51,6 +51,38 @@ class HasStats():
     def total_tertiary(self):
         """ Return total tertiary statistics. """
         return self.total_stats[stat.StatGroup.TERTIARY]
+
+    #--------- statistics manipulation - setters ---------#
+
+    @base_primary.setter
+    def base_primary(self, new):
+        """" Set base primary statistics. """
+        self.base_stats[stat.StatGroup.PRIMARY] = new
+
+    @base_secondary.setter
+    def base_secondary(self, new):
+        """" Set base secondary statistics. """
+        self.base_stats[stat.StatGroup.SECONDARY] = new
+
+    @base_tertiary.setter
+    def base_tertiary(self, new):
+        """" Set base tertiary statistics. """
+        self.base_stats[stat.StatGroup.TERTIARY] = new
+
+    @total_primary.setter
+    def total_primary(self, new):
+        """" Set total primary statistics. """
+        self.total_stats[stat.StatGroup.PRIMARY] = new
+
+    @total_secondary.setter
+    def total_secondary(self, new):
+        """" Set total secondary statistics. """
+        self.total_stats[stat.StatGroup.SECONDARY] = new
+
+    @total_tertiary.setter
+    def total_tertiary(self, new):
+        """" Set total tertiary statistics. """
+        self.total_stats[stat.StatGroup.TERTIARY] = new
 
 
 #--------- convenience things ---------#

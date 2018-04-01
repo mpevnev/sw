@@ -9,7 +9,6 @@ from collections import deque
 from itertools import chain
 
 
-import sw.const.stat as stat
 from sw.skill import HasSkills
 from sw.stat import HasStats
 
@@ -102,17 +101,17 @@ class Modifiable(HasSkills, HasStats):
         new_primary = self.base_primary.copy()
         for mod in self.all_modifiers():
             mod.apply_primary(new_primary, self.base_skills, self.base_primary)
-        self.total_stats[stat.StatGroup.PRIMARY] = new_primary
+        self.total_primary = new_primary
 
     def _update_secondary_totals(self):
         new_secondary = self.base_secondary.copy()
         for mod in self.all_modifiers():
             mod.apply_secondary(new_secondary, self.base_skills, self.total_primary)
-        self.total_stats[stat.StatGroup.SECONDARY] = new_secondary
+        self.total_secondary = new_secondary
 
     def _update_tertiary_totals(self):
         new_tertiary = self.base_tertiary.copy()
         for mod in self.all_modifiers():
             mod.apply_tertiary(new_tertiary, self.base_skills, self.total_primary,
                                self.total_secondary)
-        self.total_stats[stat.StatGroup.TERTIARY] = new_tertiary
+        self.total_tertiary = new_tertiary
