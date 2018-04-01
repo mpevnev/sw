@@ -6,5 +6,5 @@ subscript: (or leave it empty to have the game generate a random name for you)
 
 # Geometry
 
-textbox_width: 40
+textbox width: 40
 offset: 10
