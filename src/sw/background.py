@@ -16,6 +16,7 @@ class Background():
     """
 
     def __init__(self, data):
+        self.id = data[const.ID]
         self.name = data[const.NAME]
         self.shortname = data[const.SHORTNAME]
         self.modifiers = [mod.modifier_from_data(d) for d in data[const.MODIFIERS]]
