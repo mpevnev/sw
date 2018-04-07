@@ -6,6 +6,9 @@ Main overworld stage.
 import mofloc
 
 
+import sw.event.main_overworld as event
+
+
 FROM_WORLDGEN = "from worldgen"
 
 
@@ -19,6 +22,8 @@ class MainOverworld(mofloc.Flow):
         self.ui = ui_spawner.spawn_main_overworld_window(state)
         self.register_entry_point(FROM_WORLDGEN, self.from_worldgen)
         self.register_preevent_action(self.draw)
+        self.register_event_source(self.ui)
+        self.register_event_handler(self.move)
 
     def draw(self):
         """ Draw the UI. """
@@ -29,3 +34,16 @@ class MainOverworld(mofloc.Flow):
     def from_worldgen(self):
         """ Print out an introductory message and proceed as normal. """
         pass
+
+    #--------- event handlers ---------#
+
+    def move(self, ev):
+        """ Handle 'move' command. """
+        if ev[0] != event.MOVE:
+            return False
+        dx, dy = ev[1]
+        x, y = self.state.player_position
+        new_xy = (x + dx, y + dy)
+        self.state.player_position = new_xy
+        self.state.world.generate_area_buffer(*new_xy)
+        return True

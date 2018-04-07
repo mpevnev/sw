@@ -3,15 +3,11 @@ Main overworld UI.
 """
 
 
-from collections import deque
-
-
 import mofloc
 
 
 import sw.const.ui.curses.main_overworld as mo
 import sw.event.main_overworld as event
-import sw.ui as ui
 import sw.ui.curses as curses
 
 
@@ -38,6 +34,7 @@ class MainOverworld(mofloc.EventSource):
 
     def get_event(self):
         ch = self.screen.getkey()
+        curses.flash()
         if ch == self.uidata[mo.KEY_RIGHT]:
             return (event.MOVE, (1, 0))
         if ch == self.uidata[mo.KEY_RIGHT_UP]:
