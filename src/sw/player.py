@@ -21,8 +21,8 @@ class Player(Character):
 class PlayerFromData(Player):
     """ A player created from a data dict. """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, data):
+        raise NotImplementedError
 
 
 class PlayerFromScratch(Player):
