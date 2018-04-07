@@ -9,6 +9,9 @@ load it from and save it to disk.
 from enum import Enum
 
 
+MIN_AREA_BUFFER = 7
+
+
 #--------- main classes ---------#
 
 class World():
@@ -26,7 +29,18 @@ class World():
 
     def add_area(self, x, y):
         """ Generate a new area at the given coordinates. """
+        if (x, y) in self.area_headers:
+            return
         self.area_headers[(x, y)] = AreaHeaderFromScratch(None, ArcanumLevel.ZERO)
+
+    def generate_area_buffer(self, around_x, around_y):
+        """
+        Generate buffer areas around given coordinates, that is, add new areas
+        in a rectangle centered around them.
+        """
+        for x in range(around_x - MIN_AREA_BUFFER, around_x + MIN_AREA_BUFFER):
+            for y in range(around_y - MIN_AREA_BUFFER, around_y + MIN_AREA_BUFFER):
+                self.add_area(x, y)
 
 
 class AreaHeader():
@@ -58,9 +72,7 @@ class WorldFromScratch(World):
     def __init__(self):
         super().__init__()
         self.name = "TEMP WORLD NAME"
-        for x in range(10):
-            for y in range(10):
-                self.area_headers[(x, y)] = AreaHeaderFromScratch(None, ArcanumLevel.ZERO)
+        self.generate_area_buffer(0, 0)
 
 
 class AreaHeaderFromData(AreaHeader):
