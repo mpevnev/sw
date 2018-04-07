@@ -6,6 +6,9 @@ World generation stage.
 import mofloc
 
 
+import sw.world as world
+
+
 ENTRY_POINT = "the only"
 
 
@@ -25,6 +28,7 @@ class WorldGeneration(mofloc.Flow):
         """
         Generate a world and then transfer control to the main game flow.
         """
-        pass
-
-    #--------- helpers ---------#
+        import sw.stage.main_game as mg
+        new_world = world.WorldFromScratch()
+        new_flow = mg.Overworld(self.data, self.ui_spawner, self.player, new_world)
+        raise mofloc.ChangeFlow(new_flow, mg.OverworldEntry.WORLDGEN)
