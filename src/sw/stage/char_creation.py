@@ -158,6 +158,6 @@ class PlayerCreator(mofloc.Flow):
         Create the player character and transfer control to the world creator.
         """
         import sw.stage.world_generation as worldgen
-        player = Player(self.name, self.species, self.background)
+        player = Player.from_scratch(self.name, self.species, self.background)
         new_flow = worldgen.WorldGeneration(self.data, self.ui_spawner, player)
         raise mofloc.ChangeFlow(new_flow, worldgen.ENTRY_POINT)
