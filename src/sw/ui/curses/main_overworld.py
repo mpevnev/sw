@@ -62,15 +62,16 @@ class MainOverworld(mofloc.EventSource):
     def draw_overworld_view(self):
         """ Draw the overworld. """
         h, w = self.overworld_view.getmaxyx()
-        offset_x = w // 2 - self.state.player_position[0]
-        offset_y = h // 2 - self.state.player_position[1]
+        player_x, player_y = self.state.player_position
+        offset_x = w // 2 - player_x
+        offset_y = h // 2 - player_y
         for coord, header in self.state.world.area_headers.items():
             x = coord[0] + offset_x
             y = coord[1] + offset_y
             if x <= 0 or y <= 0 or x >= w or y >= h:
                 continue
             self.overworld_view.addch(y, x, self.uidata[mo.PLAIN_CHAR])
-        self.overworld_view.addch(offset_y, offset_x, self.uidata[mo.PLAYER_CHAR])
+        self.overworld_view.addch(h // 2, w // 2, self.uidata[mo.PLAYER_CHAR])
         self.overworld_view.box()
 
     def draw_player_status_box(self):
