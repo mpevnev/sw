@@ -44,6 +44,10 @@ class UISpawner():
         """ Spawn the main menu UI piece. """
         raise NotImplementedError
 
+    def spawn_main_overworld_window(self, data, world, player):
+        """ Spawn the main overworld view. """
+        raise NotImplementedError
+
     def spawn_species_selection(self, data):
         """ Spawn a menu with species selection. """
         raise NotImplementedError

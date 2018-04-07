@@ -41,6 +41,11 @@ class CursesSpawner(ui.UISpawner):
         uidata = self.uidata[const.MAIN_MENU]
         return MainMenu(self.screen, uidata, data)
 
+    def spawn_main_overworld_window(self, data, world, player):
+        from sw.ui.curses.main_overworld import MainOverworld
+        uidata = self.uidata[const.MAIN_OVERWORLD]
+        return MainOverworld(self.screen, uidata, data, world, player)
+
     def spawn_species_selection(self, data):
         from sw.ui.curses.species_selection import SpeciesSelection
         uidata = self.uidata[const.SPECIES_SELECTION]
@@ -55,10 +60,12 @@ def _read_curses_ui_data():
     import sw.const.ui.curses.background_selection as bs
     import sw.const.ui.curses.char_name_prompt as cnp
     import sw.const.ui.curses.main_menu as mm
+    import sw.const.ui.curses.main_overworld as mo
     import sw.const.ui.curses.species_selection as ss
     res = {}
     res[const.BACKGROUND_SELECTION] = misc.read({}, "ui", "curses", bs.DATA_FILE)
     res[const.CHAR_NAME_PROMPT] = misc.read({}, "ui", "curses", cnp.DATA_FILE)
     res[const.MAIN_MENU] = misc.read({}, "ui", "curses", mm.DATA_FILE)
+    res[const.MAIN_OVERWORLD] = misc.read({}, "ui", "curses", mo.DATA_FILE)
     res[const.SPECIES_SELECTION] = misc.read({}, "ui", "curses", ss.DATA_FILE)
     return res

@@ -28,7 +28,7 @@ class WorldGeneration(mofloc.Flow):
         """
         Generate a world and then transfer control to the main game flow.
         """
-        import sw.stage.main_game as mg
+        import sw.stage.main_overworld as mo
         new_world = world.WorldFromScratch()
-        new_flow = mg.Overworld(self.data, self.ui_spawner, self.player, new_world)
-        raise mofloc.ChangeFlow(new_flow, mg.OverworldEntry.WORLDGEN)
+        new_flow = mo.MainOverworld(self.data, self.ui_spawner, self.player, new_world)
+        raise mofloc.ChangeFlow(new_flow, mo.FROM_WORLDGEN)
