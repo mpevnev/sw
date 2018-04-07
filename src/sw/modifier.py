@@ -71,10 +71,10 @@ class FlatStatIncrease(Modifier):
             pass
         raise ValueError(f"Unknown statistics '{which}'")
 
-    def apply_primary(self, apply_to, skills, old_primary):
+    def apply_primary(self, apply_to, overworld, area):
         if self.which_group == stat.StatGroup.PRIMARY:
-            apply_to[self.which] += self.amount
+            apply_to.total_primary[self.which] += self.amount
 
-    def apply_secondary(self, apply_to, skills, primary):
+    def apply_secondary(self, apply_to, overworld, area):
         if self.which_group == stat.StatGroup.SECONDARY:
-            apply_to[self.which] += self.amount
+            apply_to.total_secondary[self.which] += self.amount
