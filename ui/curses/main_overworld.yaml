@@ -8,3 +8,13 @@ player char: '@'
 # Geometry
 message box height: 10
 status box width: 35
+
+# Keybindings
+right: 'l'
+right up: 'u'
+up: 'k'
+left up: 'y'
+left: 'h'
+left down: 'b'
+down: 'j'
+right down: 'n'

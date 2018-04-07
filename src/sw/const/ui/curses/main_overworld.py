@@ -19,3 +19,11 @@ PLAYER_STATUS_BOX_WIDTH = "status box width"
 
 
 # Keybindings
+KEY_RIGHT = "right"
+KEY_RIGHT_UP = "right up"
+KEY_UP = "up"
+KEY_LEFT_UP = "left up"
+KEY_LEFT = "left"
+KEY_LEFT_DOWN = "left down"
+KEY_DOWN = "down"
+KEY_RIGHT_DOWN = "right down"

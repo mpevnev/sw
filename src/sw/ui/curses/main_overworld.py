@@ -37,8 +37,23 @@ class MainOverworld(mofloc.EventSource):
         curses.doupdate()
 
     def get_event(self):
-        """ Get a key from the keyboard and transform it into an event. """
         ch = self.screen.getkey()
+        if ch == self.uidata[mo.KEY_RIGHT]:
+            return (event.MOVE, (1, 0))
+        if ch == self.uidata[mo.KEY_RIGHT_UP]:
+            return (event.MOVE, (1, -1))
+        if ch == self.uidata[mo.KEY_UP]:
+            return (event.MOVE, (0, -1))
+        if ch == self.uidata[mo.KEY_LEFT_UP]:
+            return (event.MOVE, (-1, -1))
+        if ch == self.uidata[mo.KEY_LEFT]:
+            return (event.MOVE, (-1, 0))
+        if ch == self.uidata[mo.KEY_LEFT_DOWN]:
+            return (event.MOVE, (-1, 1))
+        if ch == self.uidata[mo.KEY_DOWN]:
+            return (event.MOVE, (0, 1))
+        if ch == self.uidata[mo.KEY_RIGHT_DOWN]:
+            return (event.MOVE, (1, 1))
         raise mofloc.NoEvent
 
     #--------- subwindow drawing ---------#
