@@ -13,6 +13,7 @@ class GameState():
         self.data = None
         self.player = None
         self.world = None
+        self.player_position = None
         self.turn = 0
 
 
@@ -35,4 +36,5 @@ class GameStateFromScratch(GameState):
         self.data = data
         self.player = player
         self.world = world
+        self.player_position = (0, 0)
         self.turn = 0

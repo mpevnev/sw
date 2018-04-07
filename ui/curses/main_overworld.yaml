@@ -1,3 +1,10 @@
 
+# Strings
+city char: '%'
+hills char: 'o'
+plain char: '.'
+player char: '@'
+
+# Geometry
 message box height: 10
 status box width: 35
