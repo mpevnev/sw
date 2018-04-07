@@ -84,34 +84,23 @@ class Modifiable(HasSkills, HasStats):
 
     #--------- application of modifiers ---------#
 
-    def update_totals(self):
+    def update_totals(self, overworld, area):
         """ Update total statistics and skills of the character. """
-        self._update_skill_totals()
-        self._update_primary_totals()
-        self._update_secondary_totals()
-        self._update_tertiary_totals()
+        self._update_skill_totals(overworld, area)
+        self._update_primary_totals(overworld, area)
+        self._update_secondary_totals(overworld, area)
 
-    def _update_skill_totals(self):
-        new_skills = self.base_skills.copy()
+    def _update_skill_totals(self, overworld, area):
+        self.total_skills = self.base_skills.copy()
         for mod in self.all_modifiers():
-            mod.apply_skills(new_skills, self.base_skills)
-        self.total_skills = new_skills
+            mod.apply_skills(self, overworld, area)
 
     def _update_primary_totals(self):
-        new_primary = self.base_primary.copy()
+        self.total_primary = self.base_primary.copy()
         for mod in self.all_modifiers():
-            mod.apply_primary(new_primary, self.base_skills, self.base_primary)
-        self.total_primary = new_primary
+            mod.apply_primary(self, overworld, area)
 
     def _update_secondary_totals(self):
-        new_secondary = self.base_secondary.copy()
+        self.total_secondary = self.base_secondary.copy()
         for mod in self.all_modifiers():
-            mod.apply_secondary(new_secondary, self.base_skills, self.total_primary)
-        self.total_secondary = new_secondary
-
-    def _update_tertiary_totals(self):
-        new_tertiary = self.base_tertiary.copy()
-        for mod in self.all_modifiers():
-            mod.apply_tertiary(new_tertiary, self.base_skills, self.total_primary,
-                               self.total_secondary)
-        self.total_tertiary = new_tertiary
+            mod.apply_secondary(self, overworld, area)

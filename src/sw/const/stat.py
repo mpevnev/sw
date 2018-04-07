@@ -10,7 +10,6 @@ class StatGroup(Enum):
 
     PRIMARY = "primary"
     SECONDARY = "secondary"
-    TERTIARY = "tertiary"
 
 
 class PrimaryStat(Enum):
@@ -28,20 +27,19 @@ class SecondaryStat(Enum):
     ARMOR = "armor"
     DAMAGE = "damage"
     DODGE = "dodge"
-    HEALTH = "health"
-    MAGIC_POWER = "magic power"
-    MAGIC_KNOWLEDGE = "magic knowledge"
-    RESIST = "resist"
     TO_HIT = "to hit"
 
-
-class TertiaryStat(Enum):
-    """ Enumeration of tertiary statistics. """
-
+    HEALTH = "health"
     HEALTH_REGEN = "health regen"
+
+    MAGIC_KNOWLEDGE = "magic knowledge"
+    MAGIC_POWER = "magic power"
     MAGIC_REGEN = "magic regen"
+
+    RESIST = "resist"
     RESIST_AIR = "resist air"
     RESIST_ARCANUM = "resist arcanum"
     RESIST_EARTH = "resist earth"
     RESIST_FIRE = "resist fire"
+    RESIST_POISON = "resist poison"
     RESIST_WATER = "resist water"

@@ -24,20 +24,16 @@ class Modifier():
     def __init__(self, data):
         self.priority = data[mod.PRIORITY]
 
-    def apply_skills(self, apply_to, old_skills):
+    def apply_skills(self, apply_to, overworld, area):
         """ Apply changes to the skills. """
         pass
 
-    def apply_primary(self, apply_to, skills, old_primary):
+    def apply_primary(self, apply_to, overworld, area):
         """ Apply changes to the primary statistics. """
         pass
 
-    def apply_secondary(self, apply_to, skills, primary):
+    def apply_secondary(self, apply_to, overworld, area):
         """ Apply changes to the secondary statistics. """
-        pass
-
-    def apply_tertiary(self, apply_to, skills, primary, secondary):
-        """ Apply changes to the tertiary statistics. """
         pass
 
 
@@ -73,13 +69,6 @@ class FlatStatIncrease(Modifier):
             return
         except ValueError:
             pass
-        try:
-            which = stat.TertiaryStat(which)
-            self.which = which
-            self.which_group = stat.StatGroup.TERTIARY
-            return
-        except ValueError:
-            pass
         raise ValueError(f"Unknown statistics '{which}'")
 
     def apply_primary(self, apply_to, skills, old_primary):
@@ -88,8 +77,4 @@ class FlatStatIncrease(Modifier):
 
     def apply_secondary(self, apply_to, skills, primary):
         if self.which_group == stat.StatGroup.SECONDARY:
-            apply_to[self.which] += self.amount
-
-    def apply_tertiary(self, apply_to, skills, primary, secondary):
-        if self.which_group == stat.StatGroup.TERTIARY:
             apply_to[self.which] += self.amount
