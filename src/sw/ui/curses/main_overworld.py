@@ -18,13 +18,11 @@ import sw.ui.curses as curses
 class MainOverworld(mofloc.EventSource):
     """ Main overworld view. """
 
-    def __init__(self, screen, uidata, data, world, player):
+    def __init__(self, screen, uidata, state):
         super().__init__()
         self.screen = screen
         self.uidata = uidata
-        self.data = data
-        self.world = world
-        self.player = player
+        self.state = state
         self.message_box = self.make_message_box()
         self.player_status_box = self.make_status_box()
         self.overworld_view = self.make_overworld_view()

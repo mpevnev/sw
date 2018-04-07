@@ -44,7 +44,7 @@ class UISpawner():
         """ Spawn the main menu UI piece. """
         raise NotImplementedError
 
-    def spawn_main_overworld_window(self, data, world, player):
+    def spawn_main_overworld_window(self, state):
         """ Spawn the main overworld view. """
         raise NotImplementedError
 

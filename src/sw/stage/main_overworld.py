@@ -12,13 +12,11 @@ FROM_WORLDGEN = "from worldgen"
 class MainOverworld(mofloc.Flow):
     """ Main overworld handler. """
 
-    def __init__(self, data, ui_spawner, player, world):
+    def __init__(self, state, ui_spawner):
         super().__init__()
-        self.data = data
+        self.state = state
         self.ui_spawner = ui_spawner
-        self.player = player
-        self.world = world
-        self.ui = ui_spawner.spawn_main_overworld_window(data, world, player)
+        self.ui = ui_spawner.spawn_main_overworld_window(state)
         self.register_entry_point(FROM_WORLDGEN, self.from_worldgen)
         self.register_preevent_action(self.draw)
 

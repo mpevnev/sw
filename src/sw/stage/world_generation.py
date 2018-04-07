@@ -6,6 +6,7 @@ World generation stage.
 import mofloc
 
 
+import sw.gamestate as state
 import sw.world as world
 
 
@@ -30,5 +31,6 @@ class WorldGeneration(mofloc.Flow):
         """
         import sw.stage.main_overworld as mo
         new_world = world.WorldFromScratch()
-        new_flow = mo.MainOverworld(self.data, self.ui_spawner, self.player, new_world)
+        fullstate = state.GameStateFromScratch(self.data, self.player, new_world)
+        new_flow = mo.MainOverworld(fullstate, self.ui_spawner)
         raise mofloc.ChangeFlow(new_flow, mo.FROM_WORLDGEN)

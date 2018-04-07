@@ -41,10 +41,10 @@ class CursesSpawner(ui.UISpawner):
         uidata = self.uidata[const.MAIN_MENU]
         return MainMenu(self.screen, uidata, data)
 
-    def spawn_main_overworld_window(self, data, world, player):
+    def spawn_main_overworld_window(self, state):
         from sw.ui.curses.main_overworld import MainOverworld
         uidata = self.uidata[const.MAIN_OVERWORLD]
-        return MainOverworld(self.screen, uidata, data, world, player)
+        return MainOverworld(self.screen, uidata, state)
 
     def spawn_species_selection(self, data):
         from sw.ui.curses.species_selection import SpeciesSelection
