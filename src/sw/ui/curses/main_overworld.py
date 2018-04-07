@@ -55,7 +55,7 @@ class MainOverworld(mofloc.EventSource):
         for coord, header in self.state.world.area_headers.items():
             x = coord[0] + offset_x
             y = coord[1] + offset_y
-            if x < 0 or y < 0 or x >= w or y >= h:
+            if x <= 0 or y <= 0 or x >= w or y >= h:
                 continue
             self.overworld_view.addch(y, x, self.uidata[mo.PLAIN_CHAR])
         self.overworld_view.addch(offset_y, offset_x, self.uidata[mo.PLAYER_CHAR])
