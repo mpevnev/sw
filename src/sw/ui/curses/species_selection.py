@@ -13,7 +13,7 @@ import sw.ui as ui
 import sw.ui.curses as curses
 
 
-class SpeciesSelection(ui.SpeciesSelection):
+class SpeciesSelection(mofloc.EventSource):
     """ The species selection UI. """
 
     def __init__(self, screen, uidata, data):
@@ -28,6 +28,7 @@ class SpeciesSelection(ui.SpeciesSelection):
             for i in range(num_tiles)]
 
     def draw(self):
+        """ Draw the menu. """
         self.screen.erase()
         tile = 0
         sp_index = 0

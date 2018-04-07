@@ -3,13 +3,16 @@ Curses-based character name prompt.
 """
 
 
+import mofloc
+
+
 import sw.const.ui.curses.char_name_prompt as cnp
 import sw.ui as ui
 import sw.ui.curses as curses
 import sw.event.char_name_prompt as event
 
 
-class CharNamePrompt(ui.CharNamePrompt):
+class CharNamePrompt(mofloc.EventSource):
     """ Character name prompt. """
 
     def __init__(self, screen, uidata):
@@ -23,6 +26,7 @@ class CharNamePrompt(ui.CharNamePrompt):
         self.textbox = curses.Textbox(self.subwin)
 
     def draw(self):
+        """ Draw the prompt. """
         self.screen.erase()
         offset = self.uidata[cnp.OFFSET]
         curses.print_centered(self.screen, offset, self.uidata[cnp.HEADER])

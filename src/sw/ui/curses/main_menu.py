@@ -12,7 +12,7 @@ import sw.ui.curses as curses
 import sw.event.main_menu as event
 
 
-class MainMenu(ui.MainMenu):
+class MainMenu(mofloc.EventSource):
     """ The main menu UI. """
 
     def __init__(self, screen, uidata, data):
@@ -22,6 +22,7 @@ class MainMenu(ui.MainMenu):
         self.uidata = uidata
 
     def draw(self):
+        """ Draw the menu. """
         self.screen.erase()
         uidata = self.uidata
         offset = uidata[mm.HEADER_OFFSET]

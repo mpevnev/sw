@@ -13,7 +13,7 @@ import sw.ui as ui
 import sw.ui.curses as curses
 
 
-class BackgroundSelection(ui.BackgroundSelection):
+class BackgroundSelection(mofloc.EventSource):
     """ The background selection UI. """
 
     def __init__(self, screen, uidata, data, species):
@@ -29,6 +29,7 @@ class BackgroundSelection(ui.BackgroundSelection):
             for i in range(num_tiles)]
 
     def draw(self):
+        """ Draw the menu. """
         self.screen.erase()
         tile = 0
         bg_index = 0
