@@ -13,14 +13,20 @@ from enum import Enum
 
 class World():
     """
-    Representation of a game world. It is responsible for unifying AreaHeader's
-    and for saving and loading them as needed, also for creating new ones.
+    Representation of a game world. It is responsible for unifying and creating
+    AreaHeader's.
     """
 
     def __init__(self):
         self.name = None
         self.save_dir = None
-        self.area_headers = None
+        self.area_headers = {}
+
+    #--------- area manipulation ---------#
+
+    def add_area(self, x, y):
+        """ Generate a new area at the given coordinates. """
+        self.area_headers[(x, y)] = AreaHeaderFromScratch(None, ArcanumLevel.ZERO)
 
 
 class AreaHeader():
@@ -50,8 +56,11 @@ class WorldFromScratch(World):
     """ A randomly generated representation of a game world. """
 
     def __init__(self):
-        # TODO: name generation
         super().__init__()
+        self.name = "TEMP WORLD NAME"
+        for x in range(10):
+            for y in range(10):
+                self.area_headers[(x, y)] = AreaHeaderFromScratch(None, ArcanumLevel.ZERO)
 
 
 class AreaHeaderFromData(AreaHeader):
@@ -66,7 +75,7 @@ class AreaHeaderFromScratch(AreaHeader):
 
     def __init__(self, biome, arcanum_level):
         super().__init__()
-        # TODO: name generation
+        self.name = "TEMP AREA NAME"
         self.biome = biome
         self.arcanum_level = arcanum_level
 
@@ -85,9 +94,10 @@ class ArcanumLevel(Enum):
 
 
 class HostilityLevel(Enum):
-    """ An enumeration of hostility levels of areas. """
+    """ An enumeration of area's hostility level. """
 
     SAFE = 0
     WILD = 1
     DANGEROUS = 2
     WAR_ZONE = 3
+    DEEP_ARCANUM = 4
