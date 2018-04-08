@@ -3,7 +3,7 @@ Main dungeon view contants.
 """
 
 
-DATA_FILE = "main_overworld.yaml"
+DATA_FILE = "main_dungeon.yaml"
 
 
 # Strings
