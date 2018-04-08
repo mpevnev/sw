@@ -24,6 +24,8 @@ class Entity():
         """
         Return True if the entity can collide with the other, False otherwise.
         """
+        if self is other:
+            return False
         return bool(self.collision_groups.intersect(other.collision_groups))
 
     def collides(self, other):
