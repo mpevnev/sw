@@ -36,6 +36,11 @@ class CursesSpawner(ui.UISpawner):
         uidata = self.uidata[const.CHAR_NAME_PROMPT]
         return CharNamePrompt(self.screen, uidata)
 
+    def spawn_main_dungeon(self, state, area):
+        from sw.ui.curses.main_dungeon import MainDungeon
+        uidata = self.uidata[const.MAIN_DUNGEON]
+        return MainDungeon(self.screen, uidata, state, area)
+
     def spawn_main_menu(self, data):
         from sw.ui.curses.main_menu import MainMenu
         uidata = self.uidata[const.MAIN_MENU]
@@ -59,12 +64,14 @@ def _read_curses_ui_data():
     """ Read configuration and strings for curses-based interface. """
     import sw.const.ui.curses.background_selection as bs
     import sw.const.ui.curses.char_name_prompt as cnp
+    import sw.const.ui.curses.main_dungeon as md
     import sw.const.ui.curses.main_menu as mm
     import sw.const.ui.curses.main_overworld as mo
     import sw.const.ui.curses.species_selection as ss
     res = {}
     res[const.BACKGROUND_SELECTION] = misc.read({}, "ui", "curses", bs.DATA_FILE)
     res[const.CHAR_NAME_PROMPT] = misc.read({}, "ui", "curses", cnp.DATA_FILE)
+    res[const.MAIN_DUNGEON] = misc.read({}, "ui", "curses", md.DATA_FILE)
     res[const.MAIN_MENU] = misc.read({}, "ui", "curses", mm.DATA_FILE)
     res[const.MAIN_OVERWORLD] = misc.read({}, "ui", "curses", mo.DATA_FILE)
     res[const.SPECIES_SELECTION] = misc.read({}, "ui", "curses", ss.DATA_FILE)

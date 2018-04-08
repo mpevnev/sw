@@ -40,6 +40,10 @@ class UISpawner():
         """ Spawn a propmt for character's name. """
         raise NotImplementedError
 
+    def spawn_main_dungeon_window(self, state, area):
+        """ Spawn the main dungeon view. """
+        raise NotImplementedError
+
     def spawn_main_menu(self, data):
         """ Spawn the main menu UI piece. """
         raise NotImplementedError
