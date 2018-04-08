@@ -16,6 +16,10 @@ class GameState():
         self.player_position = None
         self.turn = 0
 
+    def current_overworld_header(self):
+        """ Return the header of the area where the player is located. """
+        return self.world.area_headers[self.player_position]
+
 
 class GameStateFromData(GameState):
     """ A container with all game information, derived from saved files. """
