@@ -47,9 +47,13 @@ class Area():
         monster.position = (at_x, at_y)
         return True
 
+    def hidden_monsters(self):
+        """ Return a list of all hidden monsters. """
+        return [m for m in self.monsters if m.hidden()]
+
     def remove_dead_monsters(self):
-        """ Remove all dead monsters from the area. """
-        self.monsters = deque((m for m in self.monsters if m.alive()))
+        """ Remove all dead (but not hidden!) monsters from the area. """
+        self.monsters = deque((m for m in self.monsters if m.alive() or m.hidden()))
 
     def remove_monster(self, monster):
         """ Remove a monster from the area. """
