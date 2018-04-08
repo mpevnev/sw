@@ -51,6 +51,8 @@ class MainOverworld(mofloc.EventSource):
             return (event.MOVE, (0, 1))
         if ch == self.uidata[mo.KEY_RIGHT_DOWN]:
             return (event.MOVE, (1, 1))
+        if ch == self.uidata[mo.KEY_DESCEND]:
+            return (event.DESCEND,)
         raise mofloc.NoEvent
 
     #--------- subwindow drawing ---------#

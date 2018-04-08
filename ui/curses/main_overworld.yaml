@@ -18,3 +18,5 @@ left: 'h'
 left down: 'b'
 down: 'j'
 right down: 'n'
+
+descend: '>'

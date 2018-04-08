@@ -27,3 +27,5 @@ KEY_LEFT = "left"
 KEY_LEFT_DOWN = "left down"
 KEY_DOWN = "down"
 KEY_RIGHT_DOWN = "right down"
+
+KEY_DESCEND = "descend"
