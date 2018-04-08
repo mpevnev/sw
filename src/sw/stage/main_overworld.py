@@ -46,7 +46,7 @@ class MainOverworld(mofloc.Flow):
         header = self.state.current_overworld_header()
         area = header.load_or_generate_area()
         new_flow = md.MainDungeon(self.state, self.ui_spawner, area)
-        raise mofloc.ChangeFlow(new_flow, mo.FROM_OVERWORLD)
+        raise mofloc.ChangeFlow(new_flow, md.FROM_OVERWORLD)
 
     def move(self, ev):
         """ Handle 'move' command. """
