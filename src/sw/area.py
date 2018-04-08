@@ -15,7 +15,8 @@ from itertools import chain
 class Area():
     """ A container of game entities and geometry driver. """
 
-    def __init__(self):
+    def __init__(self, data):
+        self.data = data
         self.width = None
         self.height = None
         self.monsters = deque()
@@ -66,8 +67,8 @@ class Area():
 class AreaFromScratch(Area):
     """ A randomly-generated area. """
 
-    def __init__(self, width, height):
-        super().__init__()
+    def __init__(self, data, width, height):
+        super().__init__(data)
         self.width = width
         self.height = height
 
@@ -75,5 +76,5 @@ class AreaFromScratch(Area):
 class AreaFromData(Area):
     """ An area loaded from a YAML dict. """
 
-    def __init__(self, data):
+    def __init__(self, gamedata, datadict):
         raise NotImplementedError

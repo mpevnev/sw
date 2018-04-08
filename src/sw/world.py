@@ -21,8 +21,9 @@ class World():
     AreaHeader's.
     """
 
-    def __init__(self):
+    def __init__(self, data):
         self.name = None
+        self.data = data
         self.save_dir = None
         self.area_headers = {}
 
@@ -32,7 +33,8 @@ class World():
         """ Generate a new area at the given coordinates. """
         if (x, y) in self.area_headers:
             return
-        self.area_headers[(x, y)] = ah.AreaHeaderFromScratch(None, aconst.ArcanumLevel.ZERO)
+        self.area_headers[(x, y)] = ah.AreaHeaderFromScratch(self.data, None, 
+                                                             aconst.ArcanumLevel.ZERO)
 
     def generate_area_buffer(self, around_x, around_y):
         """
@@ -50,14 +52,14 @@ class World():
 class WorldFromData(World):
     """ Representation of a game world obtained from a save file. """
 
-    def __init__(self, data):
+    def __init__(self, gamedata, saved_data):
         raise NotImplementedError
 
 
 class WorldFromScratch(World):
     """ A randomly generated representation of a game world. """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, data):
+        super().__init__(data)
         self.name = "TEMP WORLD NAME"
         self.generate_area_buffer(0, 0)
