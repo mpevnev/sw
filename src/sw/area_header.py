@@ -24,6 +24,12 @@ class AreaHeader():
         self.arcanum_level = ArcanumLevel.ZERO
         self.hostility = HostilityLevel.SAFE
 
+    def load_or_generate_area(self):
+        """ Either load an area from a file, or generate it from scratch. """
+        # TODO: reading areas from a file
+        import sw.area as area
+        return area.AreaFromScratch(self.data, 20, 20)
+
 
 #--------- header generation variants ---------#
 
