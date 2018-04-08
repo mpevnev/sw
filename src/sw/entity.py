@@ -33,3 +33,11 @@ class Entity():
         if self.position is None or other.position is None:
             return False
         return self.position == other.position
+
+    def hide(self):
+        """ Put the entity into unplaced state, hidden from other entities. """
+        self.position = None
+
+    def hidden(self):
+        """ Return True if the entity is hidden, False otherwise. """
+        return self.position is None
