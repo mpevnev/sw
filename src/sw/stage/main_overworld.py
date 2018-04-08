@@ -37,6 +37,16 @@ class MainOverworld(mofloc.Flow):
 
     #--------- event handlers ---------#
 
+    def descend(self, ev):
+        """ Handle 'descend' command. """
+        if ev[0] != event.DESCEND:
+            return False
+        import sw.stage.main_dungeon as md
+        header = self.state.current_overworld_header()
+        area = header.load_or_generate_area()
+        new_flow = md.MainDungeon(self.state, self.ui_spawner, area)
+        raise mofloc.ChangeFlow(new_flow, mo.FROM_OVERWORLD)
+
     def move(self, ev):
         """ Handle 'move' command. """
         if ev[0] != event.MOVE:
