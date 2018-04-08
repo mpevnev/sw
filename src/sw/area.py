@@ -28,6 +28,10 @@ class Area():
         """ Return a generator with all coordinate pairs in the area. """
         return ((x, y) for x in range(self.width) for y in range(self.height))
 
+    def contains_point(self, x, y):
+        """ Return True if the given point is in the area. """
+        return x >= 0 and x < self.width and y >= 0 and y < self.height
+
     #--------- generic entity manipulation ---------#
 
     def entities_at(self, x, y):
