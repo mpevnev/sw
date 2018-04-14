@@ -66,7 +66,7 @@ class Entity():
         """ Return True if the object is alive. """
         raise NotImplementedError
 
-    def death_action(self, state, area):
+    def death_action(self, state, area, ui):
         """ This method will be called when this object dies. """
         raise NotImplementedError
 
