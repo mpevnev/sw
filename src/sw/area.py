@@ -160,6 +160,7 @@ def area_from_scratch(gamedata, width, height):
     res = Area(gamedata)
     res.width = width
     res.height = height
+    return res
 
 #--------- area generation from YAML dicts ---------#
 
