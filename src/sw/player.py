@@ -43,6 +43,7 @@ def player_from_scratch(name, species, background):
     res.background = background
     _apply_species(res)
     _apply_background(res)
+    return res
 
 def _apply_species(player):
     """ Apply species' modifiers to the player. """
