@@ -36,10 +36,30 @@ class Area():
 
     #--------- generic entity manipulation ---------#
 
-    def entities_at(self, x, y):
-        """ Return a list of entities occupying a given position. """
+    def entities(self, living_flag):
+        """
+        Return a list with all alive entities in the area if 'living_flag' is 
+        truthy, or a list with all dead entities if 'living_flag' is falsey.
+        """
         everything = chain([self.player], self.monsters, self.doodads)
-        return [e for e in everything if e is not None and e.position == (x, y)]
+        if living_flag:
+            cond = lambda e: e is not None and e.alive()
+        else:
+            cond = lambda e: e is not None and not e.alive()
+        return [e for e in everything if cond(e)]
+
+    def entities_at(self, x, y, living_flag):
+        """
+        Return a list with all alive entities at the given position if 
+        'living_flag' is truthy, or a list with all dead entities at the given
+        position if 'living_flag' if falsey.
+        """
+        everything = chain([self.player], self.monsters, self.doodads)
+        if living_flag:
+            cond = lambda e: e is not None and e.alive() and e.position == (x, y)
+        else:
+            cond = lambda e: e is not None and not e.alive() and e.position == (x, y)
+        return [e for e in everything if cond(e)]
 
     def place_entity(self, entity, at_x, at_y):
         """
