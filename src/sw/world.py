@@ -33,8 +33,9 @@ class World():
         """ Generate a new area at the given coordinates. """
         if (x, y) in self.area_headers:
             return
-        self.area_headers[(x, y)] = ah.AreaHeaderFromScratch(self.data, None, 
-                                                             aconst.ArcanumLevel.ZERO)
+        area = ah.area_header_from_scratch(self.data, None, aconst.ArcanumLevel.ZERO)
+        self.area_headers[(x, y)] = area
+                                                                
 
     def generate_area_buffer(self, around_x, around_y):
         """
@@ -46,20 +47,20 @@ class World():
                 self.add_area(x, y)
 
 
-#--------- subclasses for reading and creating the above ---------#
+#--------- world creation from YAML dicts ---------#
 
 
-class WorldFromData(World):
-    """ Representation of a game world obtained from a save file. """
-
-    def __init__(self, gamedata, saved_data):
-        raise NotImplementedError
+def world_from_data(gamedata, yaml_dict):
+    """ Generate a world from a YAML dict. """
+    raise NotImplementedError
 
 
-class WorldFromScratch(World):
-    """ A randomly generated representation of a game world. """
+#--------- world creation from scratch ---------#
 
-    def __init__(self, data):
-        super().__init__(data)
-        self.name = "TEMP WORLD NAME"
-        self.generate_area_buffer(0, 0)
+
+def world_from_scratch(gamedata):
+    """ Generate a world from scratch. """
+    res = World(gamedata)
+    res.name = "TEMP WORLD NAME"
+    res.generate_area_buffer(0, 0)
+    return res

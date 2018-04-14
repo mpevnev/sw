@@ -28,24 +28,24 @@ class AreaHeader():
         """ Either load an area from a file, or generate it from scratch. """
         # TODO: reading areas from a file
         import sw.area as area
-        return area.AreaFromScratch(self.data, 20, 20)
+        return area.area_from_scratch(self.data, 20, 20)
 
 
-#--------- header generation variants ---------#
+#--------- header generation from yaml dicts ---------#
 
 
-class AreaHeaderFromData(AreaHeader):
-    """ An area header obtained from data files. """
-
-    def __init__(self, gamedata, datadict):
-        raise NotImplementedError
+def area_header_from_data(gamedata, yaml_dict):
+    """ Generate an area header from a YAML dict. """
+    raise NotImplementedError
 
 
-class AreaHeaderFromScratch(AreaHeader):
-    """ A randomly-generated area header. """
+#--------- header generation from scratch ---------#
 
-    def __init__(self, data, biome, arcanum_level):
-        super().__init__(data)
-        self.name = "TEMP AREA NAME"
-        self.biome = biome
-        self.arcanum_level = arcanum_level
+
+def area_header_from_scratch(gamedata, biome, arcanum_level):
+    """ Generate an area header with given parameters. """
+    res = AreaHeader(gamedata)
+    res.name = "TEMP AREA NAME"
+    res.biome = biome
+    res.arcanum_level = arcanum_level
+    return res

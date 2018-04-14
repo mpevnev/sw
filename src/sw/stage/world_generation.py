@@ -30,7 +30,7 @@ class WorldGeneration(mofloc.Flow):
         Generate a world and then transfer control to the main game flow.
         """
         import sw.stage.main_overworld as mo
-        new_world = world.WorldFromScratch(self.data)
-        fullstate = state.GameStateFromScratch(self.data, self.player, new_world)
+        new_world = world.world_from_scratch(self.data)
+        fullstate = state.game_state_from_scratch(self.data, self.player, new_world)
         new_flow = mo.MainOverworld(fullstate, self.ui_spawner)
         raise mofloc.ChangeFlow(new_flow, mo.FROM_WORLDGEN)

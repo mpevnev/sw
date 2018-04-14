@@ -116,20 +116,18 @@ class Area():
                 break
 
 
-#--------- area generation variants ---------#
+#--------- area generation from scratch ---------#
 
 
-class AreaFromScratch(Area):
-    """ A randomly-generated area. """
+def area_from_scratch(gamedata, width, height):
+    """ Generate an area from scratch. """
+    res = Area(data)
+    res.width = width
+    res.height = height
 
-    def __init__(self, data, width, height):
-        super().__init__(data)
-        self.width = width
-        self.height = height
+#--------- area generation from YAML dicts ---------#
 
 
-class AreaFromData(Area):
-    """ An area loaded from a YAML dict. """
-
-    def __init__(self, gamedata, datadict):
-        raise NotImplementedError
+def area_from_data(gamedata, yaml_dict):
+    """ Generate an area from a YAML dict. """
+    raise NotImplementedError
