@@ -43,3 +43,14 @@ class Entity():
     def hidden(self):
         """ Return True if the entity is hidden, False otherwise. """
         return self.position is None
+
+    def would_collide(self, other, at_x, at_y):
+        """
+        Return True if the entity, when placed at the position given by 'at_x'
+        and 'at_y', would collide with the other.
+        """
+        old = self.position
+        self.position = (at_x, at_y)
+        res = self.collides(other)
+        self.position = old
+        return res

@@ -38,6 +38,32 @@ class Area():
         """ Return a list of entities occupying a given position. """
         return [e for e in chain(self.monsters, self.doodads) if e.position == (x, y)]
 
+    def place_entity(self, entity, at_x, at_y):
+        """
+        Return True and change entity's position to (at_x, at_y) if the entity
+        can occupy this spot without colliding with anything and the new
+        position is within area bounds.
+
+        Return False otherwise.
+        """
+        if at_x < 0 or at_y < 0 or at_x >= self.width or at_y >= self.height:
+            return False
+        potential_blockers = self.entities_at(at_x, at_y)
+        for blocker in potential_blockers:
+            if entity.would_collide(blocker, at_x, at_y):
+                return False
+        entity.position = (at_x, at_y)
+        return True
+
+    def shift_entity(self, entity, dx, dy):
+        """
+        Shift the entity by (dx, dy). Return True on success, False if the spot
+        is either occupied or beyond area bounds.
+        """
+        return self.place_entity(entity,
+                                 entity.position[0] + dx,
+                                 entity.position[1] + dy)
+
     #--------- monsters manipulation ---------#
 
     def add_monster(self, monster, at_x, at_y):
@@ -45,11 +71,9 @@ class Area():
         Place a monster at the given position.
         Return True on success, False if the position is occupied.
         """
-        potential_blockers = self.entities_at(at_x, at_y)
-        for blocker in potential_blockers:
-            if blocker.collides(monster):
-                return False
-        monster.position = (at_x, at_y)
+        if not self.place_entity(monster, at_x, at_y):
+            return False
+        self.monsters.append(monster)
         return True
 
     def hidden_monsters(self):
