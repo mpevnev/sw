@@ -10,6 +10,9 @@ from itertools import chain
 import random as rand
 
 
+from sw.const.entity import EntityClass
+
+
 #--------- main class ---------#
 
 
@@ -21,8 +24,9 @@ class Area():
         self.width = None
         self.height = None
         self.player = None
-        self.monsters = deque()
         self.doodads = deque()
+        self.items = deque()
+        self.monsters = deque()
 
     #--------- geometry ---------#
 
@@ -36,9 +40,31 @@ class Area():
 
     #--------- generic entity manipulation ---------#
 
+    def add_entity(self, entity, at_x, at_y):
+        """
+        Place a given entity at the given position and add it to appropriate
+        subcontainer in the area.
+
+        Return True on success, False if the spot is occupied.
+        """
+        if not self.place_entity(entity, at_x, at_y):
+            return False
+        eclass = entity.entity_class()
+        if eclass is EntityClass.DOODAD:
+            self.doodads.append(entity)
+        elif eclass is EntityClass.ITEM:
+            pass
+        elif eclass is EntityClass.MONSTER:
+            self.monsters.append(entity)
+        elif eclass is EntityClass.PLAYER:
+            self.player = entity
+        else:
+            raise ValueError(f"Unknown entity class '{eclass}'")
+        return True
+
     def entities(self, living_flag):
         """
-        Return a list with all alive entities in the area if 'living_flag' is 
+        Return a list with all alive entities in the area if 'living_flag' is
         truthy, or a list with all dead entities if 'living_flag' is falsey.
         """
         everything = chain([self.player], self.monsters, self.doodads)
@@ -50,7 +76,7 @@ class Area():
 
     def entities_at(self, x, y, living_flag):
         """
-        Return a list with all alive entities at the given position if 
+        Return a list with all alive entities at the given position if
         'living_flag' is truthy, or a list with all dead entities at the given
         position if 'living_flag' if falsey.
         """
@@ -71,12 +97,32 @@ class Area():
         """
         if at_x < 0 or at_y < 0 or at_x >= self.width or at_y >= self.height:
             return False
-        potential_blockers = self.entities_at(at_x, at_y)
+        potential_blockers = self.entities_at(at_x, at_y, True)
         for blocker in potential_blockers:
             if entity.would_collide(blocker, at_x, at_y):
                 return False
         entity.position = (at_x, at_y)
         return True
+
+    def remove_dead_entities(self):
+        """ Remove all dead entities from the area. """
+        self.doodads = deque((d for d in self.doodads if d.alive()))
+        self.items = deque((i for i in self.items if i.alive()))
+        self.monsters = deque((m for m in self.monsters if m.alive()))
+
+    def remove_entity(self, entity):
+        """ Remove the entity from the area. """
+        eclass = entity.entity_class()
+        if eclass is EntityClass.DOODAD:
+            self.doodads.remove(entity)
+        elif eclass is EntityClass.ITEM:
+            self.items.remove(entity)
+        elif eclass is EntityClass.MONSTER:
+            self.monsters.remove(entity)
+        elif eclass is EntityClass.PLAYER:
+            self.player = None
+        else:
+            raise ValueError(f"Unknown entity class '{eclass}'")
 
     def shift_entity(self, entity, dx, dy):
         """
@@ -89,41 +135,11 @@ class Area():
 
     #--------- monsters manipulation ---------#
 
-    def add_monster(self, monster, at_x, at_y):
-        """
-        Place a monster at the given position.
-        Return True on success, False if the position is occupied.
-        """
-        if not self.place_entity(monster, at_x, at_y):
-            return False
-        self.monsters.append(monster)
-        return True
-
     def hidden_monsters(self):
         """ Return a list of all hidden monsters. """
         return [m for m in self.monsters if m.hidden()]
 
-    def remove_dead_monsters(self):
-        """ Remove all dead (but not hidden!) monsters from the area. """
-        self.monsters = deque((m for m in self.monsters if m.alive() or m.hidden()))
-
-    def remove_monster(self, monster):
-        """ Remove a monster from the area. """
-        self.monsters = deque((m for m in self.monsters if monster is not m))
-
     #--------- player manipulation ---------#
-
-    def place_player(self, player, x, y):
-        """
-        Place the player at the given coordinates and return True on success.
-
-        If the spot is either occupied or is beyound area's bounds, return
-        False.
-        """
-        if not self.place_entity(player, x, y):
-            return False
-        self.player = player
-        return True
 
     def randomly_place_player(self, player):
         """
@@ -132,7 +148,7 @@ class Area():
         while True:
             x = rand.randrange(self.width)
             y = rand.randrange(self.height)
-            if self.place_player(player, x, y):
+            if self.place_entity(player, x, y):
                 break
 
 
@@ -141,7 +157,7 @@ class Area():
 
 def area_from_scratch(gamedata, width, height):
     """ Generate an area from scratch. """
-    res = Area(data)
+    res = Area(gamedata)
     res.width = width
     res.height = height
 
