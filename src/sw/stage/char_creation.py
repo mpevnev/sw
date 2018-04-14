@@ -9,7 +9,7 @@ import mofloc
 import sw.event.background_selection as bs_event
 import sw.event.char_name_prompt as cnp_event
 import sw.event.species_selection as ss_event
-from sw.player import PlayerFromScratch
+from sw.player import player_from_scratch
 
 
 NAME_INPUT_ENTRY_POINT = "the only"
@@ -158,6 +158,6 @@ class PlayerCreator(mofloc.Flow):
         Create the player character and transfer control to the world creator.
         """
         import sw.stage.world_generation as worldgen
-        player = PlayerFromScratch(self.name, self.species, self.background)
+        player = player_from_scratch(self.name, self.species, self.background)
         new_flow = worldgen.WorldGeneration(self.data, self.ui_spawner, player)
         raise mofloc.ChangeFlow(new_flow, worldgen.ENTRY_POINT)

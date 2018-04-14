@@ -24,28 +24,30 @@ class Player(Character):
         pass
 
 
-class PlayerFromData(Player):
-    """ A player created from a data dict. """
-
-    def __init__(self, data):
-        raise NotImplementedError
+#--------- generating a player from a saved dict ---------#
 
 
-class PlayerFromScratch(Player):
-    """ A player created from the data received from the user. """
+def player_from_data(data):
+    """ Generate a player from a YAML dict. """
+    raise NotImplementedError
 
-    def __init__(self, name, species, background):
-        super().__init__()
-        self.name = name
-        self.species = species
-        self.background = background
-        self._apply_species()
-        self._apply_background()
 
-    def _apply_species(self):
-        """ Apply species' modifiers. """
-        self.add_innate_modifiers(*self.species.modifiers)
+#--------- generating a player from scratch ---------#
 
-    def _apply_background(self):
-        """ Apply background's modifiers. """
-        self.add_temp_modifiers(*self.background.modifiers)
+
+def player_from_scratch(name, species, background):
+    """ Generate a player from user-supplied info. """
+    res = Player()
+    res.name = name
+    res.species = species
+    res.background = background
+    _apply_species(res)
+    _apply_background(res)
+
+def _apply_species(player):
+    """ Apply species' modifiers to the player. """
+    player.add_innate_modifiers(*player.species.modifiers)
+
+def _apply_background(player):
+    """ Apply background's modifiers to the player. """
+    player.add_temp_modifiers(*player.background.modifiers)
