@@ -6,6 +6,7 @@ Provides Player class used to represent the player character.
 
 
 from sw.character import Character
+from sw.const.entity import CollisionGroup
 
 
 class Player(Character):
@@ -16,6 +17,8 @@ class Player(Character):
         self.name = None
         self.species = None
         self.background = None
+        self.add_collision_group(CollisionGroup.NORMAL)
+        self.add_collision_group(CollisionGroup.WALL)
 
     #--------- area container logic ---------#
 
