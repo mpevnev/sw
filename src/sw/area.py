@@ -7,6 +7,7 @@ Provides Area class, a container of game entities.
 
 from collections import deque
 from itertools import chain
+import random as rand
 
 
 #--------- main class ---------#
@@ -19,6 +20,7 @@ class Area():
         self.data = data
         self.width = None
         self.height = None
+        self.player = None
         self.monsters = deque()
         self.doodads = deque()
 
@@ -36,7 +38,8 @@ class Area():
 
     def entities_at(self, x, y):
         """ Return a list of entities occupying a given position. """
-        return [e for e in chain(self.monsters, self.doodads) if e.position == (x, y)]
+        everything = chain([self.player], self.monsters, self.doodads)
+        return [e for e in everything if e is not None and e.position == (x, y)]
 
     def place_entity(self, entity, at_x, at_y):
         """
@@ -87,6 +90,30 @@ class Area():
     def remove_monster(self, monster):
         """ Remove a monster from the area. """
         self.monsters = deque((m for m in self.monsters if monster is not m))
+
+    #--------- player manipulation ---------#
+
+    def place_player(self, player, x, y):
+        """
+        Place the player at the given coordinates and return True on success.
+
+        If the spot is either occupied or is beyound area's bounds, return
+        False.
+        """
+        if not self.place_entity(player, x, y):
+            return False
+        self.player = player
+        return True
+
+    def randomly_place_player(self, player):
+        """
+        Place the player at a random position.
+        """
+        while True:
+            x = rand.randrange(self.width)
+            y = rand.randrange(self.height)
+            if self.place_player(player, x, y):
+                break
 
 
 #--------- area generation variants ---------#

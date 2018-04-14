@@ -39,7 +39,8 @@ class MainDungeon(mofloc.Flow):
         Figure out the starting position of the player and then proceed as
         usual.
         """
-        self.state.player.position = (self.area.width // 2, self.area.height // 2)
+        self.area.randomly_place_player(self.state.player)
+
 
     #--------- event handlers ---------#
 
