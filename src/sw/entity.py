@@ -16,10 +16,14 @@ class Entity():
         self.collision_groups = set()
         self.transparent = True
 
-    #--------- misc logic ---------#
+    #--------- container logic ---------#
 
-    def entity_class(self):
-        """ Return the class of this entity. """
+    def add_to_area(self, area):
+        """ Add this entity to the given area. """
+        raise NotImplementedError
+
+    def remove_from_area(self, area):
+        """ Remove this entity from the given area. """
         raise NotImplementedError
 
     #--------- collision logic ---------#

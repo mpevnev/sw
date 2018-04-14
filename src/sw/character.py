@@ -17,6 +17,14 @@ class Character(Entity, Modifiable):
         Modifiable.__init__(self)
         self.health = 0
 
+    #--------- container logic ---------#
+
+    def add_to_area(self, area):
+        raise NotImplementedError
+
+    def remove_from_area(self, area):
+        raise NotImplementedError
+
     #--------- death logic ---------#
 
     def alive(self):

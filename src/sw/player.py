@@ -17,6 +17,16 @@ class Player(Character):
         self.species = None
         self.background = None
 
+    #--------- area container logic ---------#
+
+    def add_to_area(self, area):
+        area.player = self
+
+    def remove_from_area(self, area):
+        area.player = None
+
+    #--------- death logic ---------#
+
     def death_action(self, state, area, ui):
         """
         Do nothing, player death is handled by the flows directly.

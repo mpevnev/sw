@@ -49,17 +49,7 @@ class Area():
         """
         if not self.place_entity(entity, at_x, at_y):
             return False
-        eclass = entity.entity_class()
-        if eclass is EntityClass.DOODAD:
-            self.doodads.append(entity)
-        elif eclass is EntityClass.ITEM:
-            pass
-        elif eclass is EntityClass.MONSTER:
-            self.monsters.append(entity)
-        elif eclass is EntityClass.PLAYER:
-            self.player = entity
-        else:
-            raise ValueError(f"Unknown entity class '{eclass}'")
+        entity.add_to_area(self)
         return True
 
     def entities(self, living_flag):
@@ -112,17 +102,7 @@ class Area():
 
     def remove_entity(self, entity):
         """ Remove the entity from the area. """
-        eclass = entity.entity_class()
-        if eclass is EntityClass.DOODAD:
-            self.doodads.remove(entity)
-        elif eclass is EntityClass.ITEM:
-            self.items.remove(entity)
-        elif eclass is EntityClass.MONSTER:
-            self.monsters.remove(entity)
-        elif eclass is EntityClass.PLAYER:
-            self.player = None
-        else:
-            raise ValueError(f"Unknown entity class '{eclass}'")
+        entity.remove_from_area(self)
 
     def shift_entity(self, entity, dx, dy):
         """
