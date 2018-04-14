@@ -10,9 +10,6 @@ from itertools import chain
 import random as rand
 
 
-from sw.const.entity import EntityClass
-
-
 #--------- main class ---------#
 
 
