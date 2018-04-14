@@ -59,4 +59,9 @@ class MainDungeon(mofloc.Flow):
         """ Handle 'move' event. """
         if ev[0] != event.MOVE:
             return False
+        delta = ev[1]
+        if self.area.shift_entity(self.state.player, *delta):
+            # self.state.player.tick()
+            # self.area.tick()
+            pass
         return True
