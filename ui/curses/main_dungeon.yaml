@@ -9,14 +9,14 @@ message box height: 10
 status box width: 35
 
 # Keybindings
-right: 'l'
-right up: 'u'
-up: 'k'
-left up: 'y'
-left: 'h'
-left down: 'b'
-down: 'j'
-right down: 'n'
+right: ['l', '6']
+right up: ['u', '9']
+up: ['k', '8']
+left up: ['y', '7']
+left: ['h', '4']
+left down: ['b', '1']
+down: ['j', '2']
+right down: ['n', '3']
 
-ascend: '<'
-descend: '>'
+ascend: ['<']
+descend: ['>']

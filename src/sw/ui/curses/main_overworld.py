@@ -35,23 +35,23 @@ class MainOverworld(mofloc.EventSource):
     def get_event(self):
         ch = self.screen.getkey()
         curses.flash()
-        if ch == self.uidata[mo.KEY_RIGHT]:
+        if ch in self.uidata[mo.KEY_RIGHT]:
             return (event.MOVE, (1, 0))
-        if ch == self.uidata[mo.KEY_RIGHT_UP]:
+        if ch in self.uidata[mo.KEY_RIGHT_UP]:
             return (event.MOVE, (1, -1))
-        if ch == self.uidata[mo.KEY_UP]:
+        if ch in self.uidata[mo.KEY_UP]:
             return (event.MOVE, (0, -1))
-        if ch == self.uidata[mo.KEY_LEFT_UP]:
+        if ch in self.uidata[mo.KEY_LEFT_UP]:
             return (event.MOVE, (-1, -1))
-        if ch == self.uidata[mo.KEY_LEFT]:
+        if ch in self.uidata[mo.KEY_LEFT]:
             return (event.MOVE, (-1, 0))
-        if ch == self.uidata[mo.KEY_LEFT_DOWN]:
+        if ch in self.uidata[mo.KEY_LEFT_DOWN]:
             return (event.MOVE, (-1, 1))
-        if ch == self.uidata[mo.KEY_DOWN]:
+        if ch in self.uidata[mo.KEY_DOWN]:
             return (event.MOVE, (0, 1))
-        if ch == self.uidata[mo.KEY_RIGHT_DOWN]:
+        if ch in self.uidata[mo.KEY_RIGHT_DOWN]:
             return (event.MOVE, (1, 1))
-        if ch == self.uidata[mo.KEY_DESCEND]:
+        if ch in self.uidata[mo.KEY_DESCEND]:
             return (event.DESCEND,)
         raise mofloc.NoEvent
 

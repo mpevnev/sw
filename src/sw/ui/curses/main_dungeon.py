@@ -35,25 +35,25 @@ class MainDungeon(mofloc.EventSource):
 
     def get_event(self):
         ch = self.screen.getkey()
-        if ch == self.uidata[md.KEY_RIGHT]:
+        if ch in self.uidata[md.KEY_RIGHT]:
             return (event.MOVE, (1, 0))
-        if ch == self.uidata[md.KEY_RIGHT_UP]:
+        if ch in self.uidata[md.KEY_RIGHT_UP]:
             return (event.MOVE, (1, -1))
-        if ch == self.uidata[md.KEY_UP]:
+        if ch in self.uidata[md.KEY_UP]:
             return (event.MOVE, (0, -1))
-        if ch == self.uidata[md.KEY_LEFT_UP]:
+        if ch in self.uidata[md.KEY_LEFT_UP]:
             return (event.MOVE, (-1, -1))
-        if ch == self.uidata[md.KEY_LEFT]:
+        if ch in self.uidata[md.KEY_LEFT]:
             return (event.MOVE, (-1, 0))
-        if ch == self.uidata[md.KEY_LEFT_DOWN]:
+        if ch in self.uidata[md.KEY_LEFT_DOWN]:
             return (event.MOVE, (-1, 1))
-        if ch == self.uidata[md.KEY_DOWN]:
+        if ch in self.uidata[md.KEY_DOWN]:
             return (event.MOVE, (0, 1))
-        if ch == self.uidata[md.KEY_RIGHT_DOWN]:
+        if ch in self.uidata[md.KEY_RIGHT_DOWN]:
             return (event.MOVE, (1, 1))
-        if ch == self.uidata[md.KEY_ASCEND]:
+        if ch in self.uidata[md.KEY_ASCEND]:
             return (event.ASCEND,)
-        if ch == self.uidata[md.KEY_DESCEND]:
+        if ch in self.uidata[md.KEY_DESCEND]:
             return (event.DESCEND,)
         raise mofloc.NoEvent
 
