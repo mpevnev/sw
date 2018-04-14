@@ -22,7 +22,7 @@ class Character(Entity, Modifiable):
     def alive(self):
         return self.health > 0
 
-    def death_action(self, state, area):
+    def death_action(self, state, area, ui):
         raise NotImplementedError
 
     def die(self):

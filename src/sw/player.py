@@ -17,7 +17,7 @@ class Player(Character):
         self.species = None
         self.background = None
 
-    def death_action(self, state, area):
+    def death_action(self, state, area, ui):
         """
         Do nothing, player death is handled by the flows directly.
         """
