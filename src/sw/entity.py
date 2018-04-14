@@ -5,9 +5,6 @@ Provides Entity class from which Doodad and Character classes inherit.
 """
 
 
-from enum import Enum
-
-
 class Entity():
     """
     A thing that can occupy a position and collide with other entities, on one
@@ -16,8 +13,14 @@ class Entity():
 
     def __init__(self):
         self.position = None
-        self.collision_groups = set() 
+        self.collision_groups = set()
         self.transparent = True
+
+    #--------- misc logic ---------#
+
+    def entity_class(self):
+        """ Return the class of this entity. """
+        raise NotImplementedError
 
     #--------- collision logic ---------#
 
@@ -31,7 +34,7 @@ class Entity():
         """
         if self is other:
             return False
-        return bool(self.collision_groups.intersect(other.collision_groups))
+        return bool(self.collision_groups.intersection(other.collision_groups))
 
     def collides(self, other):
         """ Return True if the entity collides with the other. """
