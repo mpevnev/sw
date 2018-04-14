@@ -32,15 +32,21 @@ class Doodad(Entity):
 
     #--------- generic usage by other entities ---------#
 
-    def usable_by_monster(self, monster):
+    def use_by_monster(self, monster, state, area, ui):
         """
-        Return True if a given monster can use this object, False otherwise.
+        Return True and do something when a monster uses the doodad.
+
+        Return False without doing anything if the entity is not usable by the
+        given monster.
         """
         raise NotImplementedError
 
-    def usable_by_player(self, player):
+    def use_by_player(self, player, state, area, ui):
         """
-        Return True if the player can use this object, False otherwise.
+        Return True and do something when the player uses the doodad.
+
+        Return False without doing anything if the entity is not usable by the
+        player.
         """
         raise NotImplementedError
 
