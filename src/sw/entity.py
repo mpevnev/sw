@@ -9,12 +9,17 @@ from enum import Enum
 
 
 class Entity():
-    """ A thing that can occupy a position and collide with other entities. """
+    """
+    A thing that can occupy a position and collide with other entities, on one
+    hand, and can die on the other.
+    """
 
     def __init__(self):
         self.position = None
         self.collision_groups = set() 
         self.transparent = True
+
+    #--------- collision logic ---------#
 
     def add_collision_group(self, group):
         """ Add a collision group to the entity. """
@@ -54,3 +59,17 @@ class Entity():
         res = self.collides(other)
         self.position = old
         return res
+
+    #--------- death logic ---------#
+
+    def alive(self):
+        """ Return True if the object is alive. """
+        raise NotImplementedError
+
+    def death_action(self, state, area):
+        """ This method will be called when this object dies. """
+        raise NotImplementedError
+
+    def die(self):
+        """ Mark this object as dead. """
+        raise NotImplementedError

@@ -17,6 +17,12 @@ class Player(Character):
         self.species = None
         self.background = None
 
+    def death_action(self, state, area):
+        """
+        Do nothing, player death is handled by the flows directly.
+        """
+        pass
+
 
 class PlayerFromData(Player):
     """ A player created from a data dict. """
