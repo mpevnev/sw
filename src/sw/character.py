@@ -13,12 +13,11 @@ class Character(Entity, Modifiable):
     """ An active game entity. """
 
     def __init__(self):
-        CanDie.__init__(self)
         Entity.__init__(self)
         Modifiable.__init__(self)
         self.health = 0
 
-    #--------- CanDie interface ---------#
+    #--------- death logic ---------#
 
     def alive(self):
         return self.health > 0
