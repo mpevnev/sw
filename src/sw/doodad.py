@@ -22,6 +22,14 @@ class Doodad(Entity):
         self.detected = True
         self.dead = False
 
+    #--------- container logic ---------#
+
+    def add_to_area(self, area):
+        area.doodads.append(self)
+
+    def remove_from_area(self, area):
+        area.doodads.remove(self)
+
     #--------- generic usage by other entities ---------#
 
     def usable_by_monster(self, monster):
