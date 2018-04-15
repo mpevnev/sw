@@ -14,6 +14,7 @@ class GameData():
 
     def __init__(self):
         self.backgrounds = _read_backgrounds()
+        self.doodad_recipes = _read_doodad_recipes()
         self.species = _read_species()
         self.strings = _read_strings()
 
@@ -25,6 +26,13 @@ def _read_backgrounds():
     """ Read backgrounds from the data files. """
     import sw.const.background as constbg
     res = [bg.Background(data) for data in misc.read([], "data", constbg.BACKGROUNDS_FILE)]
+    return res
+
+
+def _read_doodad_recipes():
+    """ Read doodad recipes from the data files. """
+    import sw.const.doodad as constd
+    res = misc.read([], "data", constd.DOODAD_RECIPES_FILE)
     return res
 
 
