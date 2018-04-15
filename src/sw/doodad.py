@@ -88,7 +88,7 @@ class Wall(Doodad):
 #--------- doodad generation from recipes ---------#
 
 
-def doodad_from_recipe(self, recipe):
+def doodad_from_recipe(recipe):
     """ Create a doodad from a recipe (a YAML dict with no instance info). """
     recipe_id = recipe[const.ID]
     subtype = recipe[const.TYPE]
