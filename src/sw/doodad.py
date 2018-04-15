@@ -100,6 +100,6 @@ def doodad_from_recipe(recipe):
 #--------- doodad generation from saves ---------#
 
 
-def doodad_from_save(self, save_dict):
+def doodad_from_save(save_dict):
     """ Create a doodad from a saved dict (a YAML dict with instance info). """
     raise NotImplementedError
