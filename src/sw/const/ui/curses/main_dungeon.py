@@ -11,11 +11,15 @@ EMPTY_SPACE_CHAR = "empty space char"
 PLAYER_CHAR = "player char"
 WALL_CHAR = "wall char"
 
+# Mappings
+DOODAD_MAP = "doodad map"
+MONSTER_MAP = "monster map"
+MAP_CHAR = "char"
+MAP_COLOR = "color"
 
 # Geometry
 MESSAGE_BOX_HEIGHT = "message box height"
 PLAYER_STATUS_BOX_WIDTH = "status box width"
-
 
 # Keybindings
 KEY_RIGHT = "right"

@@ -10,6 +10,9 @@ from itertools import chain
 import random as rand
 
 
+from sw.doodad import doodad_from_recipe
+
+
 #--------- main class ---------#
 
 
@@ -149,6 +152,9 @@ def area_from_scratch(gamedata, biome, width, height):
     res.width = width
     res.height = height
     # TODO: proper area generation algorithm
+    for x, y in res.borders():
+        wall = doodad_from_recipe(gamedata.doodad_by_id("stone wall"))
+        res.add_entity(wall, x, y)
     return res
 
 #--------- area generation from YAML dicts ---------#

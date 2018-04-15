@@ -57,7 +57,7 @@ class MainDungeon(mofloc.EventSource):
             return (event.DESCEND,)
         raise mofloc.NoEvent
 
-    #--------- subwindow drawing ---------#
+    #--------- drawing ---------#
 
     def draw_area_view(self):
         """ Draw the area. """
@@ -70,6 +70,12 @@ class MainDungeon(mofloc.EventSource):
             y = y + offset_y
             if x >= 0 and x < w and y >= 0 and y < h:
                 self.area_view.addch(y, x, self.uidata[md.EMPTY_SPACE_CHAR])
+        for doodad in self.area.doodads:
+            char = self.uidata[md.DOODAD_MAP][doodad.recipe_id][md.MAP_CHAR]
+            # TODO: use color
+            x = doodad.position[0] + offset_x
+            y = doodad.position[1] + offset_y
+            self.area_view.addch(y, x, char)
         self.area_view.addch(h // 2, w // 2, self.uidata[md.PLAYER_CHAR])
         self.area_view.box()
 

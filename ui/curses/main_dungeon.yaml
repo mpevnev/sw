@@ -20,3 +20,8 @@ right down: ['n', '3']
 
 ascend: ['<']
 descend: ['>']
+
+# Doodad mappings
+
+doodad map: 
+    stone wall: {char: '#', color: white}
