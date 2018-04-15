@@ -18,10 +18,9 @@ class Doodad(Entity):
     Some passive or reactive game object - a wall, a water cell, whatever.
     """
 
-    def __init__(self, subtype, recipe_id):
+    def __init__(self, recipe_id):
         super().__init__()
         self.recipe_id = recipe_id
-        self.subtype = subtype
         self.detectable = True
         self.detected = True
         self.dead = False
@@ -73,7 +72,7 @@ class Wall(Doodad):
     """ A base class for walls. """
 
     def __init__(self, recipe_id):
-        super().__init__(const.DoodadType.WALL, recipe_id)
+        super().__init__(recipe_id)
         self.add_collision_group(CollisionGroup.WALL)
 
     def use_by_monster(self, monster, state, area, ui):
