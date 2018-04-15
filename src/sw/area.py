@@ -31,6 +31,17 @@ class Area():
         """ Return a generator with all coordinate pairs in the area. """
         return ((x, y) for x in range(self.width) for y in range(self.height))
 
+    def borders(self):
+        """ Return a generator with all border points. """
+        w = self.width
+        h = self.heigth
+        for x in range(w):
+            yield (x, 0)
+            yield (x, h - 1)
+        for y in range(h):
+            yield (0, y)
+            yield (w - 1, y)
+
     def contains_point(self, x, y):
         """ Return True if the given point is in the area. """
         return x >= 0 and x < self.width and y >= 0 and y < self.height
