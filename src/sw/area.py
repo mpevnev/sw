@@ -35,7 +35,7 @@ class Area():
         """ Return a generator with all border points. """
         w = self.width
         h = self.heigth
-        for x in range(w):
+        for x in range(1, w - 1):
             yield (x, 0)
             yield (x, h - 1)
         for y in range(h):
