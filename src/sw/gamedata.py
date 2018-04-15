@@ -18,6 +18,14 @@ class GameData():
         self.species = _read_species()
         self.strings = _read_strings()
 
+    def doodad_by_id(self, doodad_id):
+        """ Return a doodad recipe with the given ID. """
+        import sw.const.doodad as constd
+        for recipe in self.doodad_recipes:
+            if recipe[constd.ID] == doodad_id:
+                return recipe
+        raise ValueError(f"Unknown doodad ID '{doodad_id}'")
+
 
 #--------- helper things ---------#
 
