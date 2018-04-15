@@ -28,7 +28,7 @@ class AreaHeader():
         """ Either load an area from a file, or generate it from scratch. """
         # TODO: reading areas from a file
         import sw.area as area
-        return area.area_from_scratch(self.data, 20, 20)
+        return area.area_from_scratch(self.data, self.biome, 20, 20)
 
 
 #--------- header generation from yaml dicts ---------#

@@ -34,7 +34,7 @@ class Area():
     def borders(self):
         """ Return a generator with all border points. """
         w = self.width
-        h = self.heigth
+        h = self.height
         for x in range(1, w - 1):
             yield (x, 0)
             yield (x, h - 1)
@@ -143,11 +143,12 @@ class Area():
 #--------- area generation from scratch ---------#
 
 
-def area_from_scratch(gamedata, width, height):
+def area_from_scratch(gamedata, biome, width, height):
     """ Generate an area from scratch. """
     res = Area(gamedata)
     res.width = width
     res.height = height
+    # TODO: proper area generation algorithm
     return res
 
 #--------- area generation from YAML dicts ---------#
