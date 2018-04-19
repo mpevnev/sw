@@ -5,6 +5,7 @@ Provides Player class used to represent the player character.
 """
 
 
+from sw.const.entity import CollisionGroup
 from sw.character import Character
 
 
@@ -13,6 +14,8 @@ class Player(Character):
 
     def __init__(self):
         super().__init__()
+        self.add_collision_group(CollisionGroup.CHARACTER)
+        self.add_collision_group(CollisionGroup.WALL)
         self.name = None
         self.species = None
         self.background = None

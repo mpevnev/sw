@@ -5,7 +5,6 @@ Provides base Character class that Monster and Player classes inherit from.
 """
 
 
-from sw.const.entity import CollisionGroup
 from sw.entity import Entity
 from sw.modifiable import Modifiable
 
@@ -16,9 +15,8 @@ class Character(Entity, Modifiable):
     def __init__(self):
         Entity.__init__(self)
         Modifiable.__init__(self)
-        self.add_collision_group(CollisionGroup.CHARACTER)
-        self.add_collision_group(CollisionGroup.WALL)
         self.health = 0
+        self.sight_range = 0
 
     #--------- container logic ---------#
 
