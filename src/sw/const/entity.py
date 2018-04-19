@@ -12,7 +12,6 @@ class CollisionGroup(Enum):
     collision groups intersect.
     """
 
-    FLYING = "flying"
     LIQUID = "liquid"
-    NORMAL = "normal"
+    CHARACTER = "character"
     WALL = "wall"
