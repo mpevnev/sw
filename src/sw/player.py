@@ -19,6 +19,7 @@ class Player(Character):
         self.background = None
         self.add_collision_group(CollisionGroup.NORMAL)
         self.add_collision_group(CollisionGroup.WALL)
+        self.xp = 0
 
     #--------- area container logic ---------#
 
@@ -40,8 +41,8 @@ class Player(Character):
 #--------- generating a player from a saved dict ---------#
 
 
-def player_from_data(data):
-    """ Generate a player from a YAML dict. """
+def player_from_save(data):
+    """ Generate a player from a saved YAML dict. """
     raise NotImplementedError
 
 

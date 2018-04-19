@@ -160,6 +160,6 @@ def area_from_scratch(gamedata, biome, width, height):
 #--------- area generation from YAML dicts ---------#
 
 
-def area_from_data(gamedata, yaml_dict):
-    """ Generate an area from a YAML dict. """
+def area_from_save(gamedata, yaml_dict):
+    """ Generate an area from a saved YAML dict. """
     raise NotImplementedError

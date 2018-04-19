@@ -47,10 +47,10 @@ class World():
                 self.add_area(x, y)
 
 
-#--------- world creation from YAML dicts ---------#
+#--------- world creation from saved YAML dicts ---------#
 
 
-def world_from_data(gamedata, yaml_dict):
+def world_from_save(gamedata, save):
     """ Generate a world from a YAML dict. """
     raise NotImplementedError
 

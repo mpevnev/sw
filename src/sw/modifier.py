@@ -37,11 +37,11 @@ class Modifier():
         pass
 
 
-def modifier_from_data(data):
+def modifier_from_recipe(recipe):
     """ Create a modifier with its class determined by the supplied data. """
-    cls = data[mod.TYPE]
+    cls = recipe[mod.TYPE]
     if cls == mod.ModifierType.FLAT_STAT_INCREASE.value:
-        return FlatStatIncrease(data)
+        return FlatStatIncrease(recipe)
     raise ValueError(f"Unknown modifier type '{cls}'")
 
 

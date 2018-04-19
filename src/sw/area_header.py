@@ -31,10 +31,10 @@ class AreaHeader():
         return area.area_from_scratch(self.data, self.biome, 20, 20)
 
 
-#--------- header generation from yaml dicts ---------#
+#--------- header generation from saved YAML dicts ---------#
 
 
-def area_header_from_data(gamedata, yaml_dict):
+def area_header_from_save(gamedata, yaml_dict):
     """ Generate an area header from a YAML dict. """
     raise NotImplementedError
 

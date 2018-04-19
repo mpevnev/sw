@@ -21,11 +21,11 @@ class GameState():
         return self.world.area_headers[self.player_position]
 
 
-#--------- reading game state from a YAML dict ---------#
+#--------- reading game state from a saved YAML dict ---------#
 
 
-def game_state_from_data(gamedata, yaml_dict):
-    """ Read game state from a YAML dict. """
+def game_state_from_save(gamedata, yaml_dict):
+    """ Read game state from a saved YAML dict. """
     raise NotImplementedError
 
 
