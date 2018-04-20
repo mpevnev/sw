@@ -99,9 +99,13 @@ class MainDungeon(mofloc.EventSource):
             mapping = doodad_map[doodad.recipe_id]
             char = mapping[md.MAP_CHAR]
             attr = curses.color_from_dict(self.colors, mapping[md.MAP_COLOR])
-            visible = self.area.visibility_matrix[(x, y)].visible()
-            self.area_view.addstr(y + offset_y, x + offset_x, char,
-                                 attr if visible else unseen_attr)
+            visinfo = self.area.visibility_matrix[(x, y)]
+            visible = visinfo.visible()
+            if visible:
+                self.area_view.addstr(y + offset_y, x + offset_x, char, attr)
+            else:
+                if doodad in visinfo.remembered_doodads:
+                    self.area_view.addstr(y + offset_y, x + offset_x, char, unseen_attr)
 
     def _draw_player(self):
         """ Draw the player. """
