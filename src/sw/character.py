@@ -58,3 +58,8 @@ class Character(Entity, Modifiable):
         own_x, own_y = self.position
         return (own_x - self.sight_range <= x <= own_x + self.sight_range and
                 own_y - self.sight_range <= y <= own_y + self.sight_range)
+
+    #--------- other logic ---------#
+
+    def tick(self, state, area, player, ui):
+        raise NotImplementedError

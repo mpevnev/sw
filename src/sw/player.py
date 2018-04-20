@@ -43,6 +43,12 @@ class Player(Character):
     def can_see_through(self, entity):
         return entity.transparent_for_player(self)
 
+    #--------- other game logic ---------#
+
+    def tick(self, state, area, player, ui):
+        """ Process a single game turn. """
+        pass
+
 
 #--------- generating a player from a saved dict ---------#
 

@@ -64,7 +64,12 @@ class MainDungeon(mofloc.Flow):
         delta = ev[1]
         if self.area.shift_entity(self.state.player, *delta):
             self.area.update_visibility_matrix(self.state.player)
-            # self.state.player.tick()
-            # self.area.tick()
-            pass
+            self.tick()
         return True
+
+    #--------- helper things ---------#
+
+    def tick(self):
+        """ Process a single game turn. """
+        self.state.turn += 1
+        self.area.tick(self.state, self.state.player, self.ui)

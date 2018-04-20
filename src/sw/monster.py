@@ -43,6 +43,11 @@ class Monster(Character):
     def can_see_through(self, entity):
         return entity.transparent_for_monster(self)
 
+    #--------- other logic ---------#
+
+    def tick(self, state, area, player, ui):
+        raise NotImplementedError
+
 
 #--------- subclasses ---------#
 
@@ -51,7 +56,9 @@ class NormalMeleeMonster(Monster):
     """
     A monster with normal melee AI.
     """
-    pass
+
+    def tick(self, state, area, player, ui):
+        pass
 
 
 #--------- monster creation from recipes ---------#

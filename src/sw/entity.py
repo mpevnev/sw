@@ -95,3 +95,9 @@ class Entity():
         otherwise.
         """
         raise NotImplementedError
+
+    #--------- other game logic ---------#
+
+    def tick(self, state, area, player, ui):
+        """ Process a single game turn. """
+        raise NotImplementedError

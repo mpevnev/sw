@@ -268,6 +268,16 @@ class Area():
                 except KeyError:
                     pass
 
+    #--------- other game logic ---------#
+
+    def tick(self, state, player, ui):
+        """ Process a single game turn. """
+        for entity in self.entities(True):
+            entity.tick(state, self, player, ui)
+        for entity in self.entities(False, ignore_player=True):
+            entity.death_action(state, self, ui)
+        self.remove_dead_entities()
+
 
 #--------- helper classes ---------#
 

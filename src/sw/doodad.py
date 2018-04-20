@@ -72,6 +72,11 @@ class Doodad(Entity):
     def transparent_for_player(self, player):
         raise NotImplementedError
 
+    #--------- other logic ---------#
+
+    def tick(self, state, area, player, ui):
+        pass
+
 
 #--------- concrete subclasses ---------#
 
