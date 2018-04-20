@@ -14,9 +14,10 @@ import sw.ui.curses as curses
 class MainDungeon(mofloc.EventSource):
     """ Main overworld view. """
 
-    def __init__(self, screen, uidata, state, area):
+    def __init__(self, screen, colors, uidata, state, area):
         super().__init__()
         self.screen = screen
+        self.colors = colors
         self.uidata = uidata
         self.state = state
         self.area = area
@@ -76,6 +77,13 @@ class MainDungeon(mofloc.EventSource):
             x = doodad.position[0] + offset_x
             y = doodad.position[1] + offset_y
             self.area_view.addch(y, x, char)
+        for (x, y), info in self.area.visibility_matrix.items():
+            x = x + offset_x
+            y = y + offset_y
+            if info.visible():
+                self.area_view.addch(y, x, '!')
+            else:
+                self.area_view.addch(y, x, '?')
         self.area_view.addch(h // 2, w // 2, self.uidata[md.PLAYER_CHAR])
         self.area_view.box()
 

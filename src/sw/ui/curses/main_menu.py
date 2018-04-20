@@ -15,9 +15,10 @@ import sw.event.main_menu as event
 class MainMenu(mofloc.EventSource):
     """ The main menu UI. """
 
-    def __init__(self, screen, uidata, data):
+    def __init__(self, screen, colors, uidata, data):
         super().__init__()
         self.screen = screen
+        self.colors = colors
         self.data = data
         self.uidata = uidata
 

@@ -15,9 +15,10 @@ import sw.event.char_name_prompt as event
 class CharNamePrompt(mofloc.EventSource):
     """ Character name prompt. """
 
-    def __init__(self, screen, uidata):
+    def __init__(self, screen, colors, uidata):
         super().__init__()
         self.screen = screen
+        self.colors = colors
         self.uidata = uidata
         _, w = self.screen.getmaxyx()
         textwidth = uidata[cnp.TEXTBOX_WIDTH]

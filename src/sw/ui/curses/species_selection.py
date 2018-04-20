@@ -16,9 +16,10 @@ import sw.ui.curses as curses
 class SpeciesSelection(mofloc.EventSource):
     """ The species selection UI. """
 
-    def __init__(self, screen, uidata, data):
+    def __init__(self, screen, colors, uidata, data):
         super().__init__()
         self.screen = screen
+        self.colors = colors
         self.uidata = uidata
         self.data = data
         h, w = screen.getmaxyx()

@@ -16,9 +16,10 @@ import sw.ui.curses as curses
 class BackgroundSelection(mofloc.EventSource):
     """ The background selection UI. """
 
-    def __init__(self, screen, uidata, data, species):
+    def __init__(self, screen, colors, uidata, data, species):
         super().__init__()
         self.screen = screen
+        self.colors = colors
         self.data = data
         self.species = species
         self.uidata = uidata

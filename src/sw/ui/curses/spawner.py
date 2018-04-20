@@ -20,6 +20,7 @@ class CursesSpawner(ui.UISpawner):
         curses.curs_set(0)
         curses.noecho()
         curses.start_color()
+        self.colors = _init_colors()
 
     def finish(self):
         curses.nocbreak()
@@ -29,35 +30,47 @@ class CursesSpawner(ui.UISpawner):
     def spawn_background_selection(self, data, species):
         from sw.ui.curses.background_selection import BackgroundSelection
         uidata = self.uidata[const.BACKGROUND_SELECTION]
-        return BackgroundSelection(self.screen, uidata, data, species)
+        return BackgroundSelection(self.screen, self.colors, uidata, data, species)
 
     def spawn_char_name_prompt(self):
         from sw.ui.curses.char_name_prompt import CharNamePrompt
         uidata = self.uidata[const.CHAR_NAME_PROMPT]
-        return CharNamePrompt(self.screen, uidata)
+        return CharNamePrompt(self.screen, self.colors, uidata)
 
     def spawn_main_dungeon(self, state, area):
         from sw.ui.curses.main_dungeon import MainDungeon
         uidata = self.uidata[const.MAIN_DUNGEON]
-        return MainDungeon(self.screen, uidata, state, area)
+        return MainDungeon(self.screen, self.colors, uidata, state, area)
 
     def spawn_main_menu(self, data):
         from sw.ui.curses.main_menu import MainMenu
         uidata = self.uidata[const.MAIN_MENU]
-        return MainMenu(self.screen, uidata, data)
+        return MainMenu(self.screen, self.colors, uidata, data)
 
     def spawn_main_overworld_window(self, state):
         from sw.ui.curses.main_overworld import MainOverworld
         uidata = self.uidata[const.MAIN_OVERWORLD]
-        return MainOverworld(self.screen, uidata, state)
+        return MainOverworld(self.screen, self.colors, uidata, state)
 
     def spawn_species_selection(self, data):
         from sw.ui.curses.species_selection import SpeciesSelection
         uidata = self.uidata[const.SPECIES_SELECTION]
-        return SpeciesSelection(self.screen, uidata, data)
+        return SpeciesSelection(self.screen, self.colors, uidata, data)
 
 
 #--------- helper things ---------#
+
+
+def _init_colors():
+    """ Return a dict with color pair attributes. """
+    res = {}
+    i = 1
+    for fg in const.Color:
+        res[fg] = {}
+        for bg in const.Color:
+            res[fg][bg] = curses.init_pair(i, fg.value, bg.value)
+            i += 1
+    return res
 
 
 def _read_curses_ui_data():
