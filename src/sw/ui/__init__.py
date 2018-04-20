@@ -67,6 +67,6 @@ class MainDungeonWindow():
         """ Play a death animation for a given monster. """
         raise NotImplementedError
 
-    def message(self, msg):
+    def message(self, msg, channel):
         """ Display a message. """
         raise NotImplementedError

@@ -8,6 +8,7 @@ import mofloc
 
 import sw.const.ui.curses.main_dungeon as md
 import sw.event.main_dungeon as event
+from sw.message import Message
 import sw.ui as ui
 import sw.ui.curses as curses
 
@@ -65,8 +66,8 @@ class MainDungeon(mofloc.EventSource, ui.MainDungeonWindow):
     def death_animation(self, monster):
         pass
 
-    def message(self, message):
-        self.state.messages.append(message)
+    def message(self, message, channel):
+        self.state.messages.append(Message(message, channel))
 
     #--------- drawing ---------#
 
@@ -94,6 +95,20 @@ class MainDungeon(mofloc.EventSource, ui.MainDungeonWindow):
     def draw_message_box(self):
         """ Draw the messages and the message box. """
         self.message_box.box()
+        height, width = self.message_box.getmaxyx()
+        # shave off the borders
+        height -= 2
+        width -= 2
+        y = height
+        for msg in reversed(self.state.messages):
+            if y <= 0:
+                break
+            lines = msg.lines(width)
+            for line in lines:
+                self._draw_message_line(y, line, msg.channel)
+                y -= 1
+                if y <= 0:
+                    break
 
     def draw_player_status_box(self):
         """ Draw the status box with player info. """
@@ -149,6 +164,11 @@ class MainDungeon(mofloc.EventSource, ui.MainDungeonWindow):
                     self.area_view.addstr(y, x, char, unseen_attr)
                 elif sense_func(visinfo):
                     self.area_view.addstr(y, x, sensed_char, unseen_attr)
+
+    def _draw_message_line(self, y, line, channel):
+        """ Draw a single line from a message on the given channel. """
+        # TODO: make channels change message color
+        self.message_box.addstr(y, 1, line)
 
     def _draw_player(self):
         """ Draw the player. """
