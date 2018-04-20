@@ -10,6 +10,9 @@ DATA_FILE = "main_dungeon.yaml"
 EMPTY_SPACE_CHAR = "empty space char"
 PLAYER_CHAR = "player char"
 UNSEEN_ENTITY_COLOR = "unseen entity color"
+SENSED_DOODAD_CHAR = "sensed doodad char"
+SENSED_ITEM_CHAR = "sensed item char"
+SENSED_MONSTER_CHAR = "sensed monster char"
 
 # Mappings
 DOODAD_MAP = "doodad map"

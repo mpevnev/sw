@@ -3,6 +3,9 @@
 empty space char: '.'
 player char: '@'
 unseen entity color: {fg: blue, bg: black}
+sensed doodad char: '*'
+sensed item char: '}'
+sensed monster char: '{'
 
 # Geometry
 message box height: 10
