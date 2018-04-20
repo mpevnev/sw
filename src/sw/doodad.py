@@ -64,6 +64,14 @@ class Doodad(Entity):
     def die(self):
         self.dead = True
 
+    #--------- visibility logic ---------#
+
+    def transparent_for_monster(self, monster):
+        raise NotImplementedError
+
+    def transparent_for_player(self, player):
+        raise NotImplementedError
+
 
 #--------- concrete subclasses ---------#
 
@@ -83,6 +91,12 @@ class Wall(Doodad):
 
     def death_action(self, state, area, ui):
         pass
+
+    def transparent_for_monster(self, monster):
+        return const.DoodadType.WALL in monster.see_through_types
+
+    def transparent_for_player(self, player):
+        return False
 
 
 #--------- doodad generation from recipes ---------#

@@ -10,6 +10,7 @@ from itertools import chain
 import random as rand
 
 
+import sw.const.area as const
 from sw.doodad import doodad_from_recipe
 
 
@@ -27,6 +28,7 @@ class Area():
         self.doodads = deque()
         self.items = deque()
         self.monsters = deque()
+        self.visibility_matrix = {}
 
     #--------- geometry ---------#
 
@@ -49,6 +51,26 @@ class Area():
         """ Return True if the given point is in the area. """
         return x >= 0 and x < self.width and y >= 0 and y < self.height
 
+    def line(self, from_x, from_y, to_x, to_y):
+        """
+        Return a generator with all points between two given points, ends
+        included.
+        """
+        # Uses DDA algorithm
+        dx = to_x - from_x
+        dy = to_y - from_y
+        curx, cury = from_x, from_y
+        n = max(abs(dx), abs(dy)) + 1
+        last = (curx, cury)
+        yield (curx, cury)
+        for _ in range(n):
+            curx += dx / n
+            cury += dy / n
+            last = (int(curx), int(cury))
+            yield last
+        if last != (to_x, to_y):
+            yield (to_x, to_y)
+
     #--------- generic entity manipulation ---------#
 
     def add_entity(self, entity, at_x, at_y):
@@ -63,25 +85,47 @@ class Area():
         entity.add_to_area(self)
         return True
 
-    def entities(self, living_flag):
+    def entities(self, living_flag, ignore_doodads=False, ignore_items=False,
+                 ignore_monsters=False, ignore_player=False):
         """
         Return a list with all alive entities in the area if 'living_flag' is
         truthy, or a list with all dead entities if 'living_flag' is falsey.
+
+        Optionally ignore entities of certain types.
         """
-        everything = chain([self.player], self.monsters, self.doodads)
+        everything = []
+        if not ignore_player:
+            everything = [self.player]
+        if not ignore_doodads:
+            everything = chain(everything, self.doodads)
+        if not ignore_items:
+            everything = chain(everything, self.items)
+        if not ignore_monsters:
+            everything = chain(everything, self.monsters)
         if living_flag:
             cond = lambda e: e is not None and e.alive()
         else:
             cond = lambda e: e is not None and not e.alive()
         return [e for e in everything if cond(e)]
 
-    def entities_at(self, x, y, living_flag):
+    def entities_at(self, x, y, living_flag, ignore_doodads=False, ignore_items=False,
+                    ignore_monsters=False, ignore_player=False):
         """
         Return a list with all alive entities at the given position if
         'living_flag' is truthy, or a list with all dead entities at the given
         position if 'living_flag' if falsey.
+
+        Optionally filter away entities of certain types.
         """
-        everything = chain([self.player], self.monsters, self.doodads)
+        everything = []
+        if not ignore_player:
+            everything = [self.player]
+        if not ignore_doodads:
+            everything = chain(everything, self.doodads)
+        if not ignore_items:
+            everything = chain(everything, self.items)
+        if not ignore_monsters:
+            everything = chain(everything, self.monsters)
         if living_flag:
             cond = lambda e: e is not None and e.alive() and e.position == (x, y)
         else:
@@ -142,6 +186,85 @@ class Area():
             if self.place_entity(player, x, y):
                 break
 
+    #--------- visibility logic ---------#
+
+    def can_see(self, character, x, y):
+        """
+        Return True if the given character can see the given point, False
+        otherwise.
+        """
+        if not character.within_sight(x, y):
+            return False
+        origin_x, origin_y = character.position
+        for cur in self.line(origin_x, origin_y, x, y):
+            if cur == (x, y):
+                break
+            potential_blockers = self.entities_at(cur[0], cur[1], True)
+            for blocker in potential_blockers:
+                if not character.can_see_through(blocker):
+                    return False
+        return True
+
+    def reset_visibility_matrix(self):
+        """ Fill the entire visibility matrix with 'NEVER_SEEN' markers. """
+        self.visibility_matrix = {(x, y): VisibilityInfo(const.VisibilityLevel.NEVER_SEEN)
+                                  for (x, y) in self.all_coordinates()}
+
+    def update_visibility_matrix(self, for_player):
+        """
+        Update the visibility matrix of this area as seen by the given player.
+        """
+        for (x, y), info in self.visibility_matrix:
+            if self.can_see(for_player, x, y):
+                info.levels = {const.VisibilityLevel.VISIBLE}
+                info.remembered_doodads = self.entities_at(
+                    x, y, True,
+                    ignore_player=True, ignore_items=True, ignore_monsters=True)
+                info.remembered_items = self.entities_at(
+                    x, y, True,
+                    ignore_player=True, ignore_doodads=True, ignore_monsters=True)
+                info.remembered_monsters = self.entities_at(
+                    x, y, True,
+                    ignore_player=True, ignore_doodads=True, ignore_items=True)
+
+
+#--------- helper classes ---------#
+
+
+class VisibilityInfo():
+    """
+    A class containing remembered and sensed information about a position.
+    """
+
+    def __init__(self, base_level=None):
+        if base_level is None:
+            self.levels = {}
+        else:
+            self.levels = {base_level}
+        self.remembered_doodads = []
+        self.remembered_items = []
+        self.remembered_monsters = []
+
+    def never_seen(self):
+        """ Return True if the point this info refers to was never seen. """
+        return const.VisibilityLevel.NEVER_SEEN in self.levels
+
+    def sense_doodads(self):
+        """ Return True if the player can sense doodads in this point. """
+        return const.VisibilityLevel.SENSE_DOODADS in self.levels
+
+    def sense_items(self):
+        """ Return True if the player can sense items in this point. """
+        return const.VisibilityLevel.SENSE_ITEMS in self.levels
+
+    def sense_monsters(self):
+        """ Return True if the player can sense monsters in this point. """
+        return const.VisibilityLevel.SENSE_MONSTERS in self.levels
+
+    def visible(self):
+        """ Return True if the point this info refers to is visible. """
+        return const.VisibilityLevel.VISIBLE in self.levels
+
 
 #--------- area generation from scratch ---------#
 
@@ -155,9 +278,10 @@ def area_from_scratch(gamedata, biome, width, height):
     for x, y in res.borders():
         wall = doodad_from_recipe(gamedata.doodad_by_id("stone wall"))
         res.add_entity(wall, x, y)
+    res.reset_visibility_matrix()
     return res
 
-#--------- area generation from YAML dicts ---------#
+#--------- area generation from saved YAML dicts ---------#
 
 
 def area_from_save(gamedata, yaml_dict):

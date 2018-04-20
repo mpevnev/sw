@@ -14,7 +14,6 @@ class Entity():
     def __init__(self):
         self.position = None
         self.collision_groups = set()
-        self.transparent = True
 
     #--------- container logic ---------#
 
@@ -79,4 +78,20 @@ class Entity():
 
     def die(self):
         """ Mark this object as dead. """
+        raise NotImplementedError
+
+    #--------- visibility logic ---------#
+
+    def transparent_for_player(self, player):
+        """
+        Return True if the entity is transparent for the player, False
+        otherwise.
+        """
+        raise NotImplementedError
+
+    def transparent_for_monster(self, monster):
+        """
+        Return True if the entity is transparent for the given monster, False
+        otherwise.
+        """
         raise NotImplementedError
