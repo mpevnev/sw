@@ -55,3 +55,18 @@ class UISpawner():
     def spawn_species_selection(self, data):
         """ Spawn a menu with species selection. """
         raise NotImplementedError
+
+
+#--------- interfaces for some UI pieces ---------#
+
+
+class MainDungeonWindow():
+    """ An interface for the main dungeon view. """
+
+    def death_animation(self, monster):
+        """ Play a death animation for a given monster. """
+        raise NotImplementedError
+
+    def message(self, msg):
+        """ Display a message. """
+        raise NotImplementedError

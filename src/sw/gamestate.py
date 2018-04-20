@@ -6,6 +6,9 @@ and various other game data.
 """
 
 
+from collections import deque
+
+
 class GameState():
     """ A container with all game information. """
 
@@ -15,6 +18,7 @@ class GameState():
         self.world = None
         self.player_position = None
         self.turn = 0
+        self.messages = None
 
     def current_overworld_header(self):
         """ Return the header of the area where the player is located. """
@@ -40,4 +44,5 @@ def game_state_from_scratch(gamedata, player, world):
     res.world = world
     res.player_position = (0, 0)
     res.turn = 0
+    res.messages = deque(maxlen=gamedata.message_limit)
     return res

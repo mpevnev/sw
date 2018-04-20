@@ -4,7 +4,7 @@ Game data module.
 
 
 import sw.background as bg
-import sw.const as const
+import sw.const.globvars as gv
 import sw.misc as misc
 import sw.species as sp
 
@@ -17,6 +17,8 @@ class GameData():
         self.doodad_recipes = _read_doodad_recipes()
         self.species = _read_species()
         self.strings = _read_strings()
+        globvars = _read_globals()
+        self.message_limit = globvars[gv.MESSAGE_LIMIT]
 
     def doodad_by_id(self, doodad_id):
         """ Return a doodad recipe with the given ID. """
@@ -41,6 +43,12 @@ def _read_doodad_recipes():
     """ Read doodad recipes from the data files. """
     import sw.const.doodad as constd
     res = misc.read([], "data", constd.DOODAD_RECIPES_FILE)
+    return res
+
+
+def _read_globals():
+    """ Read globals configuration parameters. """
+    res = misc.read({}, "data", gv.GLOBALS_FILE)
     return res
 
 

@@ -8,14 +8,16 @@ import mofloc
 
 import sw.const.ui.curses.main_dungeon as md
 import sw.event.main_dungeon as event
+import sw.ui as ui
 import sw.ui.curses as curses
 
 
-class MainDungeon(mofloc.EventSource):
+class MainDungeon(mofloc.EventSource, ui.MainDungeonWindow):
     """ Main overworld view. """
 
     def __init__(self, screen, colors, uidata, state, area):
-        super().__init__()
+        mofloc.EventSource.__init__(self)
+        ui.MainDungeonWindow.__init__(self)
         self.screen = screen
         self.colors = colors
         self.uidata = uidata
@@ -57,6 +59,14 @@ class MainDungeon(mofloc.EventSource):
         if ch in self.uidata[md.KEY_DESCEND]:
             return (event.DESCEND,)
         raise mofloc.NoEvent
+
+    #--------- interactions ---------#
+
+    def death_animation(self, monster):
+        pass
+
+    def message(self, message):
+        self.state.messages.append(message)
 
     #--------- drawing ---------#
 
