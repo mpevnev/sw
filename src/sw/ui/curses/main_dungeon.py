@@ -104,7 +104,7 @@ class MainDungeon(mofloc.EventSource, ui.MainDungeonWindow):
             if y <= 0:
                 break
             lines = msg.lines(width)
-            for line in lines:
+            for line in reversed(lines):
                 self._draw_message_line(y, line, msg.channel)
                 y -= 1
                 if y <= 0:

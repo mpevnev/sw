@@ -12,7 +12,7 @@ class Message():
     """ A game message, as displayed in a message box of a UI. """
 
     def __init__(self, text, channel):
-        self.text = "\n".join(map(str.strip, text.splitlines()))
+        self.text = text
         self.channel = channel
 
     def lines(self, textbox_width):
@@ -34,8 +34,9 @@ class Message():
         res = 0
         for c in self.text:
             if c == "\n":
+                if i != 0:
+                    res += 1
                 i = 0
-                res += 1
                 continue
             i += 1
             if i >= textbox_width:
