@@ -214,7 +214,7 @@ class Area():
         """
         Update the visibility matrix of this area as seen by the given player.
         """
-        for (x, y), info in self.visibility_matrix:
+        for (x, y), info in self.visibility_matrix.items():
             if self.can_see(for_player, x, y):
                 info.levels = {const.VisibilityLevel.VISIBLE}
                 info.remembered_doodads = self.entities_at(
@@ -226,6 +226,11 @@ class Area():
                 info.remembered_monsters = self.entities_at(
                     x, y, True,
                     ignore_player=True, ignore_doodads=True, ignore_items=True)
+            else:
+                try:
+                    info.levels.remove(const.VisibilityLevel.VISIBLE)
+                except KeyError:
+                    pass
 
 
 #--------- helper classes ---------#
