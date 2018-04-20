@@ -73,14 +73,13 @@ class Area():
         dx = to_x - from_x
         dy = to_y - from_y
         curx, cury = from_x, from_y
-        n = max(abs(dx), abs(dy)) + 1
+        n = max(abs(dx), abs(dy))
         last = (curx, cury)
-        yield (curx, cury)
         for _ in range(n):
+            yield last
             curx += dx / n
             cury += dy / n
             last = (int(curx), int(cury))
-            yield last
         if last != (to_x, to_y):
             yield (to_x, to_y)
 
