@@ -123,6 +123,8 @@ class MainDungeon(mofloc.EventSource):
         offset_x, offset_y = self._drawing_offsets()
         unseen_attr = self._unseen_attr()
         for entity in entities:
+            if entity.hidden():
+                continue
             x, y = entity.position
             mapping = art_map[entity.recipe_id]
             char = mapping[md.MAP_CHAR]
