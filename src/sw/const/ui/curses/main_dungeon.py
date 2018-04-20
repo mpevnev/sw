@@ -16,6 +16,7 @@ SENSED_MONSTER_CHAR = "sensed monster char"
 
 # Mappings
 DOODAD_MAP = "doodad map"
+ITEM_MAP = "item map"
 MONSTER_MAP = "monster map"
 MAP_CHAR = "char"
 MAP_COLOR = "color"

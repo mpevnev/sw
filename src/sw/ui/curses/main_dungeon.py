@@ -63,9 +63,21 @@ class MainDungeon(mofloc.EventSource):
     def draw_area_view(self):
         """ Draw the area. """
         self._draw_area_background()
-        self._draw_doodads()
-        #self._draw_items()
-        #self._draw_monsters()
+        self._draw_entities(
+            self.area.doodads, self.uidata[md.DOODAD_MAP],
+            self.uidata[md.SENSED_DOODAD_CHAR],
+            lambda visinfo: visinfo.remembered_doodads,
+            lambda visinfo: visinfo.sense_doodads())
+        self._draw_entities(
+            self.area.items, self.uidata[md.ITEM_MAP],
+            self.uidata[md.SENSED_ITEM_CHAR],
+            lambda visinfo: visinfo.remembered_items,
+            lambda visinfo: visinfo.sense_items())
+        self._draw_entities(
+            self.area.monsters, self.uidata[md.MONSTER_MAP],
+            self.uidata[md.SENSED_MONSTER_CHAR],
+            lambda visinfo: visinfo.remembered_monsters,
+            lambda visinfo: visinfo.sense_monsters())
         self._draw_player()
         self.area_view.box()
 
@@ -91,29 +103,40 @@ class MainDungeon(mofloc.EventSource):
             y = y + offset_y
             self.area_view.addstr(y, x, char, seen_attr if visible else unseen_attr)
 
-    def _draw_doodads(self):
-        """ Draw the doodads in the area. """
+    def _draw_entities(self, entities, art_map, sensed_char, remembered_func, sense_func):
+        """
+        Draw the entities in the area.
+
+        Entities themselves will be taken from 'entities' iterable.
+
+        Entities' art will be taken from 'art_map', which should be a YAML
+        dict.
+
+        'sensed_char' will be used in place of unseen, but sensed entities.
+
+        'remembered_func' should be a callable that take a VisibilityInfo
+        argument and returns an iterable with remembered entities from it.
+
+        Likewise, 'sense_func' should take a VisibilityInfo argument and return
+        True if this info has 'sense_ENTITY_TYPE' set.
+        """
         offset_x, offset_y = self._drawing_offsets()
         unseen_attr = self._unseen_attr()
-        doodad_map = self.uidata[md.DOODAD_MAP]
-        for doodad in self.area.doodads:
-            x, y = doodad.position
-            mapping = doodad_map[doodad.recipe_id]
+        for entity in entities:
+            x, y = entity.position
+            mapping = art_map[entity.recipe_id]
             char = mapping[md.MAP_CHAR]
             attr = curses.color_from_dict(self.colors, mapping[md.MAP_COLOR])
             visinfo = self.area.visibility_matrix[(x, y)]
-            visible = visinfo.visible()
             x += offset_x
             y += offset_y
-            if visible:
+            if visinfo.visible():
                 self.area_view.addstr(y, x, char, attr)
             else:
-                if doodad in visinfo.remembered_doodads:
+                if entity in remembered_func(visinfo):
                     self.area_view.addstr(y, x, char, unseen_attr)
-                elif visinfo.sense_doodads():
-                    self.area_view.addstr(y, x, self.uidata[md.SENSED_DOODAD_CHAR],
-                                          unseen_attr)
-
+                elif sense_func(visinfo):
+                    self.area_view.addstr(y, x, sensed_char, unseen_attr)
 
     def _draw_player(self):
         """ Draw the player. """

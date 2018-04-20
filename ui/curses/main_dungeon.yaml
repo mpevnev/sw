@@ -27,3 +27,9 @@ descend: ['>']
 # Doodad mappings
 doodad map: 
     stone wall: {char: '#', color: {fg: white, bg: black}}
+
+# Item mappings
+item map: []
+
+# Monster mappings
+monster map: []
