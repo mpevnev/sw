@@ -3,10 +3,11 @@ Message constants.
 """
 
 
-import enum
+from enum import Enum, auto
 
 
-class Channel(enum.Enum):
+class Channel(Enum):
     """ A message channel enumeration. """
 
-    NORMAL = enum.auto()
+    NORMAL = auto()
+    MONSTER_DEATH = auto()

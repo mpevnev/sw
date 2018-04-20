@@ -1,11 +1,16 @@
 """
 Monster module.
 
-Provides base Monster class.
+Provides base Monster class and several subclasses.
 """
 
 
 from sw.character import Character
+from sw.const.message import Channel
+import sw.const.monster as const
+
+
+#--------- base class ---------#
 
 
 class Monster(Character):
@@ -28,7 +33,7 @@ class Monster(Character):
         area.monsters.remove(self)
 
     def death_action(self, state, area, ui):
-        ui.message(self.death_message)
+        ui.message(self.death_message, Channel.MONSTER_DEATH)
         ui.death_animation(self)
         if self.do_award_xp:
             state.player.xp += self.xp_award
@@ -37,3 +42,35 @@ class Monster(Character):
 
     def can_see_through(self, entity):
         return entity.transparent_for_monster(self)
+
+
+#--------- subclasses ---------#
+
+
+class NormalMeleeMonster(Monster):
+    """
+    A monster with normal melee AI.
+    """
+    pass
+
+
+#--------- monster creation from recipes ---------#
+
+
+def monster_from_recipe(recipe, other_game_data):
+    """
+    Create a monster from a recipe (and maybe use some other game data).
+    """
+    recipe_id = recipe[const.ID]
+    montype = recipe[const.TYPE]
+    if montype == const.MonsterType.NORMAL_MELEE.value:
+        return NormalMeleeMonster(recipe_id)
+    raise ValueError(f"Unknown monster type '{montype}'")
+
+
+#--------- monster creation from saves ---------#
+
+
+def monster_from_save(save_dict):
+    """ Create a monster from a saved dict. """
+    raise NotImplementedError

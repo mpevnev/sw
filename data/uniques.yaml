@@ -1,0 +1,6 @@
+
+- id: unique01
+  type: normal melee
+  xp_award: 10
+  death message: debug unique dies
+  see through: []

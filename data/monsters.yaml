@@ -1,0 +1,6 @@
+
+- id: melee goblin
+  type: normal melee
+  xp: 3
+  death message: The goblin dies!
+  see through: []
