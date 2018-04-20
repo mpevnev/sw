@@ -20,6 +20,7 @@ class Player(Character):
         self.species = None
         self.background = None
         self.xp = 0
+        self.sight_range = 5
 
     #--------- area container logic ---------#
 
@@ -36,6 +37,11 @@ class Player(Character):
         Do nothing, player death is handled by the flows directly.
         """
         pass
+
+    #--------- visibility logic ---------#
+
+    def can_see_through(self, entity):
+        return entity.transparent_for_player(self)
 
 
 #--------- generating a player from a saved dict ---------#

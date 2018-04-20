@@ -1,8 +1,8 @@
 
-# Strings
+# Global settings
 empty space char: '.'
 player char: '@'
-wall char: '#'
+unseen entity color: {fg: blue, bg: black}
 
 # Geometry
 message box height: 10
@@ -22,6 +22,5 @@ ascend: ['<']
 descend: ['>']
 
 # Doodad mappings
-
 doodad map: 
-    stone wall: {char: '#', color: white}
+    stone wall: {char: '#', color: {fg: white, bg: black}}

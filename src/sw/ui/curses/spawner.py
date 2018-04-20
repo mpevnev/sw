@@ -20,6 +20,7 @@ class CursesSpawner(ui.UISpawner):
         curses.curs_set(0)
         curses.noecho()
         curses.start_color()
+        curses.use_default_colors()
         self.colors = _init_colors()
 
     def finish(self):
@@ -65,10 +66,21 @@ def _init_colors():
     """ Return a dict with color pair attributes. """
     res = {}
     i = 1
-    for fg in const.Color:
+    colors = [
+        curses.COLOR_BLACK,
+        curses.COLOR_BLUE,
+        curses.COLOR_CYAN,
+        curses.COLOR_GREEN,
+        curses.COLOR_MAGENTA,
+        curses.COLOR_RED,
+        curses.COLOR_WHITE,
+        curses.COLOR_YELLOW,
+        ]
+    for fg in colors:
         res[fg] = {}
-        for bg in const.Color:
-            res[fg][bg] = curses.init_pair(i, fg.value, bg.value)
+        for bg in colors:
+            curses.init_pair(i, fg, bg)
+            res[fg][bg] = curses.color_pair(i)
             i += 1
     return res
 

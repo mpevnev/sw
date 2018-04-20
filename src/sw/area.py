@@ -30,6 +30,19 @@ class Area():
         self.monsters = deque()
         self.visibility_matrix = {}
 
+    #--------- doodads manipulation ---------#
+
+    def doodads_at(self, at_x, at_y, living_flag):
+        """
+        Return a list with all doodads with specified living flag at the given
+        position.
+        """
+        return self.entities_at(at_x, at_y, living_flag,
+                                ignore_doodads=False,
+                                ignore_items=True,
+                                ignore_monsters=True,
+                                ignore_player=True)
+
     #--------- geometry ---------#
 
     def all_coordinates(self):
@@ -168,11 +181,35 @@ class Area():
                                  entity.position[0] + dx,
                                  entity.position[1] + dy)
 
+    #--------- items manipulation ---------#
+
+    def items_at(self, at_x, at_y, living_flag):
+        """
+        Return a list with all items with specified living flag at the given
+        position.
+        """
+        return self.entities_at(at_x, at_y, living_flag,
+                                ignore_doodads=True,
+                                ignore_items=False,
+                                ignore_monsters=True,
+                                ignore_player=True)
+
     #--------- monsters manipulation ---------#
 
     def hidden_monsters(self):
         """ Return a list of all hidden monsters. """
         return [m for m in self.monsters if m.hidden()]
+
+    def monsters_at(self, at_x, at_y, living_flag):
+        """
+        Return a list with all monsters with specified living flag at the given
+        position.
+        """
+        return self.entities_at(at_x, at_y, living_flag,
+                                ignore_doodads=True,
+                                ignore_items=True,
+                                ignore_monsters=False,
+                                ignore_player=True)
 
     #--------- player manipulation ---------#
 

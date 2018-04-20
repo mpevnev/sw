@@ -62,29 +62,9 @@ class MainDungeon(mofloc.EventSource):
 
     def draw_area_view(self):
         """ Draw the area. """
-        h, w = self.area_view.getmaxyx()
-        player_x, player_y = self.state.player.position
-        offset_x = w // 2 - player_x
-        offset_y = h // 2 - player_y
-        for x, y in self.area.all_coordinates():
-            x = x + offset_x
-            y = y + offset_y
-            if x >= 0 and x < w and y >= 0 and y < h:
-                self.area_view.addch(y, x, self.uidata[md.EMPTY_SPACE_CHAR])
-        for doodad in self.area.doodads:
-            char = self.uidata[md.DOODAD_MAP][doodad.recipe_id][md.MAP_CHAR]
-            # TODO: use color
-            x = doodad.position[0] + offset_x
-            y = doodad.position[1] + offset_y
-            self.area_view.addch(y, x, char)
-        for (x, y), info in self.area.visibility_matrix.items():
-            x = x + offset_x
-            y = y + offset_y
-            if info.visible():
-                self.area_view.addch(y, x, '!')
-            else:
-                self.area_view.addch(y, x, '?')
-        self.area_view.addch(h // 2, w // 2, self.uidata[md.PLAYER_CHAR])
+        self._draw_area_background()
+        self._draw_doodads()
+        self._draw_player()
         self.area_view.box()
 
     def draw_message_box(self):
@@ -94,6 +74,50 @@ class MainDungeon(mofloc.EventSource):
     def draw_player_status_box(self):
         """ Draw the status box with player info. """
         self.player_status_box.box()
+
+    #--------- helper drawing procedures ---------#
+
+    def _draw_area_background(self):
+        """ Draw the empty spaces in the area. """
+        offset_x, offset_y = self._drawing_offsets()
+        char = self.uidata[md.EMPTY_SPACE_CHAR]
+        seen_attr = curses.A_NORMAL
+        unseen_attr = self._unseen_attr()
+        for x, y in self.area.all_coordinates():
+            visible = self.area.visibility_matrix[(x, y)].visible()
+            x = x + offset_x
+            y = y + offset_y
+            self.area_view.addstr(y, x, char, seen_attr if visible else unseen_attr)
+
+    def _draw_doodads(self):
+        """ Draw the doodads in the area. """
+        offset_x, offset_y = self._drawing_offsets()
+        unseen_attr = self._unseen_attr()
+        doodad_map = self.uidata[md.DOODAD_MAP]
+        for doodad in self.area.doodads:
+            x, y = doodad.position
+            mapping = doodad_map[doodad.recipe_id]
+            char = mapping[md.MAP_CHAR]
+            attr = curses.color_from_dict(self.colors, mapping[md.MAP_COLOR])
+            visible = self.area.visibility_matrix[(x, y)].visible()
+            self.area_view.addstr(y + offset_y, x + offset_x, char,
+                                 attr if visible else unseen_attr)
+
+    def _draw_player(self):
+        """ Draw the player. """
+        h, w = self.area_view.getmaxyx()
+        self.area_view.addstr(h // 2, w // 2, self.uidata[md.PLAYER_CHAR])
+
+    def _drawing_offsets(self):
+        """ Return a tuple with drawing offsets for entities in the area. """
+        h, w = self.area_view.getmaxyx()
+        offset_x = w // 2 - self.state.player.position[0]
+        offset_y = h // 2 - self.state.player.position[1]
+        return (offset_x, offset_y)
+
+    def _unseen_attr(self):
+        """ Return the attribute used for unseen entities. """
+        return curses.color_from_dict(self.colors, self.uidata[md.UNSEEN_ENTITY_COLOR])
 
     #--------- subwindow creation ---------#
 

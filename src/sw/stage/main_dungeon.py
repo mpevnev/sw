@@ -40,6 +40,7 @@ class MainDungeon(mofloc.Flow):
         usual.
         """
         self.area.randomly_place_player(self.state.player)
+        self.area.update_visibility_matrix(self.state.player)
 
 
     #--------- event handlers ---------#
@@ -62,6 +63,7 @@ class MainDungeon(mofloc.Flow):
             return False
         delta = ev[1]
         if self.area.shift_entity(self.state.player, *delta):
+            self.area.update_visibility_matrix(self.state.player)
             # self.state.player.tick()
             # self.area.tick()
             pass

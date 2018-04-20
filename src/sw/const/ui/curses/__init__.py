@@ -3,10 +3,6 @@ Constants for curses-based interface.
 """
 
 
-import curses
-import enum
-
-
 BACKGROUND_SELECTION = "background selection"
 CHAR_NAME_PROMPT = "char name prompt"
 MAIN_DUNGEON = "main dungeon"
@@ -15,14 +11,16 @@ MAIN_OVERWORLD = "main overworld"
 SPECIES_SELECTION = "species selection" 
 
 
-class Color(enum.Enum):
-    """ An enumeration with text colors. """
+# Keys into color dicts
+COLOR_FG = "fg"
+COLOR_BG = "bg"
 
-    BLACK = curses.COLOR_BLACK
-    BLUE = curses.COLOR_BLUE
-    CYAN = curses.COLOR_CYAN
-    GREEN = curses.COLOR_GREEN
-    MAGENTA = curses.COLOR_MAGENTA
-    RED = curses.COLOR_RED
-    WHITE = curses.COLOR_WHITE
-    YELLOW = curses.COLOR_YELLOW
+# Color names
+COLOR_BLACK = "black"
+COLOR_BLUE = "blue"
+COLOR_CYAN = "cyan"
+COLOR_GREEN = "green"
+COLOR_MAGENTA = "magenta"
+COLOR_RED = "red"
+COLOR_WHITE = "white"
+COLOR_YELLOW = "yellow"

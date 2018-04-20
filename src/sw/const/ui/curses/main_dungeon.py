@@ -9,7 +9,7 @@ DATA_FILE = "main_dungeon.yaml"
 # Strings
 EMPTY_SPACE_CHAR = "empty space char"
 PLAYER_CHAR = "player char"
-WALL_CHAR = "wall char"
+UNSEEN_ENTITY_COLOR = "unseen entity color"
 
 # Mappings
 DOODAD_MAP = "doodad map"
