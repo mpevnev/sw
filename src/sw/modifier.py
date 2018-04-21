@@ -8,6 +8,7 @@ The class is supposed to be subclassed.
 """
 
 
+import sw.const.message as msg
 import sw.const.modifier as mod
 import sw.const.skill as skill
 import sw.const.stat as stat
@@ -23,8 +24,11 @@ class Modifier():
 
     def __init__(self, recipe_id):
         self.recipe_id = recipe_id
-        self.priority = 0
+        self.attach_message = None
+        self.dissipate_message = None
         self.duration = 0
+        self.priority = 0
+        self.tick_message = None
 
     def apply_skills(self, attached_to, state, area, ui):
         """ Apply changes to the skills. """
@@ -52,7 +56,8 @@ def modifier_from_recipe(recipe, other_data):
     recipe_id = recipe[mod.ID]
     if cls == mod.ModifierType.FLAT_STAT_INCREASE.value:
         res = FlatStatIncrease(recipe_id)
-        _read_common_fields(res, recipe)
+        _read_common_fields_from_recipe(res, recipe)
+        _read_flat_increase_fields_from_recipe(res, recipe)
         return res
     raise ValueError(f"Unknown modifier type '{cls}'")
 
@@ -73,37 +78,53 @@ class FlatStatIncrease(Modifier):
 
     def __init__(self, recipe_id):
         super().__init__(recipe_id)
-        self.amount = data[mod.FlatStatFields.HOW_MUCH.value]
-        which = data[mod.FlatStatFields.WHICH.value]
-        try:
-            which = stat.PrimaryStat(which)
-            self.which = which
-            self.which_group = stat.StatGroup.PRIMARY
-            return
-        except ValueError:
-            pass
-        try:
-            which = stat.SecondaryStat(which)
-            self.which = which
-            self.which_group = stat.StatGroup.SECONDARY
-            return
-        except ValueError:
-            pass
-        raise ValueError(f"Unknown statistics '{which}'")
+        self.amount = 0
+        self.which = None
+        self.which_group = None
 
-    def apply_primary(self, apply_to, overworld, area):
+    def apply_primary(self, attached_to, state, area, ui):
         if self.which_group == stat.StatGroup.PRIMARY:
-            apply_to.total_primary[self.which] += self.amount
+            attached_to.total_primary[self.which] += self.amount
 
-    def apply_secondary(self, apply_to, overworld, area):
+    def apply_secondary(self, attached_to, state, area, ui):
         if self.which_group == stat.StatGroup.SECONDARY:
-            apply_to.total_secondary[self.which] += self.amount
+            attached_to.total_secondary[self.which] += self.amount
+
+    def tick(self, attached_to, state, area, ui):
+        if self.duration > 0:
+            self.duration -= 1
+        if self.tick_message is not None:
+            ui.message(self.tick_message, msg.Channel.MODIFIER_TICK)
 
 
 #--------- helper things ---------#
 
 
-def _read_common_fields(modifier, recipe):
-    """ Read common fields from a recipe into the modifier. """
+def _read_common_fields_from_recipe(modifier, recipe):
+    """ Read common fields from the recipe into the modifier. """
+    modifier.attach_message = recipe.get(mod.ATTACH_MESSAGE, None)
+    modifier.dissipate_message = recipe.get(mod.DISSIPATE_MESSAGE, None)
     modifier.duration = recipe.get(mod.DURATION, -1)
     modifier.priority = recipe.get(mod.PRIORITY, 0)
+    modifier.tick_message = recipe.get(mod.TICK_MESSAGE, None)
+
+
+def _read_flat_increase_fields_from_recipe(modifier, recipe):
+    """ Read FlatStatIncrease fields from the recipe into the modifier. """
+    modifier.amount = recipe[mod.FlatStatFields.HOW_MUCH.value]
+    which = recipe[mod.FlatStatFields.WHICH.value]
+    try:
+        which = stat.PrimaryStat(which)
+        modifier.which = which
+        modifier.which_group = stat.StatGroup.PRIMARY
+        return
+    except ValueError:
+        pass
+    try:
+        which = stat.SecondaryStat(which)
+        modifier.which = which
+        modifier.which_group = stat.StatGroup.SECONDARY
+        return
+    except ValueError:
+        pass
+    raise ValueError(f"Unknown statistics '{which}'")
