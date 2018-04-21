@@ -1,6 +1,7 @@
 
-- id: melee goblin
-  type: normal melee
+- id: debug melee zombie
+  type: generic
+  ai: melee zombie
   xp: 3
-  death message: The goblin dies!
+  death message: Debug Zombie falls apart!
   see through: []

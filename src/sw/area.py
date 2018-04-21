@@ -270,30 +270,30 @@ class Area():
 
     #--------- other game logic ---------#
 
-    def ai_turn(self, state, player, ui, actions):
+    def ai_turn(self, state, ui, actions):
         """ Make contained AI-controlled entities do something. """
         for monster in self.entities(True, ignore_doodads=True, ignore_items=True,
                                      ignore_monsters=False, ignore_player=True):
             monster.action_points += actions
-            task = monster.ai.evaluate(monster, state, self, player)
-            monster.perform_task(task, state, self, player)
+            task = monster.ai.evaluate(monster, state, self)
+            monster.perform_task(task, state, self, ui)
 
-    def tick(self, state, player, ui, action_points_for_ai):
+    def tick(self, state, ui, action_points_for_ai):
         """
         Process a single game turn.
 
         'state' is the global state of the game.
-        'player' is the currently active player character.
         'ui' is the currently active UI piece.
         'actions_for_ai' is the amount of action points available for the AI to
         perform some tasks.
         """
+        player = state.player
         for entity in self.entities(True, ignore_player=True):
             entity.tick(state, self, player, ui)
         for entity in self.entities(False, ignore_player=True):
             entity.death_action(state, self, ui)
         self.remove_dead_entities()
-        self.ai_turn(state, player, ui, action_points_for_ai)
+        self.ai_turn(state, ui, action_points_for_ai)
 
 
 #--------- helper classes ---------#
