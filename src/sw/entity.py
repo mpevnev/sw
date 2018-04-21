@@ -47,6 +47,12 @@ class Entity():
             return False
         return self.position == other.position
 
+    def distance(self, other):
+        """ Return the Manhattan distance to the other entity. """
+        dx = self.position[0] - other.position[0]
+        dy = self.position[1] - other.position[1]
+        return max(abs(dx), abs(dy))
+
     def hide(self):
         """ Put the entity into unplaced state, hidden from other entities. """
         self.position = None
