@@ -15,10 +15,10 @@ class StatGroup(Enum):
 class PrimaryStat(Enum):
     """ Enumeration of primary statistics. """
 
-    STR = "strength"
-    DEX = "dexterity"
-    INT = "intelligence"
-    SPI = "spirit"
+    STR = "str"
+    DEX = "dex"
+    INT = "int"
+    SPI = "spi"
 
 
 class SecondaryStat(Enum):
@@ -43,3 +43,5 @@ class SecondaryStat(Enum):
     RESIST_FIRE = "resist fire"
     RESIST_POISON = "resist poison"
     RESIST_WATER = "resist water"
+
+    SIGHT = "sight"
