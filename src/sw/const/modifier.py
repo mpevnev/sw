@@ -5,8 +5,10 @@ Constants for modifier module.
 from enum import Enum
 
 # Modifier header info
+ID = "id"
 TYPE = "type"
 PRIORITY = "priority"
+DURATION = "duration"
 
 # Types
 class ModifierType(Enum):
@@ -14,8 +16,10 @@ class ModifierType(Enum):
 
     FLAT_STAT_INCREASE = "flat stat"
 
+
 # Fields for Flat type
 class FlatStatFields(Enum):
     """ Keys into a YAML dict for FlatStatIncrease type. """
-    WHICH = "which"
+
+    WHICH_STAT = "which"
     HOW_MUCH = "amount"
