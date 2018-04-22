@@ -86,7 +86,8 @@ def _read_species():
 
 def _read_strings():
     """ Read strings from the data files. """
-    res = {}
+    import sw.const.strings as conststr
+    res = misc.read({}, "data", conststr.STRINGS_FILE)
     return res
 
 
