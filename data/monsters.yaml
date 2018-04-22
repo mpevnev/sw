@@ -2,6 +2,15 @@
 - id: debug melee zombie
   type: generic
   ai: melee zombie
-  xp: 3
   death message: Debug Zombie falls apart!
   see through: []
+  skills: {}
+  stats:
+      primary:
+          str: 12
+          dex: 5
+          int: 0
+          spi: 0
+      secondary:
+          sight: 5
+  xp: 3
