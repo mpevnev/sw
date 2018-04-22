@@ -45,10 +45,6 @@ class Player(Character):
 
     #--------- other game logic ---------#
 
-    def tick(self, state, area, player, ui):
-        """ Process a single game turn. """
-        pass
-
 
 #--------- generating a player from a saved dict ---------#
 

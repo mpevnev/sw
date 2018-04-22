@@ -88,9 +88,6 @@ class Monster(Character):
         else:
             raise ValueError(f"Unknown task '{taskid}")
 
-    def tick(self, state, area, player, ui):
-        raise NotImplementedError
-
     #--------- task implementations ---------#
 
     def attack(self, state, area, ui, target):
@@ -139,9 +136,6 @@ class GenericMonster(Monster):
     """
     A generic monster with no special attributes or behaviour.
     """
-
-    def tick(self, state, area, player, ui):
-        pass
 
     #--------- tasks ---------#
 
@@ -210,7 +204,7 @@ def _read_common_recipe_parameters(monster, recipe):
     """ Read common parameters from a recipe into a Monster instance. """
     monster.ai = select_ai(recipe[const.AI_TYPE])
     #
-    monster.base_skills = convert_skill_dict(recipe[const.SKILLS])
-    monster.base_stats = convert_stat_dict(recipe[const.STATS])
+    monster.base_skills = misc.convert_skill_dict(recipe[const.SKILLS])
+    monster.base_stats = misc.convert_stat_dict(recipe[const.STATS])
     monster.death_message = recipe[const.DEATH_MESSAGE]
     monster.xp_award = recipe[const.XP_AWARD]

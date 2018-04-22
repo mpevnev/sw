@@ -62,5 +62,5 @@ class Character(Entity, Modifiable):
 
     #--------- other logic ---------#
 
-    def tick(self, state, area, player, ui):
+    def tick(self, state, area, ui):
         raise NotImplementedError
