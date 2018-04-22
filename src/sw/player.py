@@ -69,6 +69,7 @@ def player_from_scratch(name, species, background):
 
 def _apply_species(player):
     """ Apply species' modifiers to the player. """
+    player.base_stats = player.species.base_stats
     player.add_innate_modifiers(*player.species.modifiers)
 
 def _apply_background(player):
