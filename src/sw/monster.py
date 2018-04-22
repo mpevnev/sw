@@ -12,6 +12,7 @@ from sw.ai import select_ai
 from sw.character import Character
 from sw.const.message import Channel
 import sw.const.ai as aiconst
+import sw.const.area as arconst
 import sw.const.monster as const
 import sw.const.strings as conststr
 
@@ -41,7 +42,8 @@ class Monster(Character):
         area.monsters.remove(self)
 
     def death_action(self, state, area, ui):
-        visible = area.visibility_matrix[self.position]
+        visinfo = area.visibility_matrix[self.position]
+        visible = arconst.VisibilityLevel.VISIBLE in visinfo.levels
         if self.do_award_xp:
             state.player.xp += self.xp_award
         if visible:
