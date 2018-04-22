@@ -5,6 +5,9 @@ Provides base Character class that Monster and Player classes inherit from.
 """
 
 
+from collections import deque
+
+
 import sw.const.stat as stat
 from sw.entity import Entity
 from sw.modifiable import Modifiable
@@ -63,4 +66,14 @@ class Character(Entity, Modifiable):
     #--------- other logic ---------#
 
     def tick(self, state, area, ui):
-        raise NotImplementedError
+        self.update_totals(state, area, ui)
+        for mod in self.innate_modifiers:
+            mod.tick(self, state, area, ui)
+        remaining_mods = deque()
+        for mod in self.temp_modifiers:
+            mod.tick(self, state, area, ui)
+            if mod.duration == 0:
+                mod.expire(self, state, area, ui)
+            else:
+                remaining_mods.append(mod)
+        self.temp_modifiers = remaining_mods

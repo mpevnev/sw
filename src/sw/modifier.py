@@ -42,6 +42,10 @@ class Modifier():
         """ Apply changes to the secondary statistics. """
         pass
 
+    def expire(self, attached_to, state, area, ui):
+        """ Perform some actions on modifier's expiration. """
+        pass
+
     def tick(self, attached_to, state, area, ui):
         """ Apply periodic changes to the 'attached_to' modifiable. """
         pass
