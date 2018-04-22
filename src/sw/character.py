@@ -19,7 +19,26 @@ class Character(Entity, Modifiable):
     def __init__(self):
         Entity.__init__(self)
         Modifiable.__init__(self)
-        self.health = 0
+        self._health = 0
+
+    #--------- health logic ---------#
+
+    @property
+    def max_health(self):
+        """ Return the maximum health of the character. """
+        return self.total_secondary[stat.SecondaryStat.HEALTH]
+
+    @property
+    def health(self):
+        """ Return the health of the character. """
+        return self._health
+
+    @health.setter
+    def health(self, value):
+        """ Set the health. """
+        value = max(0, value)
+        value = min(value, self.max_health)
+        self._health = value
 
     #--------- container logic ---------#
 
