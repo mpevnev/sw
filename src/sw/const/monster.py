@@ -19,7 +19,10 @@ class MonsterType(Enum):
 # Recipe and save dicts keys
 ID = "id"
 TYPE = "type"
+#
 AI_TYPE = "ai"
-XP_AWARD = "xp"
 DEATH_MESSAGE = "death message"
 SEE_THROUGH = "see through"
+SKILLS = "skills"
+STATS = "stats"
+XP_AWARD = "xp"

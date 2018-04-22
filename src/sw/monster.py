@@ -15,6 +15,7 @@ import sw.const.ai as aiconst
 import sw.const.area as arconst
 import sw.const.monster as const
 import sw.const.strings as conststr
+import sw.misc as misc
 
 
 #--------- base class ---------#
@@ -28,10 +29,10 @@ class Monster(Character):
         self.recipe_id = recipe_id
         self.action_points = 0
         self.ai = None
-        self.do_award_xp = True
-        self.xp_award = 0
         self.death_message = None
+        self.do_award_xp = True
         self.see_through_types = set()
+        self.xp_award = 0
 
     #--------- stuff inherited from Entity ---------#
 
@@ -208,5 +209,8 @@ def monster_from_save(save_dict):
 def _read_common_recipe_parameters(monster, recipe):
     """ Read common parameters from a recipe into a Monster instance. """
     monster.ai = select_ai(recipe[const.AI_TYPE])
-    monster.xp_award = recipe[const.XP_AWARD]
+    #
+    monster.base_skills = convert_skill_dict(recipe[const.SKILLS])
+    monster.base_stats = convert_stat_dict(recipe[const.STATS])
     monster.death_message = recipe[const.DEATH_MESSAGE]
+    monster.xp_award = recipe[const.XP_AWARD]
