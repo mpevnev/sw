@@ -34,8 +34,10 @@ def convert_stat_dict(data):
     enumeration members and return the resulting dictionary.
     """
     res = empty_stat_dict()
-    primary = {stat.PrimaryStat(key): value for key, value in data.items()}
-    secondary = {stat.SecondaryStat(key): value for key, value in data.items()}
+    primary_source = data[stat.StatGroup.PRIMARY.value]
+    secondary_source = data[stat.StatGroup.SECONDARY.value]
+    primary = {stat.PrimaryStat(key): value for key, value in primary_source.items()}
+    secondary = {stat.SecondaryStat(key): value for key, value in secondary_source.items()}
     res[stat.StatGroup.PRIMARY].update(primary)
     res[stat.StatGroup.SECONDARY].update(secondary)
     return res
