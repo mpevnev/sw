@@ -13,6 +13,7 @@ from sw.character import Character
 from sw.const.message import Channel
 import sw.const.ai as aiconst
 import sw.const.monster as const
+import sw.const.strings as conststr
 
 
 #--------- base class ---------#
@@ -40,10 +41,14 @@ class Monster(Character):
         area.monsters.remove(self)
 
     def death_action(self, state, area, ui):
-        ui.message(self.death_message, Channel.MONSTER_DEATH)
-        ui.death_animation(self)
+        visible = area.visibility_matrix[self.position]
         if self.do_award_xp:
             state.player.xp += self.xp_award
+        if visible:
+            ui.message(self.death_message, Channel.MONSTER_DEATH)
+            ui.death_animation(self)
+        elif self.do_award_xp:
+            ui.message(state.data.strings[conststr.FEEL_MORE_EXPERIENCED], Channel.NORMAL)
 
     #--------- visibility logic ---------#
 
