@@ -84,23 +84,23 @@ class Modifiable(HasSkills, HasStats):
 
     #--------- application of modifiers ---------#
 
-    def update_totals(self, overworld, area):
+    def update_totals(self, state, area, ui):
         """ Update total statistics and skills of the character. """
-        self._update_skill_totals(overworld, area)
-        self._update_primary_totals(overworld, area)
-        self._update_secondary_totals(overworld, area)
+        self._update_skill_totals(state, area, ui)
+        self._update_primary_totals(state, area, ui)
+        self._update_secondary_totals(state, area, ui)
 
-    def _update_skill_totals(self, overworld, area):
+    def _update_skill_totals(self, state, area, ui):
         self.total_skills = self.base_skills.copy()
         for mod in self.all_modifiers():
-            mod.apply_skills(self, overworld, area)
+            mod.apply_skills(self, state, area, ui)
 
-    def _update_primary_totals(self):
+    def _update_primary_totals(self, state, area, ui):
         self.total_primary = self.base_primary.copy()
         for mod in self.all_modifiers():
-            mod.apply_primary(self, overworld, area)
+            mod.apply_primary(self, state, area, ui)
 
-    def _update_secondary_totals(self):
+    def _update_secondary_totals(self, state, area, ui):
         self.total_secondary = self.base_secondary.copy()
         for mod in self.all_modifiers():
-            mod.apply_secondary(self, overworld, area)
+            mod.apply_secondary(self, state, area, ui)
