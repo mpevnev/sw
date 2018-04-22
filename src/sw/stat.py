@@ -7,6 +7,7 @@ them.
 
 
 import sw.const.stat as stat
+from sw.misc import empty_stat_dict
 
 
 #--------- main class ---------#
@@ -63,13 +64,3 @@ class HasStats():
     def total_secondary(self, new):
         """" Set total secondary statistics. """
         self.total_stats[stat.StatGroup.SECONDARY] = new
-
-
-#--------- convenience things ---------#
-
-def empty_stat_dict():
-    """ Return an empty statistics dict. """
-    res = {}
-    res[stat.StatGroup.PRIMARY] = {s: 0 for s in stat.PrimaryStat}
-    res[stat.StatGroup.SECONDARY] = {s: 0 for s in stat.SecondaryStat}
-    return res

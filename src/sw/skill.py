@@ -5,7 +5,7 @@ Provides HasSkills class for things that have skills.
 """
 
 
-import sw.const.skill as skill
+from sw.misc import empty_skill_dict
 
 
 class HasSkills():
@@ -18,12 +18,3 @@ class HasSkills():
     def upgrade_skill(self, which):
         """ Increase skill's level by one. """
         self.base_skills[which] += 1
-
-
-#--------- convenience things ---------#
-
-
-def empty_skill_dict():
-    """ Return a dict with all skills set to zero. """
-    res = {s: 0 for s in skill.Skill}
-    return res
