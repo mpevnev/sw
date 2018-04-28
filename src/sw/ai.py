@@ -27,6 +27,15 @@ class AI():
         """
         Choose and return a task (with whatever arguments it requires in a
         tuple) for the monster, given a specific environment.
+
+        :param monster: the monster for which the AI should calculate the task.
+        :type monster: sw.monster.Monster
+        :param state: the global environment of the monster that the AI should
+        take into account.
+        :type state: sw.gamestate.GameState
+        :param area: the local environment of the monster that the AI should
+        consider.
+        :type area: sw.area.Area
         """
         raise NotImplementedError
 
@@ -53,7 +62,11 @@ class MeleeZombie(AI):
 
 
 def select_ai(of_type):
-    """ Return an instance of a specific AI subclass. """
+    """
+    Return an instance of a specific AI subclass.
+    
+    :param str of_type: a string with the type of the resulting AI.
+    """
     if of_type == const.AIType.MELEE_ZOMBIE.value:
         return MeleeZombie()
     raise ValueError(f"Unknown AI type '{of_type}'")
