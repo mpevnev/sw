@@ -16,5 +16,10 @@ class HasSkills():
         self.total_skills = empty_skill_dict()
 
     def upgrade_skill(self, which):
-        """ Increase skill's level by one. """
+        """
+        Increase a skill's level by one.
+
+        :param which: which skill to improve.
+        :type which: sw.const.skill.Skill
+        """
         self.base_skills[which] += 1
