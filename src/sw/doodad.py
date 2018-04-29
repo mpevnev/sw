@@ -19,6 +19,12 @@ class Doodad(Entity):
     """
 
     def __init__(self, recipe_id):
+        """
+        Initialize a doodad.
+
+        :param recipe_id: ID of the recipe from which this doodad is/was
+        created.
+        """
         super().__init__()
         self.recipe_id = recipe_id
         self.detectable = True
@@ -37,19 +43,39 @@ class Doodad(Entity):
 
     def use_by_monster(self, monster, state, area, ui):
         """
-        Return True and do something when a monster uses the doodad.
+        React to a monster doing something with the doodad.
 
-        Return False without doing anything if the entity is not usable by the
-        given monster.
+        :param monster: a monster attempting to use the doodad.
+        :type monster: sw.monster.Monster
+        :param state: global game environment.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing both the monster and the doodad.
+        :type area: sw.area.Area
+        :param ui: the UI that should react to the event.
+        :type ui: sw.ui.MainDungeonWindow
+
+        :return: True if the monster used the doodad successfully, False if the
+        doodad is not usable by the monster.
+        :rtype: bool
         """
         raise NotImplementedError
 
     def use_by_player(self, player, state, area, ui):
         """
-        Return True and do something when the player uses the doodad.
+        React to a player doing something with the doodad.
 
-        Return False without doing anything if the entity is not usable by the
-        player.
+        :param player: a player attempting to use the doodad.
+        :type player: sw.player.Player
+        :param state: global game environment.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing both the player and the doodad.
+        :type area: sw.area.Area
+        :param ui: the UI that should react to the event.
+        :type ui: sw.ui.MainDungeonWindow
+
+        :return: True if the player used the doodad successfully, False if the
+        doodad is not usable by the player.
+        :rtype: bool
         """
         raise NotImplementedError
 
@@ -108,7 +134,14 @@ class Wall(Doodad):
 
 
 def doodad_from_recipe(recipe):
-    """ Create a doodad from a recipe (a YAML dict with no instance info). """
+    """
+    Create a doodad from a recipe.
+    
+    :param dict recipe: the template to base the new doodad on.
+    
+    :return: the freshly created doodad.
+    :rtype: Doodad
+    """
     recipe_id = recipe[const.ID]
     subtype = recipe[const.TYPE]
     if subtype == const.DoodadType.WALL.value:
@@ -119,6 +152,13 @@ def doodad_from_recipe(recipe):
 #--------- doodad generation from saves ---------#
 
 
-def doodad_from_save(save_dict):
-    """ Create a doodad from a saved dict (a YAML dict with instance info). """
+def doodad_from_save(save):
+    """
+    Create a doodad from a save.
+
+    :param dict save: the saved information about the doodad.
+
+    :return: the recreated doodad.
+    :rtype: Doodad
+    """
     raise NotImplementedError
