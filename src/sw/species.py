@@ -16,6 +16,11 @@ class Species():
     """
 
     def __init__(self, data):
+        """
+        Initialize a species.
+
+        :param dict data: a dict with species info.
+        """
         self.id = data[const.ID]
         #
         self.base_stats = misc.convert_stat_dict(data[const.STATS])
