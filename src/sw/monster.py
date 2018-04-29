@@ -25,6 +25,12 @@ class Monster(Character):
     """ A monster or some other NPC. """
 
     def __init__(self, recipe_id):
+        """
+        Initialize a monster.
+
+        :param string recipe_id: ID of the recipe from which the monster is
+        being created.
+        """
         super().__init__()
         self.recipe_id = recipe_id
         self.action_points = 0
@@ -65,7 +71,21 @@ class Monster(Character):
         self.ai.alarmed = True
 
     def perform_task(self, task, state, area, ui):
-        """ Perform a given task. """
+        """
+        Perform a task.
+
+        :param task: a task to be performed with arguments.
+        :type task: tuple(aiconst.Task, ...)
+        :param state: a global game environment the monster may factor in when
+        executing the task.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the monster.
+        :type area: sw.area.Area
+        :param ui: a UI that should react to monster's actions.
+        :type ui: sw.ui.MainDungeonWindow or None
+
+        :raises ValueError: if the task to be performed is unknown.
+        """
         taskid = task[0]
         if taskid == aiconst.Task.ATTACK:
             self.attack(state, area, ui, task[1])
@@ -91,40 +111,145 @@ class Monster(Character):
     #--------- task implementations ---------#
 
     def attack(self, state, area, ui, target):
-        """ Attack a given character. """
+        """
+        Attack a given character.
+
+        :param state: a global game state that the monster might factor in when
+        attacking.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the monster.
+        :type area: sw.area.Area
+        :param ui: a UI that should react to monster's actions.
+        :type ui: sw.ui.MainDungeonWindow or None
+
+        :param target: what to attack.
+        :type target: sw.character.Character
+        """
         raise NotImplementedError
 
     def cast_spell(self, state, area, ui, spell, target):
-        """ Cast a given spell at a given target. """
+        """
+        Cast a given spell at a given target.
+
+        :param state: a global game state that the monster might factor in when
+        attacking.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the monster.
+        :type area: sw.area.Area
+        :param ui: a UI that should react to monster's actions.
+        :type ui: sw.ui.MainDungeonWindow or None
+
+        :param spell: which spell to cast.
+        :type spell: sw.spell.Spell
+        :param target: position at which to cast.
+        :type target: tuple(int, int)
+        """
         raise NotImplementedError
 
     def explore(self, state, area, ui):
-        """ Explore the floor. """
+        """
+        Explore the floor.
+
+        :param state: a global game state that the monster might factor in when
+        attacking.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the monster.
+        :type area: sw.area.Area
+        :param ui: a UI that should react to monster's actions.
+        :type ui: sw.ui.MainDungeonWindow or None
+        """
         raise NotImplementedError
 
     def follow(self, state, area, ui, who):
-        """ Follow a friendly character somewhere. """
+        """
+        Follow a friendly character somewhere.
+
+        :param state: a global game state that the monster might factor in when
+        attacking.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the monster.
+        :type area: sw.area.Area
+        :param ui: a UI that should react to monster's actions.
+        :type ui: sw.ui.MainDungeonWindow or None
+
+        :param who: follow who.
+        :type who: sw.const.Character
+        """
         raise NotImplementedError
 
     def investigate(self, state, area, ui, position):
-        """ Look aroung a given position. """
+        """
+        Look around a given position.
+
+        :param state: a global game state that the monster might factor in when
+        attacking.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the monster.
+        :type area: sw.area.Area
+        :param ui: a UI that should react to monster's actions.
+        :type ui: sw.ui.MainDungeonWindow or None
+
+        :param position: where to investigate.
+        :type position: tuple(int, int)
+        """
         raise NotImplementedError
 
     def pursue(self, state, area, ui, who):
-        """ Pursue a hostile character. """
+        """
+        Pursue a hostile character.
+
+        :param state: a global game state that the monster might factor in when
+        attacking.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the monster.
+        :type area: sw.area.Area
+        :param ui: a UI that should react to monster's actions.
+        :type ui: sw.ui.MainDungeonWindow or None
+
+        :param who: pursue who.
+        :type who: sw.character.Character
+        """
         raise NotImplementedError
 
     def rest(self, state, area, ui):
-        """ Do nothing, just regenerate. """
+        """
+        Do nothing, just regenerate.
+
+        :param state: a global game state that the monster might factor in when
+        attacking.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the monster.
+        :type area: sw.area.Area
+        :param ui: a UI that should react to monster's actions.
+        :type ui: sw.ui.MainDungeonWindow or None
+        """
         raise NotImplementedError
 
     def retreat(self, state, area, ui):
-        """ Find a safe spot away from enemies. """
+        """
+        Find a safe spot away from enemies.
+
+        :param state: a global game state that the monster might factor in when
+        attacking.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the monster.
+        :type area: sw.area.Area
+        :param ui: a UI that should react to monster's actions.
+        :type ui: sw.ui.MainDungeonWindow or None
+        """
         raise NotImplementedError
 
     def step_aside(self, state, area, ui):
         """
         Let allies pass through the position this monster currenly occupies.
+
+        :param state: a global game state that the monster might factor in when
+        attacking.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the monster.
+        :type area: sw.area.Area
+        :param ui: a UI that should react to monster's actions.
+        :type ui: sw.ui.MainDungeonWindow or None
         """
         raise NotImplementedError
 
@@ -179,6 +304,13 @@ class GenericMonster(Monster):
 def monster_from_recipe(recipe, other_game_data):
     """
     Create a monster from a recipe (and maybe use some other game data).
+
+    :param dict recipe: a recipe to base the new monster on.
+    :param other_game_data: game data to use when populating the monster.
+    :type other_game_data: sw.gamedata.GameData
+
+    :return: the freshly created monster.
+    :rtype: Monster
     """
     recipe_id = recipe[const.ID]
     montype = recipe[const.TYPE]
@@ -192,8 +324,15 @@ def monster_from_recipe(recipe, other_game_data):
 #--------- monster creation from saves ---------#
 
 
-def monster_from_save(save_dict):
-    """ Create a monster from a saved dict. """
+def monster_from_save(save):
+    """
+    Create a monster from a save.
+
+    :param dict save: a dictionary with the info about a saved monster.
+
+    :return: a regenerated monster
+    :rtype: Monster
+    """
     raise NotImplementedError
 
 
@@ -201,7 +340,12 @@ def monster_from_save(save_dict):
 
 
 def _read_common_recipe_parameters(monster, recipe):
-    """ Read common parameters from a recipe into a Monster instance. """
+    """
+    Read common parameters from a recipe into a Monster instance.
+
+    :param Monster monster: read into.
+    :param dict recipe: read from.
+    """
     monster.ai = select_ai(recipe[const.AI_TYPE])
     #
     monster.base_skills = misc.convert_skill_dict(recipe[const.SKILLS])
