@@ -22,7 +22,7 @@ class GameData():
         globvars = _read_globals()
         self.message_limit = globvars[gv.MESSAGE_LIMIT]
 
-    def doodad_by_id(self, doodad_id):
+    def doodad_recipe_by_id(self, doodad_id):
         """ Return a doodad recipe with the given ID. """
         import sw.const.doodad as constd
         for recipe in self.doodad_recipes:

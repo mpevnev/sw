@@ -508,7 +508,7 @@ def area_from_scratch(gamedata, biome, width, height):
     res.height = height
     # TODO: proper area generation algorithm
     for x, y in res.borders():
-        wall = doodad_from_recipe(gamedata.doodad_by_id("stone wall"))
+        wall = doodad_from_recipe(gamedata.doodad_recipe_by_id("stone wall"))
         res.add_entity(wall, x, y)
     res.reset_visibility_matrix()
     return res
