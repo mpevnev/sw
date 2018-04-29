@@ -16,6 +16,11 @@ class Background():
     """
 
     def __init__(self, data):
+        """
+        Initialize a background.
+
+        :param dict data: the info the new background will be based on.
+        """
         self.id = data[const.ID]
         self.name = data[const.NAME]
         self.shortname = data[const.SHORTNAME]
