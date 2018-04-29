@@ -28,19 +28,29 @@ class Modifiable(HasSkills, HasStats):
     #--------- modifiers manipulation ---------#
 
     def add_innate_modifiers(self, *modifiers):
-        """ Add innate modifiers to the character. """
+        """
+        Add innate modifiers to the modifiable.
+
+        :param modifiers: modifiers to be added.
+        """
         self.innate_modifiers.extend(modifiers)
         self._sorted_modifiers = None
 
     def add_temp_modifiers(self, *modifiers):
-        """ Add temporary modifiers to the character. """
+        """
+        Add temporary modifiers to the modifiable.
+
+        :param modifiers: modifiers to be added.
+        """
         self.temp_modifiers.extend(modifiers)
         self._sorted_modifiers = None
 
     def all_modifiers(self):
         """
-        Return a list with all modifiers sorted by their priority.
+        :return: a list with all modifiers sorted by their priority.
+        :rtype: list[sw.modifier.Modifier]
         """
+        # TODO: sort innate and temp modifiers separately
         if self._sorted_modifiers is not None:
             return self._sorted_modifiers
         res = sorted(chain(self.innate_modifiers, self.temp_modifiers),
@@ -65,7 +75,11 @@ class Modifiable(HasSkills, HasStats):
         self._sorted_modifiers = None
 
     def remove_innate_modifiers(self, *modifiers):
-        """ Remove an innate modifier or several from the character. """
+        """
+        Remove an innate modifier or several from the character.
+
+        :param modifiers: modifiers to be removed.
+        """
         for mod in modifiers:
             try:
                 self.innate_modifiers.remove(mod)
@@ -74,7 +88,11 @@ class Modifiable(HasSkills, HasStats):
                 pass
 
     def remove_temp_modifiers(self, *modifiers):
-        """ Remove a temporary modifier or several from the character. """
+        """
+        Remove a temporary modifier or several from the character.
+
+        :param modifiers: modifiers to be removed.
+        """
         for mod in modifiers:
             try:
                 self.temp_modifiers.remove(mod)
@@ -85,7 +103,16 @@ class Modifiable(HasSkills, HasStats):
     #--------- application of modifiers ---------#
 
     def update_totals(self, state, area, ui):
-        """ Update total statistics and skills of the character. """
+        """
+        Update total statistics and skills of the modifiable.
+
+        :param state: the global game environment modifiers might factor in.
+        :type state: sw.gamestate.GameState
+        :param area: the area containing the modifiable.
+        :type area: sw.area.Area
+        :param ui: TEMP REMOVE
+        """
+        # TODO: remove 'ui' argument. Totals update is a strictly technical matter
         self._update_skill_totals(state, area, ui)
         self._update_primary_totals(state, area, ui)
         self._update_secondary_totals(state, area, ui)
