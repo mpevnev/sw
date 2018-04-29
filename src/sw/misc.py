@@ -20,8 +20,12 @@ import sw.const.stat as stat
 
 def convert_skill_dict(data):
     """
-    Convert string keys in the 'data' dict to Skill enumeration members and
-    return the resulting dictionary.
+    Convert string keys in the 'data' dict to Skill enumeration members.
+
+    :param dict data: a dictionary to be converted.
+
+    :return: a dictionary after the conversion.
+    :rtype: dict(sw.const.skill.Skill, int)
     """
     res = empty_skill_dict()
     res.update({skill.Skill(key): value for key, value in data.items()})
@@ -30,8 +34,11 @@ def convert_skill_dict(data):
 
 def convert_stat_dict(data):
     """
-    Convert string keys in the 'data' dict to PrimaryStat and SecondaryStat
-    enumeration members and return the resulting dictionary.
+    Convert string keys in the 'primary' and 'secondary' subdicts of a 'data'
+    dict to PrimaryStat and SecondaryStat enumeration members respectively.
+
+    :param dict data: a dictionary to be converted.
+    :rtype: dict
     """
     res = empty_stat_dict()
     primary_source = data[stat.StatGroup.PRIMARY.value]
@@ -45,8 +52,12 @@ def convert_stat_dict(data):
 
 def enumerate_with_letters(iterator):
     """
-    Return an iterator of things from the given iterator zipped with lowercase
-    letters a-z followed by uppercase letters A-Z.
+    Iterate over all items in a given iterator, yielding a pair of a letter of
+    the latin alphabet and an item from the iterator.
+
+    :param iterator: an iterator supplying the items.
+
+    :return: pairs (letter, item).
     """
     lower = (chr(i) for i in range(ord('a'), ord('z') + 1))
     upper = (chr(i) for i in range(ord('A'), ord('Z') + 1))
@@ -54,13 +65,19 @@ def enumerate_with_letters(iterator):
 
 
 def empty_skill_dict():
-    """ Return a dict with all skills set to zero. """
+    """
+    :return: a dictionary with zeroed skill levels.
+    :rtype: dict(sw.const.skill.Skill, int)
+    """
     res = {s: 0 for s in skill.Skill}
     return res
 
 
 def empty_stat_dict():
-    """ Return an empty statistics dict. """
+    """
+    :return: a dictionary with zeroed stat values.
+    :rtype: dict
+    """
     res = {}
     res[stat.StatGroup.PRIMARY] = {s: 0 for s in stat.PrimaryStat}
     res[stat.StatGroup.SECONDARY] = {s: 0 for s in stat.SecondaryStat}
@@ -74,6 +91,12 @@ def read(default, *filename):
     1) ./
     2) ../
     3) /usr/share/severed-world/
+
+    :param default: a value to return if the requested YAML file is empty.
+    :param filename: chunks of the path to a YAML file.
+
+    :return: contents of the YAML file.
+    :rtype: dict
     """
     f = Path(*filename)
     try:
@@ -91,7 +114,15 @@ def read(default, *filename):
 
 
 def _try_read(path, default=None):
-    """ Try reading a YAML file. """
+    """
+    Try reading a YAML file.
+
+    :param Path path: the path to a file to be read.
+    :param default: a value to return if the file is empty.
+
+    :return: contents of the YAML file.
+    :rtype: dict
+    """
     with open(path) as f:
         res = yaml.safe_load(f)
         if res is None:
