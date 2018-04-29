@@ -25,17 +25,27 @@ class Character(Entity, Modifiable):
 
     @property
     def max_health(self):
-        """ Return the maximum health of the character. """
+        """
+        :return: the maximum health of the character.
+        :rtype: float
+        """
         return self.total_secondary[stat.SecondaryStat.HEALTH]
 
     @property
     def health(self):
-        """ Return the health of the character. """
+        """
+        :return: the health of the character.
+        :rtype: float
+        """
         return self._health
 
     @health.setter
     def health(self, value):
-        """ Set the health. """
+        """
+        Set the health of the character.
+        
+        :param float value: new value for the health.
+        """
         value = max(0, value)
         value = min(value, self.max_health)
         self._health = value
@@ -63,7 +73,14 @@ class Character(Entity, Modifiable):
 
     def can_see_through(self, entity):
         """
-        Return True if the given entity is transparent for this character.
+        Test if a given entity is transparent for this character.
+
+        :param entity: the entity to be tested.
+        :type entity: sw.entity.Entity
+
+        :return: True if the entity is transparent for this character, False
+        otherwise.
+        :rtype: bool
         """
         raise NotImplementedError
 
@@ -75,7 +92,14 @@ class Character(Entity, Modifiable):
 
     def within_sight(self, x, y):
         """
-        Return True if the given position is within character's line of sight.
+        Test if a given position is withing character's line of sight.
+
+        :param int x: the X coordinate of the position being tested.
+        :param int y: the Y coordinate of the position being tested.
+
+        :return: True if the given position is within character's line of
+        sight, False otherwise.
+        :rtype: bool
         """
         sight_range = self.total_secondary[stat.SecondaryStat.SIGHT]
         own_x, own_y = self.position
