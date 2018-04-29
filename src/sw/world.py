@@ -22,6 +22,12 @@ class World():
     """
 
     def __init__(self, data):
+        """
+        Initialize a world.
+
+        :param data: game data used to populate the world with things.
+        :type data: sw.gamedata.GameData
+        """
         self.name = None
         self.data = data
         self.save_dir = None
@@ -30,7 +36,12 @@ class World():
     #--------- area manipulation ---------#
 
     def add_area(self, x, y):
-        """ Generate a new area at the given coordinates. """
+        """
+        Generate a new area at the given coordinates.
+
+        :param int x: X coordinate of the new area.
+        :param int y: Y coordinate of the new area.
+        """
         if (x, y) in self.area_headers:
             return
         area = ah.area_header_from_scratch(self.data, None, aconst.ArcanumLevel.ZERO)
@@ -41,6 +52,9 @@ class World():
         """
         Generate buffer areas around given coordinates, that is, add new areas
         in a rectangle centered around them.
+
+        :param int around_x: X coordinate of the center of the buffer.
+        :param int around_y: Y coordinate of the center of the buffer.
         """
         for x in range(around_x - MIN_AREA_BUFFER, around_x + MIN_AREA_BUFFER):
             for y in range(around_y - MIN_AREA_BUFFER, around_y + MIN_AREA_BUFFER):
@@ -51,7 +65,13 @@ class World():
 
 
 def world_from_save(gamedata, save):
-    """ Generate a world from a YAML dict. """
+    """
+    Generate a world from a save.
+
+    :param gamedata: game data used to repopulate the world with things.
+    :type gamedata: sw.gamedata.GameData
+    :param dict save: saved info about the world.
+    """
     raise NotImplementedError
 
 
@@ -59,7 +79,12 @@ def world_from_save(gamedata, save):
 
 
 def world_from_scratch(gamedata):
-    """ Generate a world from scratch. """
+    """
+    Generate a world from scratch.
+
+    :param gamedata: game data used to populate the world.
+    :type gamedata: sw.gamedata.GameData
+    """
     res = World(gamedata)
     res.name = "TEMP WORLD NAME"
     res.generate_area_buffer(0, 0)
