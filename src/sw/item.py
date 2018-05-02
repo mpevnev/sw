@@ -9,6 +9,9 @@ from sw.const.entity import CollisionGroup
 from sw.entity import Entity
 
 
+#--------- base class ---------#
+
+
 class Item(Entity):
     """ A thing that can be worn, picked up, dropped, used, etc... """
 
@@ -18,6 +21,7 @@ class Item(Entity):
         self.carrying_slot = None
         self.cursed = False
         self.known_cursed = False
+        self.owner = None
         self.wearing_slot = None
         self.add_collision_group(CollisionGroup.WALL)
 
@@ -40,12 +44,10 @@ class Item(Entity):
 
     #--------- interactions ---------#
 
-    def drop(self, by, state, area, ui, force=False):
+    def drop(self, state, area, ui, force=False):
         """
         Try to drop the item.
 
-        :param by: the character that drops the item.
-        :type by: sw.character.Character
         :param state: a global state that might affect or get affected by the
         drop.
         :type state: sw.gamestate.GameState
@@ -62,12 +64,10 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def equip(self, by, state, area, ui, force=False):
+    def equip(self, state, area, ui, force=False):
         """
         Try to equip the item.
 
-        :param by: the character that equips the item.
-        :type by: sw.character.Character
         :param state: a global state that might affect or get affected by the
         donning.
         :type state: sw.gamestate.GameState
@@ -104,12 +104,10 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def use_on_doodad(self, by, target, state, area, ui, force=False):
+    def use_on_doodad(self, target, state, area, ui, force=False):
         """
         Try to use the item on a doodad.
 
-        :param by: the character that uses the item.
-        :type by: sw.character.Character
         :param target: a target doodad.
         :type target: Item
         :param state: a global state that might affect or get affected by the
@@ -127,12 +125,10 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def use_on_item(self, by, target, state, area, ui, force=False):
+    def use_on_item(self, target, state, area, ui, force=False):
         """
         Try to use the item on another item.
 
-        :param by: the character that uses the item.
-        :type by: sw.character.Character
         :param target: a target item.
         :type target: Item
         :param state: a global state that might affect or get affected by the
@@ -150,12 +146,10 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def use_on_monster(self, by, target, state, area, ui, force=False):
+    def use_on_monster(self, target, state, area, ui, force=False):
         """
         Try to use the item on a monster.
 
-        :param by: the character that uses the item.
-        :type by: sw.character.Character
         :param target: a target monster.
         :type target: Item
         :param state: a global state that might affect or get affected by the
@@ -173,12 +167,10 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def use_on_player(self, by, state, area, ui, force=False):
+    def use_on_player(self, state, area, ui, force=False):
         """
         Try to use the item on a player.
 
-        :param by: the character that uses the item.
-        :type by: sw.character.Character
         :param state: a global state that might affect or get affected by the
         use.
         :type state: sw.gamestate.GameState
@@ -194,12 +186,10 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def use_on_position(self, by, x, y, state, area, ui, force=False):
+    def use_on_position(self, x, y, state, area, ui, force=False):
         """
         Try to use the item on a position.
 
-        :param by: the character that uses the item.
-        :type by: sw.character.Character
         :param int x: X coordinate of the target position.
         :param int y: Y coordinate of the target position.
         :param state: a global state that might affect or get affected by the
