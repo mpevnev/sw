@@ -39,9 +39,17 @@ class MainDungeon(mofloc.Flow):
         Figure out the starting position of the player and then proceed as
         usual.
         """
+        self.area.tick(self.state, self.ui, 0)
+        self.state.player.tick(self.state, self.area, self.ui)
+        # TEMP DEBUG
+        import sw.monster as monster
         self.area.randomly_place_player(self.state.player)
-        self.area.update_visibility_matrix(self.state.player)
-
+        self.area.update_visibility_matrix()
+        recipe = self.state.data.monster_recipe_by_id("debug melee zombie")
+        mon = monster.monster_from_recipe(recipe, self.state.data)
+        mon.health = 1
+        self.mon = mon
+        self.area.add_entity(mon, 3, 3)
 
     #--------- event handlers ---------#
 
@@ -72,4 +80,8 @@ class MainDungeon(mofloc.Flow):
     def tick(self):
         """ Process a single game turn. """
         self.state.turn += 1
-        self.area.tick(self.state, self.state.player, self.ui)
+        self.state.player.tick(self.state, self.area, self.ui)
+        self.area.tick(self.state, self.ui, 0)
+        # TEMP DEBUG
+        self.mon.health -= 1
+        self.state.player.health += 1

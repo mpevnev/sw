@@ -109,7 +109,7 @@ class Character(Entity, Modifiable):
     #--------- other logic ---------#
 
     def tick(self, state, area, ui):
-        self.update_totals(state, area, ui)
+        self.update_totals(state, area)
         for mod in self.innate_modifiers:
             mod.tick(self, state, area, ui)
         remaining_mods = deque()

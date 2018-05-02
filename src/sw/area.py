@@ -400,9 +400,10 @@ class Area(HasDoodads, HasItems, HasMonsters):
         :param player: the player character to be placed.
         :type player: sw.player.Player
         """
+        method = self.add_entity if self.player is None else self.place_entity
         x = rand.randrange(self.width)
         y = rand.randrange(self.height)
-        while not self.place_entity(player, x, y):
+        while not method(player, x, y):
             x = rand.randrange(self.width)
             y = rand.randrange(self.height)
 
@@ -482,7 +483,7 @@ class Area(HasDoodads, HasItems, HasMonsters):
         """
         player = state.player
         for entity in self.entities(True, ignore_player=True):
-            entity.tick(state, self, player, ui)
+            entity.tick(state, self, ui)
         for entity in self.entities(False, ignore_player=True):
             entity.death_action(state, self, ui)
         self.remove_dead_entities()

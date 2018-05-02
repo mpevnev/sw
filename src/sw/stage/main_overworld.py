@@ -34,7 +34,7 @@ class MainOverworld(mofloc.Flow):
 
     def from_worldgen(self):
         """ Print out an introductory message and proceed as normal. """
-        pass
+        self.state.player.update_totals(self.state, None)
 
     #--------- event handlers ---------#
 
