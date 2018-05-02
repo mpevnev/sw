@@ -17,7 +17,7 @@ class MainDungeon(flow.SWFlow):
         super().__init__(ui_spawner)
         self.state = state
         self.state.area = area
-        self.state.ui = ui_spawner.spawn_main_dungeon(state, area)
+        self.state.ui = ui_spawner.spawn_main_dungeon(state)
         self.register_entry_point(FROM_OVERWORLD, self.from_overworld)
         self.register_event_source(self.state.ui)
         self.register_event_handler(self.ascend)
