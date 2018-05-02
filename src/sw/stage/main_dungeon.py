@@ -3,22 +3,19 @@ Main dungeon stage (well, and non-dungeon area exploration too).
 """
 
 
-import mofloc
-
-
+import sw.flow as flow
 import sw.event.main_dungeon as event
 
 
 FROM_OVERWORLD = "from overworld"
 
 
-class MainDungeon(mofloc.Flow):
+class MainDungeon(flow.SWFlow):
     """ Main dungeon handler. """
 
     def __init__(self, state, ui_spawner, area):
-        super().__init__()
+        super().__init__(ui_spawner)
         self.state = state
-        self.ui_spawner = ui_spawner
         self.area = area
         self.ui = ui_spawner.spawn_main_dungeon(state, area)
         self.register_entry_point(FROM_OVERWORLD, self.from_overworld)

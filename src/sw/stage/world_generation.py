@@ -3,9 +3,7 @@ World generation stage.
 """
 
 
-import mofloc
-
-
+import sw.flow as flow
 import sw.gamestate as state
 import sw.world as world
 
@@ -13,13 +11,12 @@ import sw.world as world
 ENTRY_POINT = "the only"
 
 
-class WorldGeneration(mofloc.Flow):
+class WorldGeneration(flow.SWFlow):
     """ World generation control flow. """
 
     def __init__(self, data, ui_spawner, player):
-        super().__init__()
+        super().__init__(ui_spawner)
         self.data = data
-        self.ui_spawner = ui_spawner
         self.player = player
         self.register_entry_point(ENTRY_POINT, self.generate_world)
 
@@ -33,4 +30,4 @@ class WorldGeneration(mofloc.Flow):
         new_world = world.world_from_scratch(self.data)
         fullstate = state.game_state_from_scratch(self.data, self.player, new_world)
         new_flow = mo.MainOverworld(fullstate, self.ui_spawner)
-        raise mofloc.ChangeFlow(new_flow, mo.FROM_WORLDGEN)
+        raise flow.ChangeFlow(new_flow, mo.FROM_WORLDGEN)

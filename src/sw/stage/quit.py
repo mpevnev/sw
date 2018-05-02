@@ -4,21 +4,20 @@ Game finalization stage.
 Responsible for disposing of the UI.
 """
 
-import mofloc
+import sw.flow as flow
 
 
 ENTRY_POINT = "the only"
 
 
-class Quit(mofloc.Flow):
+class Quit(flow.SWFlow):
     """ Game shutdown. """
 
     def __init__(self, ui_spawner):
-        super().__init__()
-        self.ui = ui_spawner
+        super().__init__(ui_spawner)
         self.register_entry_point(ENTRY_POINT, self.quit)
 
     def quit(self):
         """ Quit the game. """
-        self.ui.finish()
-        raise mofloc.EndFlow()
+        self.ui_spawner.finish()
+        raise flow.EndFlow()

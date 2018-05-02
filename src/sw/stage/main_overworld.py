@@ -3,22 +3,19 @@ Main overworld stage.
 """
 
 
-import mofloc
-
-
 import sw.event.main_overworld as event
+import sw.flow as flow
 
 
 FROM_WORLDGEN = "from worldgen"
 
 
-class MainOverworld(mofloc.Flow):
+class MainOverworld(flow.SWFlow):
     """ Main overworld handler. """
 
     def __init__(self, state, ui_spawner):
-        super().__init__()
+        super().__init__(ui_spawner)
         self.state = state
-        self.ui_spawner = ui_spawner
         self.ui = ui_spawner.spawn_main_overworld_window(state)
         self.register_entry_point(FROM_WORLDGEN, self.from_worldgen)
         self.register_preevent_action(self.draw)
@@ -46,7 +43,7 @@ class MainOverworld(mofloc.Flow):
         header = self.state.current_overworld_header()
         area = header.load_or_generate_area()
         new_flow = md.MainDungeon(self.state, self.ui_spawner, area)
-        raise mofloc.ChangeFlow(new_flow, md.FROM_OVERWORLD)
+        raise flow.ChangeFlow(new_flow, md.FROM_OVERWORLD)
 
     def move(self, ev):
         """ Handle 'move' command. """

@@ -3,22 +3,19 @@ Main menu module.
 """
 
 
-import mofloc
-
-
+import sw.flow as flow
 import sw.event.main_menu as event
 
 
 ENTRY_POINT = "the-only"
 
 
-class MainMenu(mofloc.Flow):
+class MainMenu(flow.SWFlow):
     """ Main menu control flow. """
 
     def __init__(self, data, ui_spawner):
-        super().__init__()
+        super().__init__(ui_spawner)
         self.data = data
-        self.ui_spawner = ui_spawner
         self.ui = ui_spawner.spawn_main_menu(data)
         self.register_entry_point(ENTRY_POINT, self.run_menu)
         self.register_event_source(self.ui)
@@ -42,7 +39,7 @@ class MainMenu(mofloc.Flow):
             return False
         import sw.stage.char_creation as char_stage
         new_flow = char_stage.NameInput(self.data, self.ui_spawner)
-        raise mofloc.ChangeFlow(new_flow, char_stage.NAME_INPUT_ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, char_stage.NAME_INPUT_ENTRY_POINT)
 
     def quit(self, ev):
         """ Process a 'quit' event. """
@@ -50,4 +47,4 @@ class MainMenu(mofloc.Flow):
             return False
         import sw.stage.quit as quit_stage
         new_flow = quit_stage.Quit(self.ui_spawner)
-        raise mofloc.ChangeFlow(new_flow, quit_stage.ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, quit_stage.ENTRY_POINT)

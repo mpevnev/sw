@@ -3,9 +3,7 @@ Character creation module.
 """
 
 
-import mofloc
-
-
+import sw.flow as flow
 import sw.event.background_selection as bs_event
 import sw.event.char_name_prompt as cnp_event
 import sw.event.species_selection as ss_event
@@ -18,13 +16,12 @@ BG_SEL_ENTRY_POINT = "the only"
 FINAL_ENTRY_POINT = "the only"
 
 
-class NameInput(mofloc.Flow):
+class NameInput(flow.SWFlow):
     """ Name input control flow. """
 
     def __init__(self, data, spawner):
-        super().__init__()
+        super().__init__(spawner)
         self.data = data
-        self.ui_spawner = spawner
         self.ui = spawner.spawn_char_name_prompt()
         self.register_entry_point(NAME_INPUT_ENTRY_POINT, self.run_prompt)
         self.register_event_source(self.ui)
@@ -46,16 +43,15 @@ class NameInput(mofloc.Flow):
         if ev[0] != cnp_event.NAME_ENTERED:
             return False
         new_flow = SpeciesSelection(self.data, self.ui_spawner, ev[1])
-        raise mofloc.ChangeFlow(new_flow, BG_SEL_ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, BG_SEL_ENTRY_POINT)
 
 
-class SpeciesSelection(mofloc.Flow):
+class SpeciesSelection(flow.SWFlow):
     """ Species selection control flow. """
 
     def __init__(self, data, spawner, name):
-        super().__init__()
+        super().__init__(spawner)
         self.data = data
-        self.ui_spawner = spawner
         self.ui = spawner.spawn_species_selection(data)
         self.name = name
         self.register_entry_point(SPECIES_SEL_ENTRY_POINT, self.run_menu)
@@ -80,23 +76,22 @@ class SpeciesSelection(mofloc.Flow):
             return False
         import sw.stage.main_menu as mm
         new_flow = mm.MainMenu(self.data, self.ui_spawner)
-        raise mofloc.ChangeFlow(new_flow, mm.ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, mm.ENTRY_POINT)
 
     def choose_species(self, ev):
         """ Process a 'choose species' event. """
         if ev[0] != ss_event.CHOOSE_SPECIES:
             return False
         new_flow = BackgroundSelection(self.data, self.ui_spawner, self.name, ev[1])
-        raise mofloc.ChangeFlow(new_flow, BG_SEL_ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, BG_SEL_ENTRY_POINT)
 
 
-class BackgroundSelection(mofloc.Flow):
+class BackgroundSelection(flow.SWFlow):
     """ Background selection control flow. """
 
     def __init__(self, data, spawner, name, species):
-        super().__init__()
+        super().__init__(spawner)
         self.data = data
-        self.ui_spawner = spawner
         self.ui = spawner.spawn_background_selection(data, species)
         self.name = name
         self.species = species
@@ -124,30 +119,29 @@ class BackgroundSelection(mofloc.Flow):
             return False
         import sw.stage.main_menu as mm
         new_flow = mm.MainMenu(self.data, self.ui_spawner)
-        raise mofloc.ChangeFlow(new_flow, mm.ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, mm.ENTRY_POINT)
 
     def back(self, ev):
         """ Process 'return to species selection' event. """
         if ev[0] != bs_event.BACK_TO_SPECIES:
             return False
         new_flow = SpeciesSelection(self.data, self.ui_spawner, self.name)
-        raise mofloc.ChangeFlow(new_flow, SPECIES_SEL_ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, SPECIES_SEL_ENTRY_POINT)
 
     def choose_background(self, ev):
         """ Process a 'background chosen' event. """
         if ev[0] != bs_event.CHOOSE_BACKGROUND:
             return False
         new_flow = PlayerCreator(self.data, self.ui_spawner, self.name, self.species, ev[1])
-        raise mofloc.ChangeFlow(new_flow, FINAL_ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, FINAL_ENTRY_POINT)
 
 
-class PlayerCreator(mofloc.Flow):
+class PlayerCreator(flow.SWFlow):
     """ The final flow that will create the player character. """
 
     def __init__(self, data, spawner, name, species, background):
-        super().__init__()
+        super().__init__(spawner)
         self.data = data
-        self.ui_spawner = spawner
         self.name = name
         self.species = species
         self.background = background
@@ -160,4 +154,4 @@ class PlayerCreator(mofloc.Flow):
         import sw.stage.world_generation as worldgen
         player = player_from_scratch(self.name, self.species, self.background)
         new_flow = worldgen.WorldGeneration(self.data, self.ui_spawner, player)
-        raise mofloc.ChangeFlow(new_flow, worldgen.ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, worldgen.ENTRY_POINT)
