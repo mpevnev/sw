@@ -17,7 +17,8 @@ class SWFlow(Flow):
         super().__init__()
         self.ui_spawner = ui_spawner
         self.ui = None
-        self.register_exception_action(Exception, self.clean_ui)
+        self.register_exception_action((Exception, KeyboardInterrupt), self.clean_ui)
+        self.register_preevent_action(self.draw)
 
     def clean_ui(self, exception):
         """ Clean up the UI. """
