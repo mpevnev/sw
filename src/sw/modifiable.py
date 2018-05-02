@@ -50,11 +50,11 @@ class Modifiable(HasSkills, HasStats):
         :return: a list with all modifiers sorted by their priority.
         :rtype: list[sw.modifier.Modifier]
         """
-        # TODO: sort innate and temp modifiers separately
         if self._sorted_modifiers is not None:
             return self._sorted_modifiers
-        res = sorted(chain(self.innate_modifiers, self.temp_modifiers),
-                     key=lambda mod: mod.priority)
+        res = chain(sorted(self.innate_modifiers, key=lambda mod: mod.priority),
+                    sorted(self.temp_modifiers, key=lambda mod: mod.priority))
+        res = list(res)
         self._sorted_modifiers = res
         return res
 
@@ -102,7 +102,7 @@ class Modifiable(HasSkills, HasStats):
 
     #--------- application of modifiers ---------#
 
-    def update_totals(self, state, area, ui):
+    def update_totals(self, state, area):
         """
         Update total statistics and skills of the modifiable.
 
@@ -110,24 +110,22 @@ class Modifiable(HasSkills, HasStats):
         :type state: sw.gamestate.GameState
         :param area: the area containing the modifiable.
         :type area: sw.area.Area
-        :param ui: TEMP REMOVE
         """
-        # TODO: remove 'ui' argument. Totals update is a strictly technical matter
-        self._update_skill_totals(state, area, ui)
-        self._update_primary_totals(state, area, ui)
-        self._update_secondary_totals(state, area, ui)
+        self._update_skill_totals(state, area)
+        self._update_primary_totals(state, area)
+        self._update_secondary_totals(state, area)
 
-    def _update_skill_totals(self, state, area, ui):
+    def _update_skill_totals(self, state, area):
         self.total_skills = self.base_skills.copy()
         for mod in self.all_modifiers():
             mod.apply_skills(self, state, area, ui)
 
-    def _update_primary_totals(self, state, area, ui):
+    def _update_primary_totals(self, state, area):
         self.total_primary = self.base_primary.copy()
         for mod in self.all_modifiers():
             mod.apply_primary(self, state, area, ui)
 
-    def _update_secondary_totals(self, state, area, ui):
+    def _update_secondary_totals(self, state, area):
         self.total_secondary = self.base_secondary.copy()
         for mod in self.all_modifiers():
             mod.apply_secondary(self, state, area, ui)
