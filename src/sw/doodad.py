@@ -100,7 +100,7 @@ class Doodad(Entity):
 
     #--------- other logic ---------#
 
-    def tick(self, state, area, player, ui):
+    def tick(self, state, area, ui):
         pass
 
 
@@ -136,9 +136,9 @@ class Wall(Doodad):
 def doodad_from_recipe(recipe):
     """
     Create a doodad from a recipe.
-    
+
     :param dict recipe: the template to base the new doodad on.
-    
+
     :return: the freshly created doodad.
     :rtype: Doodad
     """
