@@ -38,6 +38,22 @@ class Area():
 
     #--------- doodads manipulation ---------#
 
+    def all_doodads(self, living_flag):
+        """
+        Return a list with all doodads with specified living flag.
+
+        :param bool living_flag: if set to true, only alive doodads will be
+        included, otherwise only dead doodads will be.
+
+        :return: a list with all doodads (including hidden) in the area.
+        :rtype: list[sw.doodad.Doodad]
+        """
+        return self.entities(living_flag,
+                             ignore_doodads=False,
+                             ignore_items=True,
+                             ignore_monsters=True,
+                             ignore_player=True)
+
     def doodads_at(self, at_x, at_y, living_flag):
         """
         Return a list with all doodads with specified living flag at the given
@@ -271,6 +287,22 @@ class Area():
 
     #--------- items manipulation ---------#
 
+    def all_items(self, living_flag):
+        """
+        Return a list with all items with specified living flag.
+
+        :param bool living_flag: if set to true, only alive items will be
+        included, otherwise only dead items will be.
+
+        :return: a list with all items (including hidden) in the area.
+        :rtype: list[sw.item.Item]
+        """
+        return self.entities(living_flag,
+                             ignore_doodads=True,
+                             ignore_items=False,
+                             ignore_monsters=True,
+                             ignore_player=True)
+
     def items_at(self, at_x, at_y, living_flag):
         """
         Return a list with all items with specified living flag at the given
@@ -300,6 +332,22 @@ class Area():
         :rtype: list[sw.monster.Monster]
         """
         return [m for m in self.monsters if m.hidden()]
+
+    def all_monsters(self, living_flag):
+        """
+        Return a list with all monsters with specified living flag.
+
+        :param bool living_flag: if set to true, only alive monsters will be
+        included, otherwise only dead monsters will be.
+
+        :return: a list with all monsters (including hidden) in the area.
+        :rtype: list[sw.monster.Monster]
+        """
+        return self.entities(living_flag,
+                             ignore_doodads=True,
+                             ignore_items=True,
+                             ignore_monsters=False,
+                             ignore_player=True)
 
     def monsters_at(self, at_x, at_y, living_flag):
         """
@@ -368,28 +416,18 @@ class Area():
         self.visibility_matrix = {(x, y): VisibilityInfo(const.VisibilityLevel.NEVER_SEEN)
                                   for (x, y) in self.all_coordinates()}
 
-    def update_visibility_matrix(self, for_player):
+    def update_visibility_matrix(self):
         """
         Update the visibility matrix of this area as seen by the given player.
         """
-        # TODO: scrap 'for_player' argument, then update the docstring.
         for (x, y), info in self.visibility_matrix.items():
-            if self.can_see(for_player, x, y):
+            if self.can_see(self.player, x, y):
                 info.levels = {const.VisibilityLevel.VISIBLE}
-                info.remembered_doodads = self.entities_at(
-                    x, y, True,
-                    ignore_player=True, ignore_items=True, ignore_monsters=True)
-                info.remembered_items = self.entities_at(
-                    x, y, True,
-                    ignore_player=True, ignore_doodads=True, ignore_monsters=True)
-                info.remembered_monsters = self.entities_at(
-                    x, y, True,
-                    ignore_player=True, ignore_doodads=True, ignore_items=True)
+                info.remembered_doodads = self.doodads_at(x, y, True)
+                info.remembered_items = self.items_at(x, y, True)
+                info.remembered_monsters = self.monsters_at(x, y, True)
             else:
-                try:
-                    info.levels.remove(const.VisibilityLevel.VISIBLE)
-                except KeyError:
-                    pass
+                info.levels.discard(const.VisibilityLevel.VISIBLE)
 
     #--------- other game logic ---------#
 
@@ -404,9 +442,9 @@ class Area():
         :param int actions: the amount of action points to be added to the
         entities' action point pools.
         """
-        # TODO: introduce 'all_monsters' method
-        for monster in self.entities(True, ignore_doodads=True, ignore_items=True,
-                                     ignore_monsters=False, ignore_player=True):
+        for monster in self.all_monsters(True):
+            if monster.hidden():
+                continue
             monster.action_points += actions
             task = monster.ai.evaluate(monster, state, self)
             monster.perform_task(task, state, self, ui)
