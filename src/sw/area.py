@@ -303,7 +303,8 @@ class Area(HasDoodads, HasItems, HasMonsters):
         doodads = [] if ignore_doodads else self.doodads
         items = [] if ignore_items else self.items
         monsters = [] if ignore_monsters else self.monsters
-        return list(chain(player, doodads, items, monsters))
+        cond = lambda e: living_flag and e.alive() or not living_flag and not e.alive()
+        return [e for e in chain(player, doodads, items, monsters) if cond(e)]
 
     def entities_at(self, x, y, living_flag, ignore_doodads=False, ignore_items=False,
                     ignore_monsters=False, ignore_player=False):
@@ -330,7 +331,9 @@ class Area(HasDoodads, HasItems, HasMonsters):
         doodads = [] if ignore_doodads else self.doodads
         items = [] if ignore_items else self.items
         monsters = [] if ignore_monsters else self.monsters
-        cond = lambda e: living_flag and e.alive() or not living_flag and not e.alive()
+        pos = (x, y)
+        cond = lambda e: ((living_flag and e.alive() or not living_flag and not e.alive())
+                          and (pos == e.position))
         return [e for e in chain(player, doodads, items, monsters) if cond(e)]
 
     def place_entity(self, entity, at_x, at_y):
