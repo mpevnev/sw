@@ -30,16 +30,43 @@ class Modifier():
         self.priority = 0
         self.tick_message = None
 
-    def apply_skills(self, attached_to, state, area, ui):
-        """ Apply changes to the skills. """
+    def apply_skills(self, attached_to, state, area):
+        """
+        Apply changes to skills. 
+        
+        :param attached_to: a thing to apply the changes of this modifier to.
+        :type attached_to: sw.modifiable.Modifiable
+        :param state: a global environment.
+        :type state: sw.gamestate.GameState
+        :type area: the area the modifiable thing is in.
+        :param area: sw.area.Area
+        """
         pass
 
-    def apply_primary(self, attached_to, state, area, ui):
-        """ Apply changes to the primary statistics. """
+    def apply_primary(self, attached_to, state, area):
+        """
+        Apply changes to the primary statistics.
+        
+        :param attached_to: a thing to apply the changes of this modifier to.
+        :type attached_to: sw.modifiable.Modifiable
+        :param state: a global environment.
+        :type state: sw.gamestate.GameState
+        :type area: the area the modifiable thing is in.
+        :param area: sw.area.Area
+        """
         pass
 
-    def apply_secondary(self, attached_to, state, area, ui):
-        """ Apply changes to the secondary statistics. """
+    def apply_secondary(self, attached_to, state, area):
+        """
+        Apply changes to the secondary statistics.
+        
+        :param attached_to: a thing to apply the changes of this modifier to.
+        :type attached_to: sw.modifiable.Modifiable
+        :param state: a global environment.
+        :type state: sw.gamestate.GameState
+        :type area: the area the modifiable thing is in.
+        :param area: sw.area.Area
+        """
         pass
 
     def expire(self, attached_to, state, area, ui):
@@ -86,11 +113,11 @@ class FlatStatIncrease(Modifier):
         self.which = None
         self.which_group = None
 
-    def apply_primary(self, attached_to, state, area, ui):
+    def apply_primary(self, attached_to, state, area):
         if self.which_group == stat.StatGroup.PRIMARY:
             attached_to.total_primary[self.which] += self.amount
 
-    def apply_secondary(self, attached_to, state, area, ui):
+    def apply_secondary(self, attached_to, state, area):
         if self.which_group == stat.StatGroup.SECONDARY:
             attached_to.total_secondary[self.which] += self.amount
 

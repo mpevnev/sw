@@ -118,14 +118,14 @@ class Modifiable(HasSkills, HasStats):
     def _update_skill_totals(self, state, area):
         self.total_skills = self.base_skills.copy()
         for mod in self.all_modifiers():
-            mod.apply_skills(self, state, area, ui)
+            mod.apply_skills(self, state, area)
 
     def _update_primary_totals(self, state, area):
         self.total_primary = self.base_primary.copy()
         for mod in self.all_modifiers():
-            mod.apply_primary(self, state, area, ui)
+            mod.apply_primary(self, state, area)
 
     def _update_secondary_totals(self, state, area):
         self.total_secondary = self.base_secondary.copy()
         for mod in self.all_modifiers():
-            mod.apply_secondary(self, state, area, ui)
+            mod.apply_secondary(self, state, area)
