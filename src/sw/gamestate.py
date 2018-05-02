@@ -51,25 +51,21 @@ def game_state_from_save(gamedata, save):
 #--------- creating game state from bottom up ---------#
 
 
-def game_state_from_scratch(gamedata, player, world):
+def game_state_from_scratch(gamedata):
     """
     Create a GameState instance from separate parts.
 
     :param gamedata: game data used to populate the state with game objects.
     :type gamedata: sw.gamedata.GameData
-    :param player: previously created player object.
-    :type player: sw.player.Player
-    :param world: previously created world object.
-    :type world: sw.world.World
 
     :return: new game state.
     :rtype: GameState
     """
     res = GameState()
     res.data = gamedata
-    res.player = player
-    res.world = world
+    res.messages = deque(maxlen=gamedata.message_limit)
+    res.player = None
     res.player_position = (0, 0)
     res.turn = 0
-    res.messages = deque(maxlen=gamedata.message_limit)
+    res.world = None
     return res

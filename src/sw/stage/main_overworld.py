@@ -14,11 +14,8 @@ class MainOverworld(flow.SWFlow):
     """ Main overworld handler. """
 
     def __init__(self, state, ui_spawner):
-        super().__init__(ui_spawner)
-        self.state = state
-        self.state.ui = ui_spawner.spawn_main_overworld_window(state)
+        super().__init__(state, ui_spawner, ui_spawner.spawn_main_overworld_window(state))
         self.register_entry_point(FROM_WORLDGEN, self.from_worldgen)
-        self.register_event_source(self.state.ui)
         self.register_event_handler(self.descend)
         self.register_event_handler(self.move)
 
@@ -37,8 +34,8 @@ class MainOverworld(flow.SWFlow):
         import sw.stage.main_dungeon as md
         header = self.state.current_overworld_header()
         area = header.load_or_generate_area()
-        new_flow = md.MainDungeon(self.state, self.ui_spawner, area)
-        raise flow.ChangeFlow(new_flow, md.FROM_OVERWORLD)
+        new_flow = md.MainDungeon(self.state, self.ui_spawner)
+        raise flow.ChangeFlow(new_flow, md.FROM_OVERWORLD, area)
 
     def move(self, ev):
         """ Handle 'move' command. """

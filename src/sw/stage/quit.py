@@ -14,7 +14,7 @@ class Quit(flow.SWFlow):
     """ Game shutdown. """
 
     def __init__(self, ui_spawner):
-        super().__init__(ui_spawner)
+        super().__init__(None, ui_spawner, None)
         self.register_entry_point(ENTRY_POINT, self.quit)
 
     def quit(self):

@@ -13,24 +13,21 @@ FROM_OVERWORLD = "from overworld"
 class MainDungeon(flow.SWFlow):
     """ Main dungeon handler. """
 
-    def __init__(self, state, ui_spawner, area):
-        super().__init__(ui_spawner)
-        self.state = state
-        self.state.area = area
-        self.state.ui = ui_spawner.spawn_main_dungeon(state)
+    def __init__(self, state, ui_spawner):
+        super().__init__(state, ui_spawner, ui_spawner.spawn_main_dungeon(state))
         self.register_entry_point(FROM_OVERWORLD, self.from_overworld)
-        self.register_event_source(self.state.ui)
         self.register_event_handler(self.ascend)
         self.register_event_handler(self.descend)
         self.register_event_handler(self.move)
 
     #--------- entry points ---------#
 
-    def from_overworld(self):
+    def from_overworld(self, area):
         """
         Figure out the starting position of the player and then proceed as
         usual.
         """
+        self.state.area = area
         self.state.area.tick(self.state, 0)
         self.state.player.tick(self.state)
         # TEMP DEBUG

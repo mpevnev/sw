@@ -13,12 +13,15 @@ class SWFlow(Flow):
     A UI-spawner-aware flow.
     """
 
-    def __init__(self, ui_spawner):
+    def __init__(self, state, ui_spawner, ui):
         super().__init__()
         self.ui_spawner = ui_spawner
-        self.ui = None
+        self.ui = ui
+        self.state = state
         self.register_exception_action((Exception, KeyboardInterrupt), self.clean_ui)
-        self.register_preevent_action(self.draw)
+        if ui is not None:
+            self.register_preevent_action(self.draw)
+            self.register_event_source(ui)
 
     def clean_ui(self, exception):
         """ Clean up the UI. """
@@ -26,7 +29,4 @@ class SWFlow(Flow):
 
     def draw(self):
         """ Draw the UI. """
-        try:
-            self.ui.draw()
-        except AttributeError:
-            self.state.ui.draw()
+        self.ui.draw()
