@@ -27,6 +27,7 @@ class MainDungeon(flow.SWFlow):
         Figure out the starting position of the player and then proceed as
         usual.
         """
+        self.state.ui = self.ui
         self.state.area = area
         self.state.area.tick(self.state, 0)
         self.state.player.tick(self.state)

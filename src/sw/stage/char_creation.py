@@ -26,7 +26,7 @@ class NameInput(flow.SWFlow):
 
     def run_prompt(self):
         """ A stub, main processing is done in event handlers. """
-        pass
+        self.state.ui = self.ui
 
     #--------- event handlers ---------#
 
@@ -50,7 +50,7 @@ class SpeciesSelection(flow.SWFlow):
 
     def run_menu(self):
         """ A stub. """
-        pass
+        self.state.ui = self.ui
 
     #--------- event handlers ---------#
 
@@ -84,7 +84,7 @@ class BackgroundSelection(flow.SWFlow):
 
     def run_menu(self):
         """ A stub, main processing is done in event handlers. """
-        pass
+        self.state.ui = self.ui
 
     #--------- event handlers ---------#
 
@@ -126,6 +126,7 @@ class PlayerCreator(flow.SWFlow):
         Create the player character and transfer control to the world creator.
         """
         import sw.stage.world_generation as worldgen
+        self.state.ui = None
         player = player_from_scratch(self.name, self.species, self.background)
         self.state.player = player
         new_flow = worldgen.WorldGeneration(self.state, self.ui_spawner)

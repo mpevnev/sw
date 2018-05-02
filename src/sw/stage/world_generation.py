@@ -25,6 +25,7 @@ class WorldGeneration(flow.SWFlow):
         Generate a world and then transfer control to the main game flow.
         """
         import sw.stage.main_overworld as mo
+        self.state.ui = None
         self.state.world = world.world_from_scratch(self.state.data)
         new_flow = mo.MainOverworld(self.state, self.ui_spawner)
         raise flow.ChangeFlow(new_flow, mo.FROM_WORLDGEN)

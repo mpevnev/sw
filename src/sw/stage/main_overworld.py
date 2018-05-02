@@ -24,6 +24,7 @@ class MainOverworld(flow.SWFlow):
     def from_worldgen(self):
         """ Print out an introductory message and proceed as normal. """
         # TODO: introductory message
+        self.state.ui = self.ui
         player = self.state.player
         player.update_totals(self.state)
         player.health = player.max_health

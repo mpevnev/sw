@@ -21,7 +21,7 @@ class MainMenu(flow.SWFlow):
 
     def run_menu(self):
         """ A stub, main processing is done in event handlers. """
-        pass
+        self.state.ui = self.ui
 
     #--------- event handlers ---------#
 
