@@ -14,29 +14,14 @@ import sw.const.area as const
 from sw.doodad import doodad_from_recipe
 
 
-#--------- main class ---------#
+#--------- parent classes ---------#
 
 
-class Area():
-    """ A container of game entities and geometry driver. """
+class HasDoodads():
+    """ A container for doodads. """
 
-    def __init__(self, data):
-        """
-        Initialize an Area object.
-
-        :param data: a game data object used to populate the area with things.
-        :type data: sw.gamedata.GameData
-        """
-        self.data = data
-        self.width = None
-        self.height = None
-        self.player = None
+    def __init__(self):
         self.doodads = deque()
-        self.items = deque()
-        self.monsters = deque()
-        self.visibility_matrix = {}
-
-    #--------- doodads manipulation ---------#
 
     def all_doodads(self, living_flag):
         """
@@ -48,11 +33,9 @@ class Area():
         :return: a list with all doodads (including hidden) in the area.
         :rtype: list[sw.doodad.Doodad]
         """
-        return self.entities(living_flag,
-                             ignore_doodads=False,
-                             ignore_items=True,
-                             ignore_monsters=True,
-                             ignore_player=True)
+        cond = lambda d: ((living_flag and d.alive())
+                          or (not living_flag and not d.alive()))
+        return [d for d in self.doodads if cond(d)]
 
     def doodads_at(self, at_x, at_y, living_flag):
         """
@@ -69,11 +52,136 @@ class Area():
         :return: a list of doodads at the given position.
         :rtype: list[sw.doodad.Doodad]
         """
-        return self.entities_at(at_x, at_y, living_flag,
-                                ignore_doodads=False,
-                                ignore_items=True,
-                                ignore_monsters=True,
-                                ignore_player=True)
+        pos = (at_x, at_y)
+        cond = lambda d: ((living_flag and d.alive())
+                          or (not living_flag and not d.alive()))
+        return [d for d in self.doodads if cond(d) and d.position == pos]
+
+    def hidden_doodads(self):
+        """
+        :return: a list of hidden doodads.
+        :rtype: list[sw.doodad.Doodad]
+        """
+        return [d for d in self.doodads if d.hidden()]
+
+
+class HasItems():
+    """ A container for items. """
+
+    def __init__(self):
+        self.items = deque()
+
+    def all_items(self, living_flag):
+        """
+        Return a list with all items with specified living flag.
+
+        :param bool living_flag: if set to true, only alive items will be
+        included, otherwise only dead items will be.
+
+        :return: a list with all items (including hidden) in the area.
+        :rtype: list[sw.item.Item]
+        """
+        cond = lambda it: ((living_flag and it.alive())
+                           or (not living_flag and not it.alive()))
+        return [it for it in self.items if cond(it)]
+
+    def hidden_items(self):
+        """
+        :return: a list with all hidden items.
+        :rtype: list[sw.item.Item]
+        """
+        return [it for it in self.items if it.hidden()]
+
+    def items_at(self, at_x, at_y, living_flag):
+        """
+        Return a list with all items with specified living flag at the given
+        position.
+
+        :param int at_x: the X coordinate of the position to look for items at.
+        :param int at_y: the Y coordinate of the position to look for items at.
+        :param bool living_flag: if set to True, only alive items will be
+        returned, otherwise only dead items will be returned.
+
+        :return: a list of items at the given position.
+        :rtype: list[sw.item.Item]
+        """
+        cond = lambda it: ((living_flag and it.alive())
+                           or (not living_flag and not it.alive()))
+        pos = (at_x, at_y)
+        return [it for it in self.items if cond(it) and it.position == pos]
+
+
+class HasMonsters():
+    """ A container for monsters. """
+
+    def __init__(self):
+        self.monsters = deque()
+
+    def all_monsters(self, living_flag):
+        """
+        Return a list with all monsters with specified living flag.
+
+        :param bool living_flag: if set to true, only alive monsters will be
+        included, otherwise only dead monsters will be.
+
+        :return: a list with all monsters (including hidden) in the area.
+        :rtype: list[sw.monster.Monster]
+        """
+        cond = lambda m: ((living_flag and m.alive())
+                          or (not living_flag and not m.alive()))
+        return [m for m in self.monsters if cond(m)]
+
+    def hidden_monsters(self):
+        """
+        Return a list of all hidden monsters.
+
+        :return: a list of monsters.
+        :rtype: list[sw.monster.Monster]
+        """
+        return [m for m in self.monsters if m.hidden()]
+
+    def monsters_at(self, at_x, at_y, living_flag):
+        """
+        Return a list with all monsters with specified living flag at the given
+        position.
+
+        :param int at_x: the X coordinate of the position to look for monsters
+        at.
+        :param int at_y: the Y coordinate of the position to look for monsters
+        at.
+        :param bool living_flag: if set to True, only alive monsters will be
+        returned, otherwise only dead monsters will be returned.
+
+        :return: a list of monsters at the given position.
+        :rtype: list[sw.monster.Monster]
+        """
+        pos = (at_x, at_y)
+        cond = lambda m: ((living_flag and m.alive())
+                          or (not living_flag and not m.alive()))
+        return [m for m in self.monsters if cond(m) and m.position == pos]
+
+
+#--------- main class ---------#
+
+
+class Area(HasDoodads, HasItems, HasMonsters):
+    """ A container of game entities and geometry driver. """
+
+    def __init__(self, data):
+        """
+        Initialize an Area object.
+
+        :param data: a game data object used to populate the area with things.
+        :type data: sw.gamedata.GameData
+        """
+        HasDoodads.__init__(self)
+        HasItems.__init__(self)
+        HasMonsters.__init__(self)
+        self.data = data
+        self.width = None
+        self.height = None
+        self.player = None
+        self.visibility_matrix = {}
 
     #--------- geometry ---------#
 
@@ -284,91 +392,6 @@ class Area():
         return self.place_entity(entity,
                                  entity.position[0] + dx,
                                  entity.position[1] + dy)
-
-    #--------- items manipulation ---------#
-
-    def all_items(self, living_flag):
-        """
-        Return a list with all items with specified living flag.
-
-        :param bool living_flag: if set to true, only alive items will be
-        included, otherwise only dead items will be.
-
-        :return: a list with all items (including hidden) in the area.
-        :rtype: list[sw.item.Item]
-        """
-        return self.entities(living_flag,
-                             ignore_doodads=True,
-                             ignore_items=False,
-                             ignore_monsters=True,
-                             ignore_player=True)
-
-    def items_at(self, at_x, at_y, living_flag):
-        """
-        Return a list with all items with specified living flag at the given
-        position.
-
-        :param int at_x: the X coordinate of the position to look for items at.
-        :param int at_y: the Y coordinate of the position to look for items at.
-        :param bool living_flag: if set to True, only alive items will be
-        returned, otherwise only dead items will be returned.
-
-        :return: a list of items at the given position.
-        :rtype: list[sw.item.Item]
-        """
-        return self.entities_at(at_x, at_y, living_flag,
-                                ignore_doodads=True,
-                                ignore_items=False,
-                                ignore_monsters=True,
-                                ignore_player=True)
-
-    #--------- monsters manipulation ---------#
-
-    def hidden_monsters(self):
-        """
-        Return a list of all hidden monsters.
-
-        :return: a list of monsters.
-        :rtype: list[sw.monster.Monster]
-        """
-        return [m for m in self.monsters if m.hidden()]
-
-    def all_monsters(self, living_flag):
-        """
-        Return a list with all monsters with specified living flag.
-
-        :param bool living_flag: if set to true, only alive monsters will be
-        included, otherwise only dead monsters will be.
-
-        :return: a list with all monsters (including hidden) in the area.
-        :rtype: list[sw.monster.Monster]
-        """
-        return self.entities(living_flag,
-                             ignore_doodads=True,
-                             ignore_items=True,
-                             ignore_monsters=False,
-                             ignore_player=True)
-
-    def monsters_at(self, at_x, at_y, living_flag):
-        """
-        Return a list with all monsters with specified living flag at the given
-        position.
-
-        :param int at_x: the X coordinate of the position to look for monsters
-        at.
-        :param int at_y: the Y coordinate of the position to look for monsters
-        at.
-        :param bool living_flag: if set to True, only alive monsters will be
-        returned, otherwise only dead monsters will be returned.
-
-        :return: a list of monsters at the given position.
-        :rtype: list[sw.monster.Monster]
-        """
-        return self.entities_at(at_x, at_y, living_flag,
-                                ignore_doodads=True,
-                                ignore_items=True,
-                                ignore_monsters=False,
-                                ignore_player=True)
 
     #--------- player manipulation ---------#
 
