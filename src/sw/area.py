@@ -64,6 +64,10 @@ class HasDoodads():
         """
         return [d for d in self.doodads if d.hidden()]
 
+    def remove_dead_doodads(self):
+        """ Remove all dead doodads. """
+        self.doodads = deque((d for d in self.doodads if d.alive()))
+
 
 class HasItems():
     """ A container for items. """
@@ -109,6 +113,10 @@ class HasItems():
                            or (not living_flag and not it.alive()))
         pos = (at_x, at_y)
         return [it for it in self.items if cond(it) and it.position == pos]
+
+    def remove_dead_items(self):
+        """ Remove all dead items. """
+        self.items = deque((i for i in self.items if i.alive()))
 
 
 class HasMonsters():
@@ -159,6 +167,10 @@ class HasMonsters():
         cond = lambda m: ((living_flag and m.alive())
                           or (not living_flag and not m.alive()))
         return [m for m in self.monsters if cond(m) and m.position == pos]
+
+    def remove_dead_monsters(self):
+        """ Remove all dead monsters. """
+        self.monsters = deque((m for m in self.monsters if m.alive()))
 
 
 #--------- main class ---------#
@@ -287,20 +299,11 @@ class Area(HasDoodads, HasItems, HasMonsters):
         :return: a list with entities from the area.
         :rtype: list(sw.entity.Entity)
         """
-        everything = []
-        if not ignore_player:
-            everything = [self.player]
-        if not ignore_doodads:
-            everything = chain(everything, self.doodads)
-        if not ignore_items:
-            everything = chain(everything, self.items)
-        if not ignore_monsters:
-            everything = chain(everything, self.monsters)
-        if living_flag:
-            cond = lambda e: e is not None and e.alive()
-        else:
-            cond = lambda e: e is not None and not e.alive()
-        return [e for e in everything if cond(e)]
+        player = [] if ignore_player or self.player is None else [self.player]
+        doodads = [] if ignore_doodads else self.doodads
+        items = [] if ignore_items else self.items
+        monsters = [] if ignore_monsters else self.monsters
+        return list(chain(player, doodads, items, monsters))
 
     def entities_at(self, x, y, living_flag, ignore_doodads=False, ignore_items=False,
                     ignore_monsters=False, ignore_player=False):
@@ -323,20 +326,12 @@ class Area(HasDoodads, HasItems, HasMonsters):
         :return: a list with entities at the given position from the area.
         :rtype: list(sw.entity.Entity)
         """
-        everything = []
-        if not ignore_player:
-            everything = [self.player]
-        if not ignore_doodads:
-            everything = chain(everything, self.doodads)
-        if not ignore_items:
-            everything = chain(everything, self.items)
-        if not ignore_monsters:
-            everything = chain(everything, self.monsters)
-        if living_flag:
-            cond = lambda e: e is not None and e.alive() and e.position == (x, y)
-        else:
-            cond = lambda e: e is not None and not e.alive() and e.position == (x, y)
-        return [e for e in everything if cond(e)]
+        player = [] if ignore_player or self.player is None else [self.player]
+        doodads = [] if ignore_doodads else self.doodads
+        items = [] if ignore_items else self.items
+        monsters = [] if ignore_monsters else self.monsters
+        cond = lambda e: living_flag and e.alive() or not living_flag and not e.alive()
+        return [e for e in chain(player, doodads, items, monsters) if cond(e)]
 
     def place_entity(self, entity, at_x, at_y):
         """
@@ -363,9 +358,9 @@ class Area(HasDoodads, HasItems, HasMonsters):
 
     def remove_dead_entities(self):
         """ Remove all dead entities from the area. """
-        self.doodads = deque((d for d in self.doodads if d.alive()))
-        self.items = deque((i for i in self.items if i.alive()))
-        self.monsters = deque((m for m in self.monsters if m.alive()))
+        self.remove_dead_doodads()
+        self.remove_dead_items()
+        self.remove_dead_monsters()
 
     def remove_entity(self, entity):
         """
