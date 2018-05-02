@@ -25,16 +25,11 @@ class NameInput(flow.SWFlow):
         self.ui = spawner.spawn_char_name_prompt()
         self.register_entry_point(NAME_INPUT_ENTRY_POINT, self.run_prompt)
         self.register_event_source(self.ui)
-        self.register_preevent_action(self.draw)
         self.register_event_handler(self.enter_name)
 
     def run_prompt(self):
         """ A stub, main processing is done in event handlers. """
         pass
-
-    def draw(self):
-        """ Draw the prompt. """
-        self.ui.draw()
 
     #--------- event handlers ---------#
 
@@ -56,17 +51,12 @@ class SpeciesSelection(flow.SWFlow):
         self.name = name
         self.register_entry_point(SPECIES_SEL_ENTRY_POINT, self.run_menu)
         self.register_event_source(self.ui)
-        self.register_preevent_action(self.draw)
         self.register_event_handler(self.abort)
         self.register_event_handler(self.choose_species)
 
     def run_menu(self):
         """ A stub. """
         pass
-
-    def draw(self):
-        """ Draw the menu. """
-        self.ui.draw()
 
     #--------- event handlers ---------#
 
@@ -97,7 +87,6 @@ class BackgroundSelection(flow.SWFlow):
         self.species = species
         self.register_entry_point(BG_SEL_ENTRY_POINT, self.run_menu)
         self.register_event_source(self.ui)
-        self.register_preevent_action(self.draw)
         self.register_event_handler(self.abort)
         self.register_event_handler(self.back)
         self.register_event_handler(self.choose_background)
@@ -105,11 +94,6 @@ class BackgroundSelection(flow.SWFlow):
     def run_menu(self):
         """ A stub, main processing is done in event handlers. """
         pass
-
-    def draw(self):
-        """ Draw the menu. """
-        self.ui.draw()
-
 
     #--------- event handlers ---------#
 

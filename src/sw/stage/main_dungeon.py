@@ -19,15 +19,10 @@ class MainDungeon(flow.SWFlow):
         self.area = area
         self.ui = ui_spawner.spawn_main_dungeon(state, area)
         self.register_entry_point(FROM_OVERWORLD, self.from_overworld)
-        self.register_preevent_action(self.draw)
         self.register_event_source(self.ui)
         self.register_event_handler(self.ascend)
         self.register_event_handler(self.descend)
         self.register_event_handler(self.move)
-
-    def draw(self):
-        """ Draw the UI. """
-        self.ui.draw()
 
     #--------- entry points ---------#
 

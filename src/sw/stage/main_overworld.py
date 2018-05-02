@@ -18,14 +18,9 @@ class MainOverworld(flow.SWFlow):
         self.state = state
         self.ui = ui_spawner.spawn_main_overworld_window(state)
         self.register_entry_point(FROM_WORLDGEN, self.from_worldgen)
-        self.register_preevent_action(self.draw)
         self.register_event_source(self.ui)
         self.register_event_handler(self.descend)
         self.register_event_handler(self.move)
-
-    def draw(self):
-        """ Draw the UI. """
-        self.ui.draw()
 
     #--------- entry points ---------#
 
