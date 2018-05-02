@@ -38,10 +38,10 @@ class CursesSpawner(ui.UISpawner):
         uidata = self.uidata[const.CHAR_NAME_PROMPT]
         return CharNamePrompt(self.screen, self.colors, uidata)
 
-    def spawn_main_dungeon(self, state, area):
+    def spawn_main_dungeon(self, state):
         from sw.ui.curses.main_dungeon import MainDungeon
         uidata = self.uidata[const.MAIN_DUNGEON]
-        return MainDungeon(self.screen, self.colors, uidata, state, area)
+        return MainDungeon(self.screen, self.colors, uidata, state)
 
     def spawn_main_menu(self, data):
         from sw.ui.curses.main_menu import MainMenu

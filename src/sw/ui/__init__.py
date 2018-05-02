@@ -61,16 +61,14 @@ class UISpawner():
         """
         raise NotImplementedError
 
-    def spawn_main_dungeon_window(self, state, area):
+    def spawn_main_dungeon_window(self, state):
         """
         Spawn a dungeon view.
 
         :param state: global game state.
         :type state: sw.gamestate.GameState
-        :param area: an area to view.
-        :type area: sw.area.Area
 
-        :return: a UI piece displaying the given area.
+        :return: a UI piece displaying the current area.
         """
         raise NotImplementedError
 
