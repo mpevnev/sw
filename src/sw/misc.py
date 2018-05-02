@@ -5,6 +5,7 @@ A module for things that don't fit anywhere else.
 
 from itertools import chain
 from pathlib import Path
+import sys
 
 
 import yaml
@@ -98,13 +99,14 @@ def read(default, *filename):
     :return: contents of the YAML file.
     :rtype: dict
     """
+    scriptdir = Path(sys.path[0])
     f = Path(*filename)
     try:
-        return _try_read(f, default=default)
+        return _try_read(scriptdir / f, default=default)
     except FileNotFoundError:
         pass
     try:
-        return _try_read(".." / f, default=default)
+        return _try_read(scriptdir / ".." / f, default=default)
     except FileNotFoundError:
         pass
     return _try_read(Path("/", "usr", "share", INSTALLDIR, f), default=default)
