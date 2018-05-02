@@ -41,7 +41,7 @@ class Doodad(Entity):
 
     #--------- generic usage by other entities ---------#
 
-    def use_by_monster(self, monster, state, area, ui):
+    def use_by_monster(self, monster, state):
         """
         React to a monster doing something with the doodad.
 
@@ -49,10 +49,6 @@ class Doodad(Entity):
         :type monster: sw.monster.Monster
         :param state: global game environment.
         :type state: sw.gamestate.GameState
-        :param area: the area containing both the monster and the doodad.
-        :type area: sw.area.Area
-        :param ui: the UI that should react to the event.
-        :type ui: sw.ui.MainDungeonWindow
 
         :return: True if the monster used the doodad successfully, False if the
         doodad is not usable by the monster.
@@ -60,7 +56,7 @@ class Doodad(Entity):
         """
         raise NotImplementedError
 
-    def use_by_player(self, player, state, area, ui):
+    def use_by_player(self, player, state):
         """
         React to a player doing something with the doodad.
 
@@ -68,10 +64,6 @@ class Doodad(Entity):
         :type player: sw.player.Player
         :param state: global game environment.
         :type state: sw.gamestate.GameState
-        :param area: the area containing both the player and the doodad.
-        :type area: sw.area.Area
-        :param ui: the UI that should react to the event.
-        :type ui: sw.ui.MainDungeonWindow
 
         :return: True if the player used the doodad successfully, False if the
         doodad is not usable by the player.
@@ -84,7 +76,7 @@ class Doodad(Entity):
     def alive(self):
         return not self.dead
 
-    def death_action(self, state, area, ui):
+    def death_action(self, state):
         raise NotImplementedError
 
     def die(self):
@@ -100,7 +92,7 @@ class Doodad(Entity):
 
     #--------- other logic ---------#
 
-    def tick(self, state, area, ui):
+    def tick(self, state):
         pass
 
 
@@ -114,13 +106,13 @@ class Wall(Doodad):
         super().__init__(recipe_id)
         self.add_collision_group(CollisionGroup.WALL)
 
-    def use_by_monster(self, monster, state, area, ui):
+    def use_by_monster(self, monster, state):
         return False
 
-    def use_by_player(self, player, state, area, ui):
+    def use_by_player(self, player, state):
         return False
 
-    def death_action(self, state, area, ui):
+    def death_action(self, state):
         pass
 
     def transparent_for_monster(self, monster):

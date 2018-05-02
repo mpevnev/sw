@@ -63,7 +63,7 @@ class Character(Entity, Modifiable):
     def alive(self):
         return self.health > 0
 
-    def death_action(self, state, area, ui):
+    def death_action(self, state):
         raise NotImplementedError
 
     def die(self):
@@ -108,15 +108,15 @@ class Character(Entity, Modifiable):
 
     #--------- other logic ---------#
 
-    def tick(self, state, area, ui):
-        self.update_totals(state, area)
+    def tick(self, state):
+        self.update_totals(state)
         for mod in self.innate_modifiers:
-            mod.tick(self, state, area, ui)
+            mod.tick(self, state)
         remaining_mods = deque()
         for mod in self.temp_modifiers:
-            mod.tick(self, state, area, ui)
+            mod.tick(self, state)
             if mod.duration == 0:
-                mod.expire(self, state, area, ui)
+                mod.expire(self, state)
             else:
                 remaining_mods.append(mod)
         self.temp_modifiers = remaining_mods

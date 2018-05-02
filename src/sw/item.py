@@ -39,21 +39,18 @@ class Item(Entity):
     def transparent_for_monster(self, monster):
         return True
 
-    def tick(self, state, area, ui):
+    def tick(self, state):
         raise NotImplementedError
 
     #--------- interactions ---------#
 
-    def drop(self, state, area, ui, force=False):
+    def drop(self, state, force=False):
         """
         Try to drop the item.
 
         :param state: a global state that might affect or get affected by the
         drop.
         :type state: sw.gamestate.GameState
-        :param area: an area from where the item is dropped to.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to the drop.
         :param bool force: if set to True, the item will be dropped even if it
         would destroy it, otherwise a WOULD_GET_DESTROYED code will be returned
         in such circumstances.
@@ -64,16 +61,13 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def equip(self, state, area, ui, force=False):
+    def equip(self, state, force=False):
         """
         Try to equip the item.
 
         :param state: a global state that might affect or get affected by the
         donning.
         :type state: sw.gamestate.GameState
-        :param area: an area where the character is.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to the donning.
         :param bool force: if set to True, the item will be equipped even if
         is (visibly) cursed or has harmful properties.
 
@@ -83,7 +77,7 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def pick_up(self, by, state, area, ui, force=False):
+    def pick_up(self, by, state, force=False):
         """
         Try to pick up the item.
 
@@ -92,9 +86,6 @@ class Item(Entity):
         :param state: a global state that might affect or get affected by the
         pickup.
         :type state: sw.gamestate.GameState
-        :param area: an area from where the item is picked up.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to the pickup.
         :param bool force: if set to True, the item will be picked up even if
         it's dangerous.
 
@@ -104,18 +95,15 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def use_on_doodad(self, target, state, area, ui, force=False):
+    def use_on_doodad(self, target, state, force=False):
         """
         Try to use the item on a doodad.
 
         :param target: a target doodad.
-        :type target: Item
+        :type target: sw.doodad.Doodad
         :param state: a global state that might affect or get affected by the
         use.
         :type state: sw.gamestate.GameState
-        :param area: an area where the target and the user are.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to the use.
         :param bool force: if set to True, the item will be used even if it's
         dangerous or useless.
 
@@ -125,7 +113,7 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def use_on_item(self, target, state, area, ui, force=False):
+    def use_on_item(self, target, state, force=False):
         """
         Try to use the item on another item.
 
@@ -134,9 +122,6 @@ class Item(Entity):
         :param state: a global state that might affect or get affected by the
         use.
         :type state: sw.gamestate.GameState
-        :param area: an area where the target and the user are.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to the use.
         :param bool force: if set to True, the item will be used even if it's
         dangerous or useless.
 
@@ -146,18 +131,15 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def use_on_monster(self, target, state, area, ui, force=False):
+    def use_on_monster(self, target, state, force=False):
         """
         Try to use the item on a monster.
 
         :param target: a target monster.
-        :type target: Item
+        :type target: sw.monster.Monster
         :param state: a global state that might affect or get affected by the
         use.
         :type state: sw.gamestate.GameState
-        :param area: an area where the target and the user are.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to the use.
         :param bool force: if set to True, the item will be used even if it's
         dangerous or useless.
 
@@ -167,16 +149,13 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def use_on_player(self, state, area, ui, force=False):
+    def use_on_player(self, state, force=False):
         """
         Try to use the item on a player.
 
         :param state: a global state that might affect or get affected by the
         use.
         :type state: sw.gamestate.GameState
-        :param area: an area where the target and the user are.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to the use.
         :param bool force: if set to True, the item will be used even if it's
         dangerous or useless.
 
@@ -186,7 +165,7 @@ class Item(Entity):
         """
         raise NotImplementedError
 
-    def use_on_position(self, x, y, state, area, ui, force=False):
+    def use_on_position(self, x, y, state, force=False):
         """
         Try to use the item on a position.
 
@@ -195,9 +174,6 @@ class Item(Entity):
         :param state: a global state that might affect or get affected by the
         use.
         :type state: sw.gamestate.GameState
-        :param area: an area where the target and the user are.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to the use.
         :param bool force: if set to True, the item will be used even if it's
         dangerous or useless.
 

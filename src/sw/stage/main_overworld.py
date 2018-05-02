@@ -16,9 +16,9 @@ class MainOverworld(flow.SWFlow):
     def __init__(self, state, ui_spawner):
         super().__init__(ui_spawner)
         self.state = state
-        self.ui = ui_spawner.spawn_main_overworld_window(state)
+        self.state.ui = ui_spawner.spawn_main_overworld_window(state)
         self.register_entry_point(FROM_WORLDGEN, self.from_worldgen)
-        self.register_event_source(self.ui)
+        self.register_event_source(self.state.ui)
         self.register_event_handler(self.descend)
         self.register_event_handler(self.move)
 

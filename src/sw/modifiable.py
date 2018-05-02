@@ -102,30 +102,28 @@ class Modifiable(HasSkills, HasStats):
 
     #--------- application of modifiers ---------#
 
-    def update_totals(self, state, area):
+    def update_totals(self, state):
         """
         Update total statistics and skills of the modifiable.
 
         :param state: the global game environment modifiers might factor in.
         :type state: sw.gamestate.GameState
-        :param area: the area containing the modifiable.
-        :type area: sw.area.Area
         """
-        self._update_skill_totals(state, area)
-        self._update_primary_totals(state, area)
-        self._update_secondary_totals(state, area)
+        self._update_skill_totals(state)
+        self._update_primary_totals(state)
+        self._update_secondary_totals(state)
 
-    def _update_skill_totals(self, state, area):
+    def _update_skill_totals(self, state):
         self.total_skills = self.base_skills.copy()
         for mod in self.all_modifiers():
-            mod.apply_skills(self, state, area)
+            mod.apply_skills(self, state)
 
-    def _update_primary_totals(self, state, area):
+    def _update_primary_totals(self, state):
         self.total_primary = self.base_primary.copy()
         for mod in self.all_modifiers():
-            mod.apply_primary(self, state, area)
+            mod.apply_primary(self, state)
 
-    def _update_secondary_totals(self, state, area):
+    def _update_secondary_totals(self, state):
         self.total_secondary = self.base_secondary.copy()
         for mod in self.all_modifiers():
-            mod.apply_secondary(self, state, area)
+            mod.apply_secondary(self, state)

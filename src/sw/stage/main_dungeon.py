@@ -16,10 +16,10 @@ class MainDungeon(flow.SWFlow):
     def __init__(self, state, ui_spawner, area):
         super().__init__(ui_spawner)
         self.state = state
-        self.area = area
-        self.ui = ui_spawner.spawn_main_dungeon(state, area)
+        self.state.area = area
+        self.state.ui = ui_spawner.spawn_main_dungeon(state, area)
         self.register_entry_point(FROM_OVERWORLD, self.from_overworld)
-        self.register_event_source(self.ui)
+        self.register_event_source(self.state.ui)
         self.register_event_handler(self.ascend)
         self.register_event_handler(self.descend)
         self.register_event_handler(self.move)
@@ -31,17 +31,17 @@ class MainDungeon(flow.SWFlow):
         Figure out the starting position of the player and then proceed as
         usual.
         """
-        self.area.tick(self.state, self.ui, 0)
-        self.state.player.tick(self.state, self.area, self.ui)
+        self.state.area.tick(self.state, 0)
+        self.state.player.tick(self.state)
         # TEMP DEBUG
         import sw.monster as monster
-        self.area.randomly_place_player(self.state.player)
-        self.area.update_visibility_matrix()
+        self.state.area.randomly_place_player(self.state.player)
+        self.state.area.update_visibility_matrix()
         recipe = self.state.data.monster_recipe_by_id("debug melee zombie")
         mon = monster.monster_from_recipe(recipe, self.state.data)
         mon.health = 1
         self.mon = mon
-        self.area.add_entity(mon, 3, 3)
+        self.state.area.add_entity(mon, 3, 3)
 
     #--------- event handlers ---------#
 
@@ -62,8 +62,8 @@ class MainDungeon(flow.SWFlow):
         if ev[0] != event.MOVE:
             return False
         delta = ev[1]
-        if self.area.shift_entity(self.state.player, *delta):
-            self.area.update_visibility_matrix()
+        if self.state.area.shift_entity(self.state.player, *delta):
+            self.state.area.update_visibility_matrix()
             self.tick()
         return True
 
@@ -72,8 +72,8 @@ class MainDungeon(flow.SWFlow):
     def tick(self):
         """ Process a single game turn. """
         self.state.turn += 1
-        self.state.player.tick(self.state, self.area, self.ui)
-        self.area.tick(self.state, self.ui, 0)
+        self.state.player.tick(self.state)
+        self.state.area.tick(self.state, 0)
         # TEMP DEBUG
         self.mon.health -= 1
         self.state.player.health += 1

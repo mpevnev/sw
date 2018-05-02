@@ -13,12 +13,14 @@ class GameState():
     """ A container with all game information. """
 
     def __init__(self):
+        self.area = None
         self.data = None
+        self.messages = None
         self.player = None
-        self.world = None
         self.player_position = None
         self.turn = 0
-        self.messages = None
+        self.ui = None
+        self.world = None
 
     def current_overworld_header(self):
         """

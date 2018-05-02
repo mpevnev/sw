@@ -32,7 +32,7 @@ class Player(Character):
 
     #--------- death logic ---------#
 
-    def death_action(self, state, area, ui):
+    def death_action(self, state):
         """
         Do nothing, player death is handled by the flows directly.
         """
@@ -88,7 +88,7 @@ def player_from_scratch(name, species, background):
 def _apply_species(player):
     """
     Apply species' modifiers to a player.
-    
+
     :param player: a player to apply the species modifiers to.
     :type player: Player
     """

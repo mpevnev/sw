@@ -30,7 +30,7 @@ class Modifier():
         self.priority = 0
         self.tick_message = None
 
-    def apply_skills(self, attached_to, state, area):
+    def apply_skills(self, attached_to, state):
         """
         Apply changes to skills. 
         
@@ -38,12 +38,10 @@ class Modifier():
         :type attached_to: sw.modifiable.Modifiable
         :param state: a global environment.
         :type state: sw.gamestate.GameState
-        :type area: the area the modifiable thing is in.
-        :param area: sw.area.Area
         """
         pass
 
-    def apply_primary(self, attached_to, state, area):
+    def apply_primary(self, attached_to, state):
         """
         Apply changes to the primary statistics.
         
@@ -51,12 +49,10 @@ class Modifier():
         :type attached_to: sw.modifiable.Modifiable
         :param state: a global environment.
         :type state: sw.gamestate.GameState
-        :type area: the area the modifiable thing is in.
-        :param area: sw.area.Area
         """
         pass
 
-    def apply_secondary(self, attached_to, state, area):
+    def apply_secondary(self, attached_to, state):
         """
         Apply changes to the secondary statistics.
         
@@ -64,16 +60,14 @@ class Modifier():
         :type attached_to: sw.modifiable.Modifiable
         :param state: a global environment.
         :type state: sw.gamestate.GameState
-        :type area: the area the modifiable thing is in.
-        :param area: sw.area.Area
         """
         pass
 
-    def expire(self, attached_to, state, area, ui):
+    def expire(self, attached_to, state):
         """ Perform some actions on modifier's expiration. """
         pass
 
-    def tick(self, attached_to, state, area, ui):
+    def tick(self, attached_to, state):
         """ Apply periodic changes to the 'attached_to' modifiable. """
         pass
 
@@ -113,15 +107,15 @@ class FlatStatIncrease(Modifier):
         self.which = None
         self.which_group = None
 
-    def apply_primary(self, attached_to, state, area):
+    def apply_primary(self, attached_to, state):
         if self.which_group == stat.StatGroup.PRIMARY:
             attached_to.total_primary[self.which] += self.amount
 
-    def apply_secondary(self, attached_to, state, area):
+    def apply_secondary(self, attached_to, state):
         if self.which_group == stat.StatGroup.SECONDARY:
             attached_to.total_secondary[self.which] += self.amount
 
-    def tick(self, attached_to, state, area, ui):
+    def tick(self, attached_to, state):
         if self.duration > 0:
             self.duration -= 1
         if self.tick_message is not None:

@@ -23,7 +23,7 @@ class AI():
         self.alarm_coordinates = None
         self.last_tasks = deque(maxlen=const.REMEMBERED_TASKS_NUM)
 
-    def evaluate(self, monster, state, area):
+    def evaluate(self, monster, state):
         """
         Choose and return a task (with whatever arguments it requires in a
         tuple) for the monster, given a specific environment.
@@ -33,9 +33,6 @@ class AI():
         :param state: the global environment of the monster that the AI should
         take into account.
         :type state: sw.gamestate.GameState
-        :param area: the local environment of the monster that the AI should
-        consider.
-        :type area: sw.area.Area
         """
         raise NotImplementedError
 
@@ -46,9 +43,9 @@ class AI():
 class MeleeZombie(AI):
     """ A very dumb AI. """
 
-    def evaluate(self, monster, state, area):
+    def evaluate(self, monster, state):
         player = state.player
-        if area.can_see(monster, *player.position):
+        if state.area.can_see(monster, *player.position):
             self.alarmed = True
             if monster.distance(player) == 1:
                 return (const.Task.ATTACK, player)

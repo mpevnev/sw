@@ -48,8 +48,8 @@ class Monster(Character):
     def remove_from_area(self, area):
         area.monsters.remove(self)
 
-    def death_action(self, state, area, ui):
-        visinfo = area.visibility_matrix[self.position]
+    def death_action(self, state):
+        visinfo = state.area.visibility_matrix[self.position]
         visible = arconst.VisibilityLevel.VISIBLE in visinfo.levels
         if self.do_award_xp:
             state.player.xp += self.xp_award
@@ -70,7 +70,7 @@ class Monster(Character):
         """ Raise the AI 'alarmed' flag. """
         self.ai.alarmed = True
 
-    def perform_task(self, task, state, area, ui):
+    def perform_task(self, task, state):
         """
         Perform a task.
 
@@ -79,177 +79,132 @@ class Monster(Character):
         :param state: a global game environment the monster may factor in when
         executing the task.
         :type state: sw.gamestate.GameState
-        :param area: the area containing the monster.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to monster's actions.
-        :type ui: sw.ui.MainDungeonWindow or None
 
         :raises ValueError: if the task to be performed is unknown.
         """
         taskid = task[0]
         if taskid == aiconst.Task.ATTACK:
-            self.attack(state, area, ui, task[1])
+            self.attack(task[1], state)
         elif taskid == aiconst.Task.CAST_SPELL:
-            self.cast_spell(state, area, ui, task[1], task[2])
+            self.cast_spell(task[1], task[2], state)
         elif taskid == aiconst.Task.EXPLORE:
-            self.explore(state, area, ui)
+            self.explore(state)
         elif taskid == aiconst.Task.FOLLOW:
-            self.follow(state, area, ui, task[1])
+            self.follow(task[1], state)
         elif taskid == aiconst.Task.INVESTIGATE:
-            self.investigate(state, area, ui, task[1])
+            self.investigate(task[1], state)
         elif taskid == aiconst.Task.PURSUE:
-            self.pursue(state, area, ui, task[1])
+            self.pursue(task[1], state)
         elif taskid == aiconst.Task.REST:
-            self.rest(state, area, ui)
+            self.rest(state)
         elif taskid == aiconst.Task.RETREAT:
-            self.retreat(state, area, ui)
+            self.retreat(state)
         elif taskid == aiconst.Task.STEP_ASIDE:
-            self.step_aside(state, area, ui)
+            self.step_aside(state)
         else:
             raise ValueError(f"Unknown task '{taskid}")
 
     #--------- task implementations ---------#
 
-    def attack(self, state, area, ui, target):
+    def attack(self, target, state):
         """
         Attack a given character.
 
+        :param target: what to attack.
+        :type target: sw.character.Character
         :param state: a global game state that the monster might factor in when
         attacking.
         :type state: sw.gamestate.GameState
-        :param area: the area containing the monster.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to monster's actions.
-        :type ui: sw.ui.MainDungeonWindow or None
-
-        :param target: what to attack.
-        :type target: sw.character.Character
         """
         raise NotImplementedError
 
-    def cast_spell(self, state, area, ui, spell, target):
+    def cast_spell(self, target, spell, state):
         """
         Cast a given spell at a given target.
 
-        :param state: a global game state that the monster might factor in when
-        attacking.
-        :type state: sw.gamestate.GameState
-        :param area: the area containing the monster.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to monster's actions.
-        :type ui: sw.ui.MainDungeonWindow or None
-
-        :param spell: which spell to cast.
-        :type spell: sw.spell.Spell
         :param target: position at which to cast.
         :type target: tuple(int, int)
+        :param spell: which spell to cast.
+        :type spell: sw.spell.Spell
+        :param state: a global game state that the monster might factor in when
+        casting a spell.
+        :type state: sw.gamestate.GameState
         """
         raise NotImplementedError
 
-    def explore(self, state, area, ui):
+    def explore(self, state):
         """
         Explore the floor.
 
-        :param state: a global game state that the monster might factor in when
-        attacking.
+        :param state: a global game state that the monster can factor in when
+        exploring.
         :type state: sw.gamestate.GameState
-        :param area: the area containing the monster.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to monster's actions.
-        :type ui: sw.ui.MainDungeonWindow or None
         """
         raise NotImplementedError
 
-    def follow(self, state, area, ui, who):
+    def follow(self, who, state):
         """
         Follow a friendly character somewhere.
 
-        :param state: a global game state that the monster might factor in when
-        attacking.
-        :type state: sw.gamestate.GameState
-        :param area: the area containing the monster.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to monster's actions.
-        :type ui: sw.ui.MainDungeonWindow or None
-
         :param who: follow who.
         :type who: sw.const.Character
+        :param state: a global game state that the monster can factor in when
+        following.
+        :type state: sw.gamestate.GameState
         """
         raise NotImplementedError
 
-    def investigate(self, state, area, ui, position):
+    def investigate(self, x, y, state):
         """
         Look around a given position.
 
+        :param int x: X coordinate of a point to investigate.
+        :param int y: Y coordinate of a point to investigate.
         :param state: a global game state that the monster might factor in when
-        attacking.
+        investigating.
         :type state: sw.gamestate.GameState
-        :param area: the area containing the monster.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to monster's actions.
-        :type ui: sw.ui.MainDungeonWindow or None
-
-        :param position: where to investigate.
-        :type position: tuple(int, int)
         """
         raise NotImplementedError
 
-    def pursue(self, state, area, ui, who):
+    def pursue(self, who, state):
         """
         Pursue a hostile character.
 
-        :param state: a global game state that the monster might factor in when
-        attacking.
-        :type state: sw.gamestate.GameState
-        :param area: the area containing the monster.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to monster's actions.
-        :type ui: sw.ui.MainDungeonWindow or None
-
         :param who: pursue who.
         :type who: sw.character.Character
+        :param state: a global game state that the monster might factor in when
+        pursuing.
+        :type state: sw.gamestate.GameState
         """
         raise NotImplementedError
 
-    def rest(self, state, area, ui):
+    def rest(self, state):
         """
         Do nothing, just regenerate.
 
         :param state: a global game state that the monster might factor in when
-        attacking.
+        resting.
         :type state: sw.gamestate.GameState
-        :param area: the area containing the monster.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to monster's actions.
-        :type ui: sw.ui.MainDungeonWindow or None
         """
         raise NotImplementedError
 
-    def retreat(self, state, area, ui):
+    def retreat(self, state):
         """
         Find a safe spot away from enemies.
 
         :param state: a global game state that the monster might factor in when
-        attacking.
+        retreating.
         :type state: sw.gamestate.GameState
-        :param area: the area containing the monster.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to monster's actions.
-        :type ui: sw.ui.MainDungeonWindow or None
         """
         raise NotImplementedError
 
-    def step_aside(self, state, area, ui):
+    def step_aside(self, state):
         """
         Let allies pass through the position this monster currenly occupies.
 
-        :param state: a global game state that the monster might factor in when
-        attacking.
+        :param state: a global game state that the monster can factor in when
+        stepping aside
         :type state: sw.gamestate.GameState
-        :param area: the area containing the monster.
-        :type area: sw.area.Area
-        :param ui: a UI that should react to monster's actions.
-        :type ui: sw.ui.MainDungeonWindow or None
         """
         raise NotImplementedError
 
@@ -264,37 +219,37 @@ class GenericMonster(Monster):
 
     #--------- tasks ---------#
 
-    def attack(self, state, area, ui, target):
+    def attack(self, target, state):
         pass
 
-    def cast_spell(self, state, area, ui, spell, target):
+    def cast_spell(self, target, spell, state):
         pass
 
-    def explore(self, state, area, ui):
-        area.shift_entity(self, rand.randint(-1, 1), rand.randint(-1, 1))
+    def explore(self, state):
+        state.area.shift_entity(self, rand.randint(-1, 1), rand.randint(-1, 1))
 
-    def follow(self, state, area, ui, who):
+    def follow(self, who, state):
         dx = 1 if who.position[0] - self.position[0] >= 0 else -1
         dy = 1 if who.position[1] - self.position[1] >= 0 else -1
-        area.shift_entity(self, dx, dy)
+        state.area.shift_entity(self, dx, dy)
 
-    def investigate(self, state, area, ui, position):
+    def investigate(self, x, y, state):
         pass
 
-    def pursue(self, state, area, ui, who):
+    def pursue(self, who, state):
         dx = 1 if who.position[0] - self.position[0] >= 0 else -1
         dy = 1 if who.position[1] - self.position[1] >= 0 else -1
-        area.shift_entity(self, dx, dy)
+        state.area.shift_entity(self, dx, dy)
 
-    def rest(self, state, area, ui):
+    def rest(self, state):
         pass
 
-    def retreat(self, state, area, ui):
+    def retreat(self, state):
         dx = -1 if state.player.position[0] - self.position[0] >= 0 else 1
         dy = -1 if state.player.position[1] - self.position[1] >= 0 else 1
-        area.shift_entity(self, dx, dy)
+        state.area.shift_entity(self, dx, dy)
 
-    def step_aside(self, state, area, ui):
+    def step_aside(self, state):
         pass
 
 

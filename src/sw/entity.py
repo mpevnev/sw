@@ -128,16 +128,12 @@ class Entity():
         """
         raise NotImplementedError
 
-    def death_action(self, state, area, ui):
+    def death_action(self, state):
         """
         Do something when the entity dies.
         
         :param state: the global game environment of the entity.
         :type state: sw.gamestate.GameState
-        :param area: the area containing the entity.
-        :type area: sw.area.Area
-        :param ui: the UI piece that should react to the death of the entity.
-        :type ui: sw.ui.MainDungeonWindow or None
         """
         raise NotImplementedError
 
@@ -175,15 +171,11 @@ class Entity():
 
     #--------- other game logic ---------#
 
-    def tick(self, state, area, ui):
+    def tick(self, state):
         """
         Process a single game turn.
         
         :param state: global game environment of the entity.
         :type state: sw.gamestate.GameState
-        :param area: the area containing the entity.
-        :type area: sw.area.Area
-        :param ui: the UI that should react to whatever happens in this turn.
-        :type ui: sw.ui.MainDungeonWindow
         """
         raise NotImplementedError
