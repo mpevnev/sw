@@ -71,7 +71,7 @@ class MainDungeon(mofloc.Flow):
             return False
         delta = ev[1]
         if self.area.shift_entity(self.state.player, *delta):
-            self.area.update_visibility_matrix(self.state.player)
+            self.area.update_visibility_matrix()
             self.tick()
         return True
 
