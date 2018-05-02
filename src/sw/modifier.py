@@ -119,7 +119,7 @@ class FlatStatIncrease(Modifier):
         if self.duration > 0:
             self.duration -= 1
         if self.tick_message is not None:
-            ui.message(self.tick_message, msg.Channel.MODIFIER_TICK)
+            state.ui.message(self.tick_message, msg.Channel.MODIFIER_TICK)
 
 
 #--------- helper things ---------#

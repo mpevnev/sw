@@ -54,10 +54,10 @@ class Monster(Character):
         if self.do_award_xp:
             state.player.xp += self.xp_award
         if visible:
-            ui.message(self.death_message, Channel.MONSTER_DEATH)
+            state.ui.message(self.death_message, Channel.MONSTER_DEATH)
             ui.death_animation(self)
         elif self.do_award_xp:
-            ui.message(state.data.strings[conststr.FEEL_MORE_EXPERIENCED], Channel.NORMAL)
+            state.ui.message(state.data.strings[conststr.FEEL_MORE_EXPERIENCED], Channel.NORMAL)
 
     #--------- visibility logic ---------#
 

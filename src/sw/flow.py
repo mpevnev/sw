@@ -26,4 +26,7 @@ class SWFlow(Flow):
 
     def draw(self):
         """ Draw the UI. """
-        self.ui.draw()
+        try:
+            self.ui.draw()
+        except AttributeError:
+            self.state.ui.draw()

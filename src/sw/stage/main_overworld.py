@@ -26,7 +26,7 @@ class MainOverworld(flow.SWFlow):
 
     def from_worldgen(self):
         """ Print out an introductory message and proceed as normal. """
-        self.state.player.update_totals(self.state, None)
+        self.state.player.update_totals(self.state)
 
     #--------- event handlers ---------#
 
