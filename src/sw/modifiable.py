@@ -81,8 +81,8 @@ class Modifiable(HasSkills, HasStats):
 
     def sort_modifiers(self):
         """ Sort modifier deques. """
-        self.innate_modifiers = deque(sorted(self.innate_modifiers, lambda m: m.priority))
-        self.temp_modifiers = deque(sorted(self.temp_modifiers, lambda m: m.priority))
+        self.innate_modifiers = deque(sorted(self.innate_modifiers, key=lambda m: m.priority))
+        self.temp_modifiers = deque(sorted(self.temp_modifiers, key=lambda m: m.priority))
 
     #--------- application of modifiers ---------#
 

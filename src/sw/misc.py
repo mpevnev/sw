@@ -139,13 +139,13 @@ def slot_stat(slot_type):
 
     :raises ValueError: if the slot type is unknown.
     """
-    if slot_type is const.InventorySlot.SMALL:
+    if slot_type is item.InventorySlot.SMALL:
         return stat.SecondaryStat.SMALL_SLOTS
-    if slot_type is const.InventorySlot.MEDIUM:
+    if slot_type is item.InventorySlot.MEDIUM:
         return stat.SecondaryStat.MEDIUM_SLOTS
-    if slot_type is const.InventorySlot.BIG:
+    if slot_type is item.InventorySlot.BIG:
         return stat.SecondaryStat.BIG_SLOTS
-    if slot_type is const.InventorySlot.HUGE:
+    if slot_type is item.InventorySlot.HUGE:
         return stat.SecondaryStat.HUGE_SLOTS
     raise ValueError(f"Unknown slot type '{self.carrying_slot}'")
 
