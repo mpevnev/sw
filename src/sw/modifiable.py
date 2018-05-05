@@ -100,15 +100,15 @@ class Modifiable(HasSkills, HasStats):
 
     def _update_skill_totals(self, state):
         self.total_skills = self.base_skills.copy()
-        for mod in chain(self.innate_modifiers, self.temp_modifiers)
+        for mod in chain(self.innate_modifiers, self.temp_modifiers):
             mod.apply_skills(self, state)
 
     def _update_primary_totals(self, state):
         self.total_primary = self.base_primary.copy()
-        for mod in self.innate_modifiers, self.temp_modifiers)
+        for mod in chain(self.innate_modifiers, self.temp_modifiers):
             mod.apply_primary(self, state)
 
     def _update_secondary_totals(self, state):
         self.total_secondary = self.base_secondary.copy()
-        for mod in self.innate_modifiers, self.temp_modifiers)
+        for mod in chain(self.innate_modifiers, self.temp_modifiers):
             mod.apply_secondary(self, state)
