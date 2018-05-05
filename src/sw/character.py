@@ -103,6 +103,10 @@ class Character(Entity, Modifiable):
             index = relevant_list.index(None)
         except ValueError:
             return citem.PickUpError.NO_SLOTS
+        num_used = len(filter(None, relevant_list))
+        slot_limit = self.total_secondary[item.slot_stat()]
+        if num_used > slot_limit:
+            return citem.PickUpError.NO_SLOTS
         res = item.pick_up(self, state, force)
         if not res:
             return res

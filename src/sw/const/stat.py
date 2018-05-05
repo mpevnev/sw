@@ -45,3 +45,8 @@ class SecondaryStat(Enum):
     RESIST_WATER = "resist water"
 
     SIGHT = "sight"
+
+    SMALL_SLOTS = "small slots"
+    MEDIUM_SLOTS = "medium slots"
+    BIG_SLOTS = "big slots"
+    HUGE_SLOTS = "huge slots"
