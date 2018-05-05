@@ -83,6 +83,19 @@ class Character(Entity, Modifiable):
         remove_from_list[remove_index] = None
         return True
 
+    def free_slots(self, slot_type):
+        """
+        :param slot_type: slot type to get the number of slots of.
+        :type slot_type: sw.const.item.InventorySlot
+
+        :return: the number of free slots of a given type.
+        :rtype: int
+        """
+        inv_list = self.inventory[slot_type]
+        num_items = len(filter(None, inv_list))
+        num_slots = self.total_secondary[misc.slot_stat(slot_type)]
+        return num_slots - num_items
+
     def pick_up_item(self, item, state, force=False):
         """
         Pick up an item.
@@ -98,21 +111,15 @@ class Character(Entity, Modifiable):
         dangerous or impossible.
         :rtype: bool or sw.const.item.PickUpError
         """
-        relevant_list = self.inventory[item.carrying_slot]
-        try:
-            index = relevant_list.index(None)
-        except ValueError:
-            return citem.PickUpError.NO_SLOTS
-        num_used = len(filter(None, relevant_list))
-        slot_limit = self.total_secondary[misc.slot_stat(item.carrying_slot)]
-        if num_used > slot_limit:
+        inv_list = self.inventory[item.carrying_slot]
+        if self.free_slots(item.carrying_slots) == 0:
             return citem.PickUpError.NO_SLOTS
         res = item.pick_up(self, state, force)
         if not res:
             return res
         item.owner = self
         item.position = None
-        relevant_list[index] = item
+        inv_list[inv_list.index(None)] = item
         return True
 
     #--------- health logic ---------#
