@@ -62,3 +62,27 @@ class UseError(Enum):
     NO_CHARGES = "no charges"
     USELESS = "useless"
     UNUSABLE = "unusable"
+
+
+#--------- slots ---------#
+
+
+class EquipmentSlot(Enum):
+    """ A slot where equipped items are placed. """
+
+    AMULET = "amulet"
+    ARMOR = "armor"
+    BOOTS = "boots"
+    HAT = "hat"
+    MELEE_WEAPON = "weapon"
+    RANGED_WEAPON = "ranged weapon"
+    RING = "ring"
+
+
+class InventorySlot(Enum):
+    """ A slot where unequipped items are stored. """
+
+    SMALL = "small"
+    MEDIUM = "medium"
+    BIG = "big"
+    HUGE = "huge"

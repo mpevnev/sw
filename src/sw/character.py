@@ -8,8 +8,10 @@ Provides base Character class that Monster and Player classes inherit from.
 from collections import deque
 
 
+import sw.const.item as citem
 import sw.const.stat as stat
 from sw.entity import Entity
+import sw.misc as misc
 from sw.modifiable import Modifiable
 
 
@@ -20,6 +22,92 @@ class Character(Entity, Modifiable):
         Entity.__init__(self)
         Modifiable.__init__(self)
         self._health = 0
+        self.equipment = misc.empty_equipment_dict()
+        self.inventory = misc.empty_inventory_dict()
+
+    #--------- item logic ---------#
+
+    def drop_item(self, item, state, force=False):
+        """
+        Drop an item.
+
+        :param item: an item to be dropped.
+        :type item: sw.item.Item
+        :param state: a global environment which affects dropping the item.
+        :type state: sw.gamestate.GameState
+        :param bool force: if set to true, the item will be dropped even if
+        it's dangerous.
+
+        :return: True on success, an error code if something makes dropping the
+        item dangerous or impossible.
+        :rtype: bool or sw.const.item.DropError
+        """
+        res = item.drop(state, force)
+        if not res:
+            return res
+        slot = item.carrying_slot
+        relevant_list = self.inventory[slot]
+        relevant_list[relevant_list.index(item)] = None
+        item.owner = None
+        return True
+
+    def equip_item(self, item, state, force=False):
+        """
+        Equip an item.
+
+        :param item: an item to equip.
+        :type item: sw.item.Item
+        :param state: a global environment that may affect equipping.
+        :type state: sw.gamestate.GameState
+        :param bool force: if set to true, the item will be equipped even if
+        it's dangerous.
+
+        :return: True on success, an error code if something makes equipping
+        the item dangerous or impossible.
+        :rtype: bool or sw.const.item.EquipError
+        """
+        if item.cursed and item.visibly_cursed and not force:
+            return citem.EquipError.VISIBLY_CURSED
+        relevant_list = self.equipment[item.wearing_slot]
+        try:
+            index = relevant_list.index(None)
+        except ValueError:
+            return citem.EquipError.NO_SLOTS
+        res = item.equip(state, force)
+        if not res:
+            return res
+        relevant_list[index] = item
+        remove_from_list = self.inventory[item.carrying_slot]
+        remove_index = remove_from_list.index(item)
+        remove_from_list[remove_index] = None
+        return True
+
+    def pick_up_item(self, item, state, force=False):
+        """
+        Pick up an item.
+
+        :param item: an item to pick up.
+        :type item: sw.item.Item
+        :param state: a global environment that may affect pick up.
+        :type state: sw.gamestate.GameState
+        :param bool force: if set to true, the item will be picked up even if
+        it's dangerous.
+
+        :return: True on success, an error code if something makes pick up
+        dangerous or impossible.
+        :rtype: bool or sw.const.item.PickUpError
+        """
+        relevant_list = self.inventory[item.carrying_slot]
+        try:
+            index = relevant_list.index(None)
+        except ValueError:
+            return citem.PickUpError.NO_SLOTS
+        res = item.pick_up(self, state, force)
+        if not res:
+            return res
+        item.owner = self
+        relevant_list[index] = item
+        return True
 
     #--------- health logic ---------#
 
@@ -43,7 +131,7 @@ class Character(Entity, Modifiable):
     def health(self, value):
         """
         Set the health of the character.
-        
+
         :param float value: new value for the health.
         """
         value = max(0, value)

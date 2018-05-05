@@ -11,6 +11,7 @@ import sys
 import yaml
 
 
+import sw.const.item as item
 from sw.const.misc import INSTALLDIR
 import sw.const.skill as skill
 import sw.const.stat as stat
@@ -63,6 +64,22 @@ def enumerate_with_letters(iterator):
     lower = (chr(i) for i in range(ord('a'), ord('z') + 1))
     upper = (chr(i) for i in range(ord('A'), ord('Z') + 1))
     return zip(chain(lower, upper), iterator)
+
+
+def empty_equipment_dict():
+    """
+    :return: a dictionar with zero-length equipment slots.
+    :rtype: dict(sw.const.item.EquipmentSlot, list)
+    """
+    return {slot: [] for slot in item.EquipmentSlot}
+
+
+def empty_inventory_dict():
+    """
+    :return: a dictionary with zero-length inventory slots.
+    :rtype: dict(sw.const.item.InventorySlot, list)
+    """
+    return {slot: [] for slot in item.InventorySlot}
 
 
 def empty_skill_dict():
