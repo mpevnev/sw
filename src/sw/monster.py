@@ -8,7 +8,6 @@ Provides base Monster class and several subclasses.
 import random as rand
 
 
-from sw.ai import select_ai
 from sw.character import Character
 from sw.const.message import Channel
 import sw.const.ai as aiconst
@@ -260,7 +259,7 @@ def monster_from_recipe(recipe, other_game_data):
     montype = recipe[const.TYPE]
     if montype == const.MonsterType.GENERIC.value:
         res = GenericMonster(recipe_id)
-        _read_common_recipe_parameters(res, recipe)
+        _read_common_recipe_parameters(res, recipe, other_game_data)
         return res
     raise ValueError(f"Unknown monster type '{montype}'")
 
@@ -283,14 +282,14 @@ def monster_from_save(save):
 #--------- helper things ---------#
 
 
-def _read_common_recipe_parameters(monster, recipe):
+def _read_common_recipe_parameters(monster, recipe, other_game_data):
     """
     Read common parameters from a recipe into a Monster instance.
 
     :param Monster monster: read into.
     :param dict recipe: read from.
     """
-    monster.ai = select_ai(recipe[const.AI_TYPE])
+    monster.ai = other_game_data.ai_by_id(recipe[const.AI_TYPE])
     #
     monster.base_skills = misc.convert_skill_dict(recipe[const.SKILLS])
     monster.base_stats = misc.convert_stat_dict(recipe[const.STATS])

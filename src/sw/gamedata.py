@@ -3,6 +3,7 @@ Game data module.
 """
 
 
+import sw.ai as ai
 import sw.background as bg
 import sw.const.globvars as gv
 import sw.misc as misc
@@ -21,6 +22,19 @@ class GameData():
         self.uniques_recipes = _read_uniques_recipes()
         globvars = _read_globals()
         self.message_limit = globvars[gv.MESSAGE_LIMIT]
+
+    def ai_by_id(self, ai_id):
+        """
+        Get an AI by its ID.
+
+        :param str ai_id: the ID to look for.
+
+        :return: an AI with the given ID.
+        :rtype: sw.ai.AI
+
+        :raises ValueError: if there's no AI with this ID.
+        """
+        return ai.create_ai(ai_id)
 
     def doodad_recipe_by_id(self, doodad_id):
         """
