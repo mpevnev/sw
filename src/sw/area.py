@@ -16,6 +16,7 @@ from multipledispatch import dispatch
 import sw.const.area as const
 import sw.const.visibility as visc
 from sw.doodad import doodad_from_recipe, Doodad
+from sw.item import Item
 from sw.monster import Monster
 from sw.player import Player
 import sw.visibility as vis
@@ -506,6 +507,15 @@ def add_to_area(area, doodad):
     """
     area.doodads.append(doodad)
 
+@dispatch(Area, Item)
+def add_to_area(area, item):
+    """
+    Add an item to an area.
+
+    :param Area area: an area to add the item to.
+    :param Item item: an item to add.
+    """
+    area.items.append(item)
 
 @dispatch(Area, Monster)
 def add_to_area(area, monster):
