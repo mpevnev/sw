@@ -22,14 +22,6 @@ class Player(Character):
         self.xp = 0
         self.sight_range = 5
 
-    #--------- area container logic ---------#
-
-    def add_to_area(self, area):
-        area.player = self
-
-    def remove_from_area(self, area):
-        area.player = None
-
     #--------- death logic ---------#
 
     def death_action(self, state):

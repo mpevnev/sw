@@ -164,14 +164,6 @@ class Character(Entity, Modifiable):
         value = min(value, self.max_health)
         self._health = value
 
-    #--------- container logic ---------#
-
-    def add_to_area(self, area):
-        raise NotImplementedError
-
-    def remove_from_area(self, area):
-        raise NotImplementedError
-
     #--------- death logic ---------#
 
     def alive(self):
@@ -182,43 +174,6 @@ class Character(Entity, Modifiable):
 
     def die(self):
         self.health = 0
-
-    #--------- visibility logic ---------#
-
-    def can_see_through(self, entity):
-        """
-        Test if a given entity is transparent for this character.
-
-        :param entity: the entity to be tested.
-        :type entity: sw.entity.Entity
-
-        :return: True if the entity is transparent for this character, False
-        otherwise.
-        :rtype: bool
-        """
-        raise NotImplementedError
-
-    def transparent_for_monster(self, monster):
-        return True
-
-    def transparent_for_player(self, player):
-        return True
-
-    def within_sight(self, x, y):
-        """
-        Test if a given position is withing character's line of sight.
-
-        :param int x: the X coordinate of the position being tested.
-        :param int y: the Y coordinate of the position being tested.
-
-        :return: True if the given position is within character's line of
-        sight, False otherwise.
-        :rtype: bool
-        """
-        sight_range = self.total_secondary[stat.SecondaryStat.SIGHT]
-        own_x, own_y = self.position
-        return (own_x - sight_range <= x <= own_x + sight_range and
-                own_y - sight_range <= y <= own_y + sight_range)
 
     #--------- other logic ---------#
 
@@ -243,3 +198,19 @@ class Character(Entity, Modifiable):
             new_len = self.total_secondary[misc.slot_stat(slot_type)]
             if new_len > old_len:
                 inventory_list.extend([None] * (new_len - old_len))
+
+    def within_sight(self, x, y):
+        """
+        Test if a given position is withing character's line of sight.
+
+        :param int x: the X coordinate of the position being tested.
+        :param int y: the Y coordinate of the position being tested.
+
+        :return: True if the given position is within character's line of
+        sight, False otherwise.
+        :rtype: bool
+        """
+        sight_range = self.total_secondary[stat.SecondaryStat.SIGHT]
+        own_x, own_y = self.position
+        return (own_x - sight_range <= x <= own_x + sight_range and
+                own_y - sight_range <= y <= own_y + sight_range)

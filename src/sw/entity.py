@@ -15,32 +15,12 @@ class Entity():
         self.position = None
         self.collision_groups = set()
 
-    #--------- container logic ---------#
-
-    def add_to_area(self, area):
-        """
-        Add this entity to a given area.
-
-        :param area: an area to add this entity to.
-        :type area: sw.area.Area
-        """
-        raise NotImplementedError
-
-    def remove_from_area(self, area):
-        """
-        Remove this entity from a given area.
-        
-        :param area: an area from which the entity will be removed.
-        :type area: sw.area.Area
-        """
-        raise NotImplementedError
-
     #--------- collision logic ---------#
 
     def add_collision_group(self, group):
         """
         Add a collision group to the entity.
-        
+
         :param group: a collision group to be added.
         :type group: sw.const.entity.CollisionGroup
         """
@@ -78,7 +58,7 @@ class Entity():
     def distance(self, other):
         """
         Calculate the Manhattan distance to an other entity.
-        
+
         :param Entity other: an entity to which the distance will be
         calculated.
 
@@ -131,7 +111,7 @@ class Entity():
     def death_action(self, state):
         """
         Do something when the entity dies.
-        
+
         :param state: the global game environment of the entity.
         :type state: sw.gamestate.GameState
         """
@@ -141,40 +121,12 @@ class Entity():
         """ Mark this object as dead. """
         raise NotImplementedError
 
-    #--------- visibility logic ---------#
-
-    def transparent_for_player(self, player):
-        """
-        Test if the entity is transparent for a player.
-
-        :param player: a player being tested.
-        :type player: sw.player.Player
-
-        :return: True if the entity is transparent for the player, False
-        otherwise.
-        :rtype: bool
-        """
-        raise NotImplementedError
-
-    def transparent_for_monster(self, monster):
-        """
-        Test if the entity is transparent for a monster.
-
-        :param monster: a monster being tested.
-        :type monster: sw.monster.Monster
-
-        :return: True if the entity is transparent for the monster, False
-        otherwise.
-        :rtype: bool
-        """
-        raise NotImplementedError
-
     #--------- other game logic ---------#
 
     def tick(self, state):
         """
         Process a single game turn.
-        
+
         :param state: global game environment of the entity.
         :type state: sw.gamestate.GameState
         """

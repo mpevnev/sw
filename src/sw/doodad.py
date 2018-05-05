@@ -31,14 +31,6 @@ class Doodad(Entity):
         self.detected = True
         self.dead = False
 
-    #--------- container logic ---------#
-
-    def add_to_area(self, area):
-        area.doodads.append(self)
-
-    def remove_from_area(self, area):
-        area.doodads.remove(self)
-
     #--------- generic usage by other entities ---------#
 
     def use_by_monster(self, monster, state):
@@ -82,14 +74,6 @@ class Doodad(Entity):
     def die(self):
         self.dead = True
 
-    #--------- visibility logic ---------#
-
-    def transparent_for_monster(self, monster):
-        raise NotImplementedError
-
-    def transparent_for_player(self, player):
-        raise NotImplementedError
-
     #--------- other logic ---------#
 
     def tick(self, state):
@@ -104,6 +88,7 @@ class Wall(Doodad):
 
     def __init__(self, recipe_id):
         super().__init__(recipe_id)
+        self.transparent = False
         self.add_collision_group(CollisionGroup.WALL)
 
     def use_by_monster(self, monster, state):
@@ -114,12 +99,6 @@ class Wall(Doodad):
 
     def death_action(self, state):
         pass
-
-    def transparent_for_monster(self, monster):
-        return const.DoodadType.WALL in monster.see_through_types
-
-    def transparent_for_player(self, player):
-        return False
 
 
 #--------- doodad generation from recipes ---------#

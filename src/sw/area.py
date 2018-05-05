@@ -10,9 +10,14 @@ from itertools import chain
 import random as rand
 
 
+from multipledispatch import dispatch
+
+
 import sw.const.area as const
 import sw.const.visibility as visc
-from sw.doodad import doodad_from_recipe
+from sw.doodad import doodad_from_recipe, Doodad
+from sw.monster import Monster
+from sw.player import Player
 import sw.visibility as vis
 
 
@@ -279,7 +284,7 @@ class Area(HasDoodads, HasItems, HasMonsters):
         """
         if not self.place_entity(entity, at_x, at_y):
             return False
-        entity.add_to_area(self)
+        add_to_area(self, entity)
         return True
 
     def entities(self, living_flag, ignore_doodads=False, ignore_items=False,
@@ -486,6 +491,42 @@ class Area(HasDoodads, HasItems, HasMonsters):
             entity.death_action(state)
         self.remove_dead_entities()
         self.ai_turn(state, action_points_for_ai)
+
+
+#--------- container logic ---------#
+
+
+@dispatch(Area, Doodad)
+def add_to_area(area, doodad):
+    """
+    Add a doodad to an area.
+
+    :param Area area: an area to add the doodad to.
+    :param Doodad doodad: a doodad to add.
+    """
+    area.doodads.append(doodad)
+
+
+@dispatch(Area, Monster)
+def add_to_area(area, monster):
+    """
+    Add a monster to an area.
+
+    :param Area area: an area to add the monster to.
+    :param Monster monster: a monster to add.
+    """
+    area.monsters.append(monster)
+
+
+@dispatch(Area, Player)
+def add_to_area(area, player):
+    """
+    Add a player to an area.
+
+    :param Area area: an area to add the player to.
+    :param Player player: a player to add.
+    """
+    area.player = player
 
 
 #--------- area generation from scratch ---------#

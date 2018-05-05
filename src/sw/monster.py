@@ -42,12 +42,6 @@ class Monster(Character):
 
     #--------- stuff inherited from Entity ---------#
 
-    def add_to_area(self, area):
-        area.monsters.append(self)
-
-    def remove_from_area(self, area):
-        area.monsters.remove(self)
-
     def death_action(self, state):
         visinfo = state.area.visibility_matrix[self.position]
         visible = visconst.VisibilityLevel.VISIBLE in visinfo.levels
