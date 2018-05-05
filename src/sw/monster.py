@@ -11,6 +11,7 @@ import random as rand
 from sw.character import Character
 from sw.const.message import Channel
 import sw.const.ai as aiconst
+import sw.const.entity as entconst
 import sw.const.visibility as visconst
 import sw.const.monster as const
 import sw.const.strings as conststr
@@ -31,12 +32,12 @@ class Monster(Character):
         being created.
         """
         super().__init__()
+        self.add_collision_group(entconst.CollisionGroup.CHARACTER)
         self.recipe_id = recipe_id
         self.action_points = 0
         self.ai = None
         self.death_message = None
         self.do_award_xp = True
-        self.see_through_types = set()
         self.xp_award = 0
 
     #--------- stuff inherited from Entity ---------#
@@ -67,7 +68,9 @@ class GenericMonster(Monster):
     A generic monster with no special attributes or behaviour.
     """
 
-    pass
+    def __init__(self, recipe_id):
+        super().__init__(recipe_id)
+        self.add_collision_group(entconst.CollisionGroup.WALL)
 
 
 #--------- monster creation from recipes ---------#
