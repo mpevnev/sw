@@ -85,12 +85,23 @@ class Character(Entity, Modifiable):
         remove_from_list[remove_index] = None
         return True
 
-    def free_slots(self, slot_type):
+    def free_equipment_slots(self, slot_type):
+        """
+        :param slot_type: slot type to get the number of slots of.
+        :type slot_type: sw.const.item.EquipmentSlot
+
+        :return: the number of free slots of a given type for equipment.
+        :rtype: int
+        """
+        equip_list = self.equipment[slot_type]
+        return equip_list.count(None)
+
+    def free_inventory_slots(self, slot_type):
         """
         :param slot_type: slot type to get the number of slots of.
         :type slot_type: sw.const.item.InventorySlot
 
-        :return: the number of free slots of a given type.
+        :return: the number of free slots of a given type in the inventory.
         :rtype: int
         """
         inv_list = self.inventory[slot_type]
@@ -114,7 +125,7 @@ class Character(Entity, Modifiable):
         :rtype: bool or sw.const.item.PickUpError
         """
         inv_list = self.inventory[item.carrying_slot]
-        if self.free_slots(item.carrying_slots) == 0:
+        if self.free_inventory_slots(item.carrying_slots) == 0:
             return citem.PickUpError.NO_SLOTS
         res = item.pick_up(self, state, force)
         if not res:
