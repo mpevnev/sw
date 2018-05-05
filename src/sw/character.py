@@ -104,7 +104,7 @@ class Character(Entity, Modifiable):
         except ValueError:
             return citem.PickUpError.NO_SLOTS
         num_used = len(filter(None, relevant_list))
-        slot_limit = self.total_secondary[item.slot_stat()]
+        slot_limit = self.total_secondary[misc.slot_stat(item.carrying_slot)]
         if num_used > slot_limit:
             return citem.PickUpError.NO_SLOTS
         res = item.pick_up(self, state, force)
@@ -214,3 +214,12 @@ class Character(Entity, Modifiable):
             else:
                 remaining_mods.append(mod)
         self.temp_modifiers = remaining_mods
+
+    def update_totals(self, state):
+        super().update_totals(state)
+        for slot_type in citem.InventorySlot:
+            inventory_list = self.inventory[slot_type]
+            old_len = len(inventory_list)
+            new_len = self.total_secondary[misc.slot_stat(slot_type)]
+            if new_len > old_len:
+                inventory_list.extend([None] * (new_len - old_len))

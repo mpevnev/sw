@@ -184,25 +184,3 @@ class Item(Entity):
         :rtype: bool or sw.const.item.UseError
         """
         raise NotImplementedError
-
-    #--------- convenience things ---------#
-
-    def slot_stat(self):
-        """
-        Return a secondary statistics governing how many slots are suited to
-        hold this item.
-
-        :return: the relevant *_SLOTS statistic.
-        :rtype: sw.const.stat.SecondaryStat
-
-        :raises ValueError: if the slot type is unknown.
-        """
-        if self.carrying_slot is const.InventorySlot.SMALL:
-            return stat.SecondaryStat.SMALL_SLOTS
-        if self.carrying_slot is const.InventorySlot.MEDIUM:
-            return stat.SecondaryStat.MEDIUM_SLOTS
-        if self.carrying_slot is const.InventorySlot.BIG:
-            return stat.SecondaryStat.BIG_SLOTS
-        if self.carrying_slot is const.InventorySlot.HUGE:
-            return stat.SecondaryStat.HUGE_SLOTS
-        raise ValueError(f"Unknown slot type '{self.carrying_slot}'")
