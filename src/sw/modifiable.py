@@ -23,7 +23,6 @@ class Modifiable(HasSkills, HasStats):
         HasStats.__init__(self)
         self.innate_modifiers = deque()
         self.temp_modifiers = deque()
-        self._sorted_modifiers = None
 
     #--------- modifiers manipulation ---------#
 
@@ -34,7 +33,6 @@ class Modifiable(HasSkills, HasStats):
         :param modifiers: modifiers to be added.
         """
         self.innate_modifiers.extend(modifiers)
-        self._sorted_modifiers = None
 
     def add_temp_modifiers(self, *modifiers):
         """
@@ -43,36 +41,19 @@ class Modifiable(HasSkills, HasStats):
         :param modifiers: modifiers to be added.
         """
         self.temp_modifiers.extend(modifiers)
-        self._sorted_modifiers = None
-
-    def all_modifiers(self):
-        """
-        :return: a list with all modifiers sorted by their priority.
-        :rtype: list[sw.modifier.Modifier]
-        """
-        if self._sorted_modifiers is not None:
-            return self._sorted_modifiers
-        res = chain(sorted(self.innate_modifiers, key=lambda mod: mod.priority),
-                    sorted(self.temp_modifiers, key=lambda mod: mod.priority))
-        res = list(res)
-        self._sorted_modifiers = res
-        return res
 
     def clear_all_modifiers(self):
         """ Remove all modifiers. """
         self.innate_modifiers = deque()
         self.temp_modifiers = deque()
-        self._sorted_modifiers = []
 
     def clear_innate_modifiers(self):
         """ Remove all innate modifiers. """
         self.innate_modifiers = deque()
-        self._sorted_modifiers = None
 
     def clear_temp_modifiers(self):
         """ Remove all temporary modifiers. """
         self.temp_modifiers = deque()
-        self._sorted_modifiers = None
 
     def remove_innate_modifiers(self, *modifiers):
         """
@@ -83,7 +64,6 @@ class Modifiable(HasSkills, HasStats):
         for mod in modifiers:
             try:
                 self.innate_modifiers.remove(mod)
-                self._sorted_modifiers = None
             except ValueError:
                 pass
 
@@ -96,9 +76,13 @@ class Modifiable(HasSkills, HasStats):
         for mod in modifiers:
             try:
                 self.temp_modifiers.remove(mod)
-                self._sorted_modifiers = None
             except ValueError:
                 pass
+
+    def sort_modifiers(self):
+        """ Sort modifier deques. """
+        self.innate_modifiers = deque(sorted(self.innate_modifiers, lambda m: m.priority))
+        self.temp_modifiers = deque(sorted(self.temp_modifiers, lambda m: m.priority))
 
     #--------- application of modifiers ---------#
 
@@ -109,21 +93,22 @@ class Modifiable(HasSkills, HasStats):
         :param state: the global game environment modifiers might factor in.
         :type state: sw.gamestate.GameState
         """
+        self.sort_modifiers()
         self._update_skill_totals(state)
         self._update_primary_totals(state)
         self._update_secondary_totals(state)
 
     def _update_skill_totals(self, state):
         self.total_skills = self.base_skills.copy()
-        for mod in self.all_modifiers():
+        for mod in chain(self.innate_modifiers, self.temp_modifiers)
             mod.apply_skills(self, state)
 
     def _update_primary_totals(self, state):
         self.total_primary = self.base_primary.copy()
-        for mod in self.all_modifiers():
+        for mod in self.innate_modifiers, self.temp_modifiers)
             mod.apply_primary(self, state)
 
     def _update_secondary_totals(self, state):
         self.total_secondary = self.base_secondary.copy()
-        for mod in self.all_modifiers():
+        for mod in self.innate_modifiers, self.temp_modifiers)
             mod.apply_secondary(self, state)
