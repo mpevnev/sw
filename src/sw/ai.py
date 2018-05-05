@@ -16,6 +16,29 @@ import sw.const.ai as const
 
 import sw.gamestate as gs
 import sw.monster as mon
+import sw.monster_interactions as mi
+
+
+#--------- AI driver ---------#
+
+
+def ai_turn(state, actions):
+    """
+    Make AI-controlled entities do something.
+
+    :param state: game state to be modified by the active entities.
+    :type state: sw.gamestate.GameState
+    :param int actions: the amount of action points to be added to the
+    entities' action point pools.
+    """
+    if state.area is None:
+        return
+    for monster in state.area.all_monsters(True):
+        if monster.hidden():
+            continue
+        monster.action_points += actions
+        task = evaluate_ai_action(monster.ai, monster, state)
+        mi.perform_task(monster, task[0], task[1:], state)
 
 
 #--------- AI selector ---------#
@@ -86,10 +109,10 @@ def evaluate_ai_action(ai, monster, state):
     """
     player = state.player
     if state.area.can_see(monster, *player.position):
-        self.alarmed = True
+        ai.alarmed = True
         if monster.distance(player) == 1:
             return (const.Task.ATTACK, player)
         return (const.Task.PURSUE, player)
-    if self.alarmed:
-        return (const.Task.INVESTIGATE, self.alarm_coordinates)
+    if ai.alarmed:
+        return (const.Task.INVESTIGATE, ai.alarm_coordinates)
     return (const.Task.REST,)

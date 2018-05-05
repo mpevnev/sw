@@ -11,7 +11,6 @@ from multipledispatch import dispatch
 import sw.const.ai as constai
 from sw.const.message import Channel
 
-import sw.ai as a
 import sw.character as c
 import sw.doodad as d
 import sw.gamestate as gs

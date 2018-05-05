@@ -3,6 +3,7 @@ Main dungeon stage (well, and non-dungeon area exploration too).
 """
 
 
+import sw.ai as ai
 import sw.flow as flow
 import sw.event.main_dungeon as event
 
@@ -29,7 +30,7 @@ class MainDungeon(flow.SWFlow):
         """
         self.state.ui = self.ui
         self.state.area = area
-        self.state.area.tick(self.state, 0)
+        self.state.area.tick(self.state)
         self.state.player.tick(self.state)
         # TEMP DEBUG
         import sw.monster as monster
@@ -37,6 +38,7 @@ class MainDungeon(flow.SWFlow):
         self.state.area.update_visibility_matrix()
         recipe = self.state.data.monster_recipe_by_id("debug melee zombie")
         mon = monster.monster_from_recipe(recipe, self.state.data)
+        mon.tick(self.state)
         mon.health = 1
         self.mon = mon
         self.state.area.add_entity(mon, 3, 3)
@@ -70,8 +72,6 @@ class MainDungeon(flow.SWFlow):
     def tick(self):
         """ Process a single game turn. """
         self.state.turn += 1
+        self.state.area.tick(self.state)
         self.state.player.tick(self.state)
-        self.state.area.tick(self.state, 0)
-        # TEMP DEBUG
-        self.mon.health -= 1
-        self.state.player.health += 1
+        ai.ai_turn(self.state, 0)

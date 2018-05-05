@@ -461,23 +461,7 @@ class Area(HasDoodads, HasItems, HasMonsters):
 
     #--------- other game logic ---------#
 
-    def ai_turn(self, state, actions):
-        """
-        Make contained AI-controlled entities do something.
-
-        :param state: game state to be modified by the active entities.
-        :type state: sw.gamestate.GameState
-        :param int actions: the amount of action points to be added to the
-        entities' action point pools.
-        """
-        for monster in self.all_monsters(True):
-            if monster.hidden():
-                continue
-            monster.action_points += actions
-            task = monster.ai.evaluate(monster, state)
-            monster.perform_task(task, state)
-
-    def tick(self, state, action_points_for_ai):
+    def tick(self, state):
         """
         Process a single game turn.
 
@@ -491,7 +475,6 @@ class Area(HasDoodads, HasItems, HasMonsters):
         for entity in self.entities(False, ignore_player=True):
             entity.death_action(state)
         self.remove_dead_entities()
-        self.ai_turn(state, action_points_for_ai)
 
 
 #--------- container logic ---------#
