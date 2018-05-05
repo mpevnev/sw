@@ -67,6 +67,8 @@ class Character(Entity, Modifiable):
         the item dangerous or impossible.
         :rtype: bool or sw.const.item.EquipError
         """
+        if item.wearing_slot is None:
+            return citem.EquipError.UNEQUIPABLE
         if item.cursed and item.visibly_cursed and not force:
             return citem.EquipError.VISIBLY_CURSED
         relevant_list = self.equipment[item.wearing_slot]
