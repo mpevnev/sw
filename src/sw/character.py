@@ -27,63 +27,31 @@ class Character(Entity, Modifiable):
 
     #--------- item logic ---------#
 
-    def drop_item(self, item, state, force=False):
+    def add_item_to_equipment_slot(self, item):
         """
-        Drop an item.
+        Add an item to its equipment slot.
 
-        :param item: an item to be dropped.
+        :param item: an item to add.
         :type item: sw.item.Item
-        :param state: a global environment which affects dropping the item.
-        :type state: sw.gamestate.GameState
-        :param bool force: if set to true, the item will be dropped even if
-        it's dangerous.
 
-        :return: True on success, an error code if something makes dropping the
-        item dangerous or impossible.
-        :rtype: bool or sw.const.item.DropError
+        :raises ValueError: if there is no free slot.
         """
-        res = item.drop(state, force)
-        if not res:
-            return res
-        slot = item.carrying_slot
-        relevant_list = self.inventory[slot]
-        relevant_list[relevant_list.index(item)] = None
-        item.position = item.owner.position
-        item.owner = None
-        return True
+        equip_list = self.equipment[item.wearing_slot]
+        index = equip_list.index(None)
+        equip_list[index] = item
 
-    def equip_item(self, item, state, force=False):
+    def add_item_to_inventory_slot(self, item):
         """
-        Equip an item.
+        Add an item to an inventory slot of relevant type.
 
-        :param item: an item to equip.
+        :param item: an item to add.
         :type item: sw.item.Item
-        :param state: a global environment that may affect equipping.
-        :type state: sw.gamestate.GameState
-        :param bool force: if set to true, the item will be equipped even if
-        it's dangerous.
 
-        :return: True on success, an error code if something makes equipping
-        the item dangerous or impossible.
-        :rtype: bool or sw.const.item.EquipError
+        :raises ValueError: if there is no free slot.
         """
-        if item.wearing_slot is None:
-            return citem.EquipError.UNEQUIPABLE
-        if item.cursed and item.visibly_cursed and not force:
-            return citem.EquipError.VISIBLY_CURSED
-        relevant_list = self.equipment[item.wearing_slot]
-        try:
-            index = relevant_list.index(None)
-        except ValueError:
-            return citem.EquipError.NO_SLOTS
-        res = item.equip(state, force)
-        if not res:
-            return res
-        relevant_list[index] = item
-        remove_from_list = self.inventory[item.carrying_slot]
-        remove_index = remove_from_list.index(item)
-        remove_from_list[remove_index] = None
-        return True
+        inv_list = self.inventory[item.carrying_slot]
+        index = inv_list.index(None)
+        inv_list[index] = item
 
     def free_equipment_slots(self, slot_type):
         """
@@ -109,31 +77,23 @@ class Character(Entity, Modifiable):
         num_slots = self.total_secondary[misc.slot_stat(slot_type)]
         return num_slots - num_items
 
-    def pick_up_item(self, item, state, force=False):
+    def remove_item_from_slot(self, item):
         """
-        Pick up an item.
+        Remove an item from its slot either in inventory or equipment.
 
-        :param item: an item to pick up.
+        :param item: an item to remove.
         :type item: sw.item.Item
-        :param state: a global environment that may affect pick up.
-        :type state: sw.gamestate.GameState
-        :param bool force: if set to true, the item will be picked up even if
-        it's dangerous.
-
-        :return: True on success, an error code if something makes pick up
-        dangerous or impossible.
-        :rtype: bool or sw.const.item.PickUpError
         """
-        inv_list = self.inventory[item.carrying_slot]
-        if self.free_inventory_slots(item.carrying_slots) == 0:
-            return citem.PickUpError.NO_SLOTS
-        res = item.pick_up(self, state, force)
-        if not res:
-            return res
-        item.owner = self
-        item.position = None
-        inv_list[inv_list.index(None)] = item
-        return True
+        try:
+            self.inventory[self.inventory.index(item)] = None
+            return
+        except ValueError:
+            pass
+        try:
+            self.equipment[self.equipment.index(item)] = None
+            return
+        except ValueError:
+            pass
 
     #--------- health logic ---------#
 
