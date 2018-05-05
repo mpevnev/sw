@@ -12,7 +12,7 @@ from sw.ai import select_ai
 from sw.character import Character
 from sw.const.message import Channel
 import sw.const.ai as aiconst
-import sw.const.area as arconst
+import sw.const.visibility as visconst
 import sw.const.monster as const
 import sw.const.strings as conststr
 import sw.misc as misc
@@ -50,19 +50,14 @@ class Monster(Character):
 
     def death_action(self, state):
         visinfo = state.area.visibility_matrix[self.position]
-        visible = arconst.VisibilityLevel.VISIBLE in visinfo.levels
+        visible = visconst.VisibilityLevel.VISIBLE in visinfo.levels
         if self.do_award_xp:
             state.player.xp += self.xp_award
         if visible:
             state.ui.message(self.death_message, Channel.MONSTER_DEATH)
-            ui.death_animation(self)
+            state.ui.death_animation(self)
         elif self.do_award_xp:
             state.ui.message(state.data.strings[conststr.FEEL_MORE_EXPERIENCED], Channel.NORMAL)
-
-    #--------- visibility logic ---------#
-
-    def can_see_through(self, entity):
-        return entity.transparent_for_monster(self)
 
     #--------- other logic ---------#
 
@@ -92,7 +87,7 @@ class Monster(Character):
         elif taskid == aiconst.Task.FOLLOW:
             self.follow(task[1], state)
         elif taskid == aiconst.Task.INVESTIGATE:
-            self.investigate(task[1], state)
+            self.investigate(*task[1], state)
         elif taskid == aiconst.Task.PURSUE:
             self.pursue(task[1], state)
         elif taskid == aiconst.Task.REST:

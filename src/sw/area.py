@@ -11,7 +11,9 @@ import random as rand
 
 
 import sw.const.area as const
+import sw.const.visibility as visc
 from sw.doodad import doodad_from_recipe
+import sw.visibility as vis
 
 
 #--------- parent classes ---------#
@@ -429,13 +431,13 @@ class Area(HasDoodads, HasItems, HasMonsters):
                 break
             potential_blockers = self.entities_at(cur[0], cur[1], True)
             for blocker in potential_blockers:
-                if not character.can_see_through(blocker):
+                if not vis.is_transparent(blocker, character):
                     return False
         return True
 
     def reset_visibility_matrix(self):
         """ Fill the entire visibility matrix with 'NEVER_SEEN' markers. """
-        self.visibility_matrix = {(x, y): VisibilityInfo(const.VisibilityLevel.NEVER_SEEN)
+        self.visibility_matrix = {(x, y): vis.VisibilityInfo(visc.VisibilityLevel.NEVER_SEEN)
                                   for (x, y) in self.all_coordinates()}
 
     def update_visibility_matrix(self):
@@ -444,12 +446,12 @@ class Area(HasDoodads, HasItems, HasMonsters):
         """
         for (x, y), info in self.visibility_matrix.items():
             if self.can_see(self.player, x, y):
-                info.levels = {const.VisibilityLevel.VISIBLE}
+                info.levels = {visc.VisibilityLevel.VISIBLE}
                 info.remembered_doodads = self.doodads_at(x, y, True)
                 info.remembered_items = self.items_at(x, y, True)
                 info.remembered_monsters = self.monsters_at(x, y, True)
             else:
-                info.levels.discard(const.VisibilityLevel.VISIBLE)
+                info.levels.discard(visc.VisibilityLevel.VISIBLE)
 
     #--------- other game logic ---------#
 
@@ -478,70 +480,12 @@ class Area(HasDoodads, HasItems, HasMonsters):
         :param int action_points_for_ai: the amount of action points to be
         granted to the AI entities.
         """
-        player = state.player
         for entity in self.entities(True, ignore_player=True):
             entity.tick(state)
         for entity in self.entities(False, ignore_player=True):
             entity.death_action(state)
         self.remove_dead_entities()
         self.ai_turn(state, action_points_for_ai)
-
-
-#--------- helper classes ---------#
-
-
-class VisibilityInfo():
-    """
-    A class containing remembered and sensed information about a position.
-    """
-
-    def __init__(self, base_level=None):
-        if base_level is None:
-            self.levels = {}
-        else:
-            self.levels = {base_level}
-        self.remembered_doodads = []
-        self.remembered_items = []
-        self.remembered_monsters = []
-
-    def never_seen(self):
-        """
-        :return: True if the point this info refers to was never seen, False
-        otherwise.
-        :rtype: bool
-        """
-        return const.VisibilityLevel.NEVER_SEEN in self.levels
-
-    def sense_doodads(self):
-        """
-        :return: True if the player can sense doodads in this point, False
-        otherwise.
-        :rtype: bool
-        """
-        return const.VisibilityLevel.SENSE_DOODADS in self.levels
-
-    def sense_items(self):
-        """
-        :return: True if the player can sense items in this point, False
-        otherwise.
-        :rtype: bool
-        """
-        return const.VisibilityLevel.SENSE_ITEMS in self.levels
-
-    def sense_monsters(self):
-        """
-        :return: True if the player can sense monsters in this point, False
-        otherwise.
-        :rtype: bool
-        """
-        return const.VisibilityLevel.SENSE_MONSTERS in self.levels
-
-    def visible(self):
-        """
-        :return: True if the point this info refers to is visible, False
-        otherwise.
-        """
-        return const.VisibilityLevel.VISIBLE in self.levels
 
 
 #--------- area generation from scratch ---------#

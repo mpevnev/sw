@@ -38,13 +38,6 @@ class Player(Character):
         """
         pass
 
-    #--------- visibility logic ---------#
-
-    def can_see_through(self, entity):
-        return entity.transparent_for_player(self)
-
-    #--------- other game logic ---------#
-
 
 #--------- generating a player from a saved dict ---------#
 
