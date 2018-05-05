@@ -92,6 +92,8 @@ def drop_item(item, character, state, force):
     """
     if character.hidden():
         return citem.DropError.HIDDEN
+    if state.area is None and not force:
+        return citem.DropError.WOULD_GET_DESTROYED
     pos = character.position
     for blocker in state.area.entities_at(*pos):
         if item.would_collide(blocker, *pos):
