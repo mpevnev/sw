@@ -20,7 +20,7 @@ import sw.player as player
 
 
 @dispatch(entity.Entity, entity.Entity)
-def is_transparent(_1, _2):
+def is_transparent(_what, _to_what):
     """
     :return: True if a given entity is transparent for another entity, False
     otherwise.
@@ -30,7 +30,7 @@ def is_transparent(_1, _2):
 
 
 @dispatch(doodad.Wall, entity.Entity)
-def is_transparent(wall, _):
+def is_transparent(wall, _other):
     """
     :return: True if a given wall is transparent to a given entity, False
     otherwise.
