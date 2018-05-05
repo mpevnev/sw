@@ -48,6 +48,7 @@ class Character(Entity, Modifiable):
         slot = item.carrying_slot
         relevant_list = self.inventory[slot]
         relevant_list[relevant_list.index(item)] = None
+        item.position = item.owner.position
         item.owner = None
         return True
 
@@ -106,6 +107,7 @@ class Character(Entity, Modifiable):
         if not res:
             return res
         item.owner = self
+        item.position = None
         relevant_list[index] = item
         return True
 
