@@ -64,14 +64,21 @@ class MainDungeon(flow.SWFlow):
         delta = ev[1]
         if self.state.area.shift_entity(self.state.player, *delta):
             self.state.area.update_visibility_matrix()
-            self.tick()
+            self.tick(0)
+        return True
+
+    def wait(self, ev):
+        """ Handle 'wait' event. """
+        if ev[0] != event.WAIT:
+            return False
+        self.tick(0)
         return True
 
     #--------- helper things ---------#
 
-    def tick(self):
+    def tick(self, ai_actions):
         """ Process a single game turn. """
         self.state.turn += 1
         self.state.area.tick(self.state)
         self.state.player.tick(self.state)
-        ai.ai_turn(self.state, 0)
+        ai.ai_turn(self.state, ai_actions)

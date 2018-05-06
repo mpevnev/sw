@@ -1,11 +1,35 @@
 
-# Global settings
+# Configuration
+low health threshold: 0.3
+moderate health threshold: 0.75
+
+# Strings - dungeon view
 empty space char: '.'
 player char: '@'
 unseen entity color: {fg: blue, bg: black}
 sensed doodad char: '*'
 sensed item char: '}'
 sensed monster char: '{'
+
+# Strings - status box
+bar char: '#'
+low health: {fg: red, bg: black}
+moderate health: {fg: yellow, bg: black}
+high health: {fg: green, bg: black}
+health: 'Health: {current}/{maximum}'
+experience: 'Experience: '
+#
+strength: 'STR: '
+dexterity: 'DEX: '
+intelligence: 'INT: '
+spirit: 'SPI: '
+#
+slot separator: '-'
+#
+to hit: 'To hit: '
+dodge: 'Dodge: '
+armor: 'Armor: '
+
 
 # Geometry
 message box height: 10
@@ -23,13 +47,15 @@ right down: ['n', '3']
 
 ascend: ['<']
 descend: ['>']
+wait: ['5']
 
 # Doodad mappings
 doodad map: 
     stone wall: {char: '#', color: {fg: white, bg: black}}
 
 # Item mappings
-item map: []
+item map: {}
 
 # Monster mappings
-monster map: []
+monster map:
+    debug melee zombie: {char: 'z', color: {fg: white, bg: black}}

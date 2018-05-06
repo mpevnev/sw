@@ -59,6 +59,8 @@ class MainDungeon(mofloc.EventSource, ui.MainDungeonWindow):
             return (event.ASCEND,)
         if ch in self.uidata[md.KEY_DESCEND]:
             return (event.DESCEND,)
+        if ch in self.uidata[md.KEY_WAIT]:
+            return (event.WAIT,)
         raise mofloc.NoEvent
 
     #--------- interactions ---------#
