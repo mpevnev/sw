@@ -53,6 +53,13 @@ class Character(Entity, Modifiable):
         index = inv_list.index(None)
         inv_list[index] = item
 
+    def armor(self):
+        """
+        :return: a list of worn armor.
+        :rtype: list[sw.item.Armor]
+        """
+        return self.equipment[citem.EquipmentSlot.ARMOR]
+
     def free_equipment_slots(self, slot_type):
         """
         :param slot_type: slot type to get the number of slots of.
@@ -76,6 +83,20 @@ class Character(Entity, Modifiable):
         num_items = len(filter(None, inv_list))
         num_slots = self.total_secondary[misc.slot_stat(slot_type)]
         return num_slots - num_items
+
+    def melee_weapons(self):
+        """
+        :return: a list of wielded melee weapons.
+        :rtype: list[sw.item.MeleeWeapon]
+        """
+        return self.equipment[citem.EquipmentSlot.MELEE_WEAPON]
+
+    def ranged_weapons(self):
+        """
+        :return: a list of wielded ranged weapons.
+        :rtype: list[sw.item.RangedWeapon]
+        """
+        return self.equipment[citem.EquipmentSlot.RANGED_WEAPON]
 
     def remove_item_from_slot(self, item):
         """

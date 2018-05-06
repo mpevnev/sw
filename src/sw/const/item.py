@@ -6,17 +6,19 @@ Item constnats.
 from enum import Enum
 
 
-#--------- reading from dicts ---------#
+#--------- reading from dicts - main things ---------#
 
 
 class ItemType(Enum):
     """ An item type. """
 
-    GENERIC_MELEE = "generic melee"
-    GENERIC_RANGED = "generic ranged"
+    DAGGER = "dagger"
 
 ID = "id"
 TYPE = "type"
+
+
+#--------- reading from dicts - generic fields ---------#
 
 
 class WeaponField(Enum):
@@ -26,7 +28,6 @@ class WeaponField(Enum):
     ARMOR_PENETRATION = "armor penetration"
     MIN_DAMAGE = "min damage"
     MAX_DAMAGE = "max damage"
-    SKILL = "skill"
     TO_HIT_BONUS = "to hit"
 
 
@@ -41,6 +42,16 @@ class RangedWeaponField(Enum):
 
     AMMO_TYPES = "ammo"
     RANGE = "range"
+
+
+#--------- reading from dicts - fields of concrete classes ---------#
+
+
+class DaggerField(Enum):
+    """ A field of a dagger-type weapon. """
+
+    STABBING_DAMAGE_BONUS = "stab damage bonus"
+    STABBING_TO_HIT_BONUS = "stab to hit bonus"
 
 
 #--------- error codes ---------#

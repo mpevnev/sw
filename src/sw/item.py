@@ -9,7 +9,6 @@ from sw.entity import Entity
 
 from sw.const.entity import CollisionGroup
 import sw.const.item as const
-from sw.const.skill import Skill
 
 
 #--------- base class ---------#
@@ -45,11 +44,7 @@ class Weapon(Item):
         self.armor_penetration = None
         self.min_damage = None
         self.max_damage = None
-        self.skill = None
         self.to_hit_bonus = None
-
-
-#--------- concrete subclasses ---------#
 
 
 class MeleeWeapon(Weapon):
@@ -70,6 +65,18 @@ class RangedWeapon(Weapon):
         self.wearing_slot = const.EquipmentSlot.RANGED_WEAPON
 
 
+#--------- concrete subclasses ---------#
+
+
+class Dagger(MeleeWeapon):
+    """ A dagger. Gets bonuses to stabbing. """
+
+    def __init__(self, recipe_id):
+        super().__init__(recipe_id)
+        self.stab_damage_bonus = None
+        self.stab_to_hit_bonus = None
+
+
 #--------- reading ---------#
 
 
@@ -87,17 +94,25 @@ def item_from_recipe(recipe, other_game_data):
     """
     item_id = recipe[const.ID]
     item_type = recipe[const.TYPE]
-    if item_type == const.ItemType.GENERIC_MELEE.value:
-        res = MeleeWeapon(item_id)
-        read_generic_weapon_fields(res, recipe)
-        return res
-    if item_type == const.ItemType.GENERIC_RANGED.value:
-        res = RangedWeapon(item_id)
-        read_ranged_weapon_fields(res, recipe)
+    if item_type == const.ItemType.DAGGER.value:
+        res = Dagger(item_id)
+        read_dagger_fields(res, recipe)
         return res
     raise ValueError(f"Unknown item type '{item_type}'")
 
 #--------- reading helpers ---------#
+
+
+def read_dagger_fields(dagger, recipe):
+    """
+    Read fields for a dagger.
+
+    :param Dagger dagger: read into this.
+    :param dict recipe: read from here.
+    """
+    read_generic_weapon_fields(dagger, recipe)
+    dagger.stab_damage_bonus = recipe[const.DaggerField.STABBING_DAMAGE_BONUS.value]
+    dagger.stab_to_hit_bonus = recipe[const.DaggerField.STABBING_TO_HIT_BONUS.value]
 
 
 def read_generic_weapon_fields(weapon, from_dict):
@@ -111,7 +126,6 @@ def read_generic_weapon_fields(weapon, from_dict):
     weapon.armor_penetration = from_dict.get(const.WeaponField.ARMOR_PENETRATION.value, 0)
     weapon.min_damage = from_dict[const.WeaponField.MIN_DAMAGE.value]
     weapon.max_damage = from_dict[const.WeaponField.MAX_DAMAGE.value]
-    weapon.skill = Skill(from_dict[const.WeaponField.SKILL.value])
     weapon.to_hit_bonus = from_dict.get(const.WeaponField.TO_HIT_BONUS.value, 0)
 
 

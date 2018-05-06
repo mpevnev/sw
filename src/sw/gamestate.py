@@ -13,6 +13,7 @@ class GameState():
     """ A container with all game information. """
 
     def __init__(self):
+        self.ai_action_points = 0
         self.area = None
         self.data = None
         self.messages = None
