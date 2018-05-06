@@ -357,6 +357,23 @@ class Area(HasDoodads, HasItems, HasMonsters):
         add_to_area(self, entity)
         return True
 
+    def blockers_at(self, entity, at_x, at_y):
+        """
+        Return a generator with all blockers for a given entity at a given
+        position.
+
+        :param entity: an entity to get blockers for.
+        :type entity: sw.entity.Entity
+        :param int at_x: the X coordinate of a point to look for blockers at.
+        :param int at_y: the Y coordinate of a point to look for blockers at.
+
+        :return: a generator with blockers.
+        :rtype: iter
+        """
+        potential_blockers = self.entities_at(at_x, at_y, True)
+        return filter(lambda blocker: entity.would_collide(blocker, at_x, at_y),
+                      potential_blockers)
+
     def can_place_entity(self, entity, at_x, at_y):
         """
         Test if an entity can be placed at a given position.
@@ -575,6 +592,7 @@ def add_to_area(area, doodad):
     """
     area.doodads.append(doodad)
 
+
 @dispatch(Area, Item)
 def add_to_area(area, item):
     """
@@ -584,6 +602,7 @@ def add_to_area(area, item):
     :param Item item: an item to add.
     """
     area.items.append(item)
+
 
 @dispatch(Area, Monster)
 def add_to_area(area, monster):
