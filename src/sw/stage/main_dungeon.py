@@ -62,9 +62,16 @@ class MainDungeon(flow.SWFlow):
         if ev[0] != event.MOVE:
             return False
         delta = ev[1]
-        if self.state.area.shift_entity(self.state.player, *delta):
-            self.state.area.update_visibility_matrix()
+        area = self.state.area
+        player = self.state.player
+        if area.shift_entity(player, *delta):
+            area.update_visibility_matrix()
             self.tick(0)
+        else:
+            target = player.position[0] + delta[0], player.position[1] + delta[1]
+            blockers = area.blockers_at(player, *target)
+            for blocker in blockers:
+                pass
         return True
 
     def wait(self, ev):
@@ -79,6 +86,7 @@ class MainDungeon(flow.SWFlow):
     def tick(self, ai_actions):
         """ Process a single game turn. """
         self.state.turn += 1
+        self.state.ai_action_points += ai_actions
         self.state.area.tick(self.state)
         self.state.player.tick(self.state)
-        ai.ai_turn(self.state, ai_actions)
+        ai.ai_turn(self.state)

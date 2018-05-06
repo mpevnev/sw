@@ -24,7 +24,7 @@ import sw.monster as mon
 #--------- AI driver ---------#
 
 
-def ai_turn(state, actions):
+def ai_turn(state):
     """
     Make AI-controlled entities do something.
 
@@ -38,12 +38,13 @@ def ai_turn(state, actions):
     for monster in state.area.all_monsters(True):
         if monster.hidden():
             continue
-        monster.action_points += actions
+        monster.action_points += state.ai_action_points
         task = evaluate_ai_action(monster.ai, monster, state)
         if task[0] is const.Task.CARRY_ON:
             mi.carry_on(monster, state)
         else:
             mi.start_new_task(monster, task, state)
+    state.ai_action_points = 0
 
 
 #--------- AI selector ---------#
