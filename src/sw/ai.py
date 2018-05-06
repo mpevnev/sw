@@ -14,10 +14,11 @@ from multipledispatch import dispatch
 
 import sw.const.ai as const
 
+import sw.interaction.monster as mi
+
 import sw.gamestate as gs
 import sw.misc as misc
 import sw.monster as mon
-import sw.monster_interactions as mi
 
 
 #--------- AI driver ---------#
