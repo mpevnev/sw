@@ -15,6 +15,7 @@ from multipledispatch import dispatch
 import sw.const.ai as const
 
 import sw.gamestate as gs
+import sw.misc as misc
 import sw.monster as mon
 import sw.monster_interactions as mi
 
@@ -38,7 +39,10 @@ def ai_turn(state, actions):
             continue
         monster.action_points += actions
         task = evaluate_ai_action(monster.ai, monster, state)
-        mi.perform_task(monster, task[0], task[1:], state)
+        if task[0] is const.Task.CARRY_ON:
+            mi.carry_on(monster, state)
+        else:
+            mi.start_new_task(monster, task, state)
 
 
 #--------- AI selector ---------#
@@ -69,7 +73,19 @@ class AI():
     def __init__(self):
         self.alarmed = False
         self.alarm_coordinates = None
+        self.chosen_path = None
         self.last_tasks = deque(maxlen=const.REMEMBERED_TASKS_NUM)
+
+    def last_task(self):
+        """
+        :return: the last task the AI performed, or None if the task deque is
+        empty.
+        :rtype: const.Task or None
+        """
+        try:
+            return self.last_tasks[-1]
+        except IndexError:
+            return None
 
 
 class MeleeZombie(AI):
@@ -93,8 +109,9 @@ def evaluate_ai_action(ai, monster, state):
     :param state: a global environment to take into account.
     :type state: sw.gamestate.GameState
 
-    :return: a tuple with a task and its arguments
-    :rtype: tuple
+    :return: a tuple with a task and its arguments or None if the monster
+    should carry on with whatever it's doing at the moment.
+    :rtype: tuple or None
     """
     return (const.Task.REST,)
 
@@ -113,7 +130,17 @@ def evaluate_ai_action(ai, monster, state):
         ai.alarm_coordinates = player.position
         if monster.distance(player) == 1:
             return (const.Task.ATTACK, player)
-        return (const.Task.PURSUE, player)
+        last_task = ai.last_task()
+        if last_task is None or last_task[0] is not const.Task.PURSUE:
+            ai.chosen_path = None
+            return (const.Task.PURSUE, player)
+        return (const.Task.CARRY_ON,)
     if ai.alarmed:
-        return (const.Task.INVESTIGATE, ai.alarm_coordinates)
+        last_task = ai.last_task()
+        if (last_task is None
+                or last_task[0] is not const.Task.INVESTIGATE
+                or misc.dist(monster.position, ai.alarm_coordinates) <= 2):
+            ai.chosen_path = None
+            return (const.Task.INVESTIGATE, ai.alarm_coordinates)
+        return (const.Task.CARRY_ON,)
     return (const.Task.REST,)

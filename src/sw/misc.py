@@ -52,6 +52,21 @@ def convert_stat_dict(data):
     return res
 
 
+def dist(a, b):
+    """
+    Return Manhattan distance between two points.
+
+    :param a: first point.
+    :type a: tuple(int, int)
+    :param b: second point.
+    :type b: tuple(int, int)
+
+    :return: distance.
+    :rtype: int
+    """
+    return max(abs(a[0] - b[0]), abs(a[1] - b[1]))
+
+
 def enumerate_with_letters(iterator):
     """
     Iterate over all items in a given iterator, yielding a pair of a letter of
@@ -128,12 +143,14 @@ def read(default, *filename):
         pass
     return _try_read(Path("/", "usr", "share", INSTALLDIR, f), default=default)
 
+
 def slot_stat(slot_type):
     """
     Return a stat governing the number of slots of a given type.
 
     :param slot_type: the type of slot to get statistics for.
     :type slot_type: sw.const.item.InventorySlot
+
     :return: the relevant *_SLOTS statistic.
     :rtype: sw.const.stat.SecondaryStat
 

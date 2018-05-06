@@ -13,6 +13,7 @@ class Task(Enum):
     """ An AI task type. """
 
     ATTACK = "attack"
+    CARRY_ON = "carry on"
     CAST_SPELL = "cast"
     EXPLORE = "explore"
     FOLLOW = "follow"

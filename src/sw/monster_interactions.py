@@ -20,7 +20,22 @@ import sw.player as p
 import sw.spell as s
 
 
-#--------- performing AI tasks - main function ---------#
+#--------- performing AI tasks - main functions ---------#
+
+
+def carry_on(monster, state):
+    """
+    Make a monster continue with its current task.
+
+    :param monster: a monster to go on.
+    :type monster: sw.monster.Monster
+    :param state: a global environment.
+    :type state: sw.gamestate.GameState
+    """
+    last_task = monster.ai.last_task()
+    if last_task is None:
+        return
+    perform_task(monster, last_task[0], last_task[1:], state)
 
 
 def perform_task(monster, task, taskargs, state):
@@ -57,6 +72,20 @@ def perform_task(monster, task, taskargs, state):
         step_aside(monster, state)
     else:
         raise ValueError(f"Unknown task '{task}'")
+
+
+def start_new_task(monster, task_and_args, state):
+    """
+    Make a monster start some new activity.
+
+    :param monster: a monster to perform the task.
+    :type monster: sw.monster.Monster
+    :param tuple task_and_args: a task to perform with its arguments.
+    :param state: a global environment.
+    :type state: sw.gamestate.GameState
+    """
+    monster.ai.last_tasks.append(task_and_args)
+    perform_task(monster, task_and_args[0], task_and_args[1:], state)
 
 
 #--------- monster attacks ---------#
@@ -145,7 +174,16 @@ def investigate(monster, x, y, state):
     :param state: a global environment.
     :type state: sw.gamestate.GameState
     """
-    state.ui.message("FIXME: generic monster investigate", None)
+    path = monster.ai.chosen_path or state.area.path(monster, x, y)
+    if path is None:
+        return
+    monster.ai.chosen_path = path
+    try:
+        move_here = monster.ai.chosen_path.popleft()
+    except IndexError:
+        return
+    state.area.place_entity(monster, *move_here)
+    monster.action_points -= monster.movement_ap_cost()
 
 
 #--------- monsters pursuing ---------#
@@ -163,7 +201,16 @@ def pursue(monster, who, state):
     :param state: a global environment.
     :type state: sw.gamestate.GameState
     """
-    state.ui.message("FIXME: generic monster pursue", None)
+    path = monster.ai.chosen_path or state.area.path(monster, *who.position)
+    if path is None:
+        return
+    monster.ai.chosen_path = path
+    try:
+        move_here = monster.ai.chosen_path.popleft()
+    except IndexError:
+        return
+    state.area.place_entity(monster, *move_here)
+    monster.action_points -= monster.movement_ap_cost()
 
 
 #--------- monsters resting ---------#

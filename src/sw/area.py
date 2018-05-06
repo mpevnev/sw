@@ -17,6 +17,7 @@ import sw.const.area as const
 import sw.const.visibility as visc
 from sw.doodad import doodad_from_recipe, Doodad
 from sw.item import Item
+import sw.misc as misc
 from sw.monster import Monster
 from sw.player import Player
 import sw.visibility as vis
@@ -268,6 +269,74 @@ class Area(HasDoodads, HasItems, HasMonsters):
         if last != (to_x, to_y):
             yield (to_x, to_y)
 
+    def neighbours(self, x, y):
+        """
+        Compute all neighbours of a given position.
+
+        :param int x: X coordinate of a position to search for neighbours.
+        :param int y: Y coordinate of a position to search for neighbours.
+
+        :return: a generator with all neighbours of a position.
+        :rtype: iter
+        """
+        offsets = [
+            (1, 0),
+            (1, -1),
+            (0, -1),
+            (-1, -1),
+            (-1, 0),
+            (-1, 1),
+            (0, 1),
+            (1, 1)]
+        for dx, dy in offsets:
+            if self.contains_point(x + dx, y + dy):
+                yield x + dx, y + dy
+
+    def path(self, entity, to_x, to_y):
+        """
+        Compute a path from an entity's current position to a given position.
+
+        :param entity: an entity to compute the path for.
+        :type entity: sw.entity.Entity
+        :param int to_x: the X coordinate of the target point.
+        :param int to_y: the Y coordinate of the target point.
+
+        :return: a path to the given position or None if no such path exists
+        :rtype: deque or None
+        """
+        closed_nodes = set()
+        open_nodes = set([entity.position])
+        parent = {}
+        goal = (to_x, to_y)
+        own_score = {entity.position: 0}
+        goal_score = {entity.position: misc.dist(entity.position, goal)}
+        inf = float("inf")
+        while open_nodes:
+            cur = min(open_nodes, key=lambda pos: goal_score.get(pos, inf))
+            if cur == goal:
+                res = deque()
+                while cur != entity.position:
+                    res.appendleft(cur)
+                    cur = parent[cur]
+                return res
+            open_nodes.remove(cur)
+            closed_nodes.add(cur)
+            for neighbour in self.neighbours(*cur):
+                if neighbour in closed_nodes:
+                    continue
+                if neighbour != goal and not self.can_place_entity(entity, *neighbour):
+                    closed_nodes.add(neighbour)
+                    continue
+                if neighbour not in open_nodes:
+                    open_nodes.add(neighbour)
+                maybe_goal_score = goal_score.get(cur, inf) + misc.dist(cur, neighbour)
+                if maybe_goal_score >= goal_score.get(neighbour, inf):
+                    continue
+                parent[neighbour] = cur
+                goal_score[neighbour] = maybe_goal_score
+                own_score[neighbour] = maybe_goal_score + misc.dist(neighbour, goal)
+        return None
+
     #--------- generic entity manipulation ---------#
 
     def add_entity(self, entity, at_x, at_y):
@@ -286,6 +355,26 @@ class Area(HasDoodads, HasItems, HasMonsters):
         if not self.place_entity(entity, at_x, at_y):
             return False
         add_to_area(self, entity)
+        return True
+
+    def can_place_entity(self, entity, at_x, at_y):
+        """
+        Test if an entity can be placed at a given position.
+
+        :param entity: the entity to test.
+        :type entity: sw.entity.Entity
+        :param int at_x: the X coordinate of the position being tested.
+        :param int at_y: the Y coordinate of the position being tested.
+
+        :return: True if the entity can be placed there, False otherwise.
+        :rtype: bool
+        """
+        if at_x < 0 or at_y < 0 or at_x >= self.width or at_y >= self.height:
+            return False
+        potential_blockers = self.entities_at(at_x, at_y, True)
+        for blocker in potential_blockers:
+            if entity.would_collide(blocker, at_x, at_y):
+                return False
         return True
 
     def entities(self, living_flag, ignore_doodads=False, ignore_items=False,
@@ -358,12 +447,8 @@ class Area(HasDoodads, HasItems, HasMonsters):
         with something.
         :rtype: bool
         """
-        if at_x < 0 or at_y < 0 or at_x >= self.width or at_y >= self.height:
+        if not self.can_place_entity(entity, at_x, at_y):
             return False
-        potential_blockers = self.entities_at(at_x, at_y, True)
-        for blocker in potential_blockers:
-            if entity.would_collide(blocker, at_x, at_y):
-                return False
         entity.position = (at_x, at_y)
         return True
 

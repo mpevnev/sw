@@ -59,6 +59,16 @@ class Monster(Character):
         """ Raise the AI 'alarmed' flag. """
         self.ai.alarmed = True
 
+    #--------- action points calculations ---------#
+
+    def movement_ap_cost(self):
+        """
+        :return: amount of action points required to move.
+        :rtype: int
+        """
+        # TODO: movement AP cost calculations
+        return 0
+
 
 #--------- subclasses ---------#
 
