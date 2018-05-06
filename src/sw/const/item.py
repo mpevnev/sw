@@ -6,6 +6,9 @@ Item constnats.
 from enum import Enum
 
 
+ITEM_RECIPES_FILE = "items.yaml"
+
+
 #--------- reading from dicts - main things ---------#
 
 

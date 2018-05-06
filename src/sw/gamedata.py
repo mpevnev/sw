@@ -16,6 +16,7 @@ class GameData():
     def __init__(self):
         self.backgrounds = _read_backgrounds()
         self.doodad_recipes = _read_doodad_recipes()
+        self.item_recipes = _read_item_recipes()
         self.monster_recipes = _read_monster_recipes()
         self.species = _read_species()
         self.strings = _read_strings()
@@ -52,6 +53,23 @@ class GameData():
             if recipe[constd.ID] == doodad_id:
                 return recipe
         raise ValueError(f"Unknown doodad ID '{doodad_id}'")
+
+    def item_recipe_by_id(self, item_id):
+        """
+        Get an item recipe by its ID.
+
+        :param str item_id: the ID to look for.
+
+        :return: an item recipe with the given ID.
+        :rtype: dict
+
+        :raises ValueError: if there's no recipe with this ID.
+        """
+        import sw.const.item as constitem
+        for recipe in self.item_recipes:
+            if recipe[constitem.ID] == item_id:
+                return recipe
+        raise ValueError(f"Unknown item ID '{item_id}'")
 
     def monster_recipe_by_id(self, recipe_id):
         """
@@ -123,6 +141,18 @@ def _read_globals():
     :rtype: dict
     """
     res = misc.read({}, "data", gv.GLOBALS_FILE)
+    return res
+
+
+def _read_item_recipes():
+    """
+    Read item recipes from the data files.
+
+    :return: a list with recipes.
+    :rtype: list[dict]
+    """
+    import sw.const.item as constitem
+    res = misc.read([], "data", constitem.ITEM_RECIPES_FILE)
     return res
 
 

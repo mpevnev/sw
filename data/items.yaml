@@ -1,0 +1,10 @@
+
+- id: debug dagger
+  type: dagger
+  ap cost: 5
+  armor penetration: 0.3
+  min damage: 2
+  max damage: 4
+  to hit: 2
+  stab damage bonus: 0.6
+  stab to hit bonus: 0.8
