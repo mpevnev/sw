@@ -28,6 +28,9 @@ class Item(Entity):
 
     #--------- inherited stuff ---------#
 
+    def alive(self):
+        return True
+
     def tick(self, state):
         pass
 
