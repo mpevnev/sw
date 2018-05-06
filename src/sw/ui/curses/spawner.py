@@ -96,7 +96,11 @@ def _read_curses_ui_data():
     res = {}
     res[const.BACKGROUND_SELECTION] = misc.read({}, "ui", "curses", bs.DATA_FILE)
     res[const.CHAR_NAME_PROMPT] = misc.read({}, "ui", "curses", cnp.DATA_FILE)
-    res[const.MAIN_DUNGEON] = misc.read({}, "ui", "curses", md.DATA_FILE)
+    main_dungeon = misc.read({}, "ui", "curses", md.DATA_FILE)
+    main_dungeon[md.DOODAD_MAP] = misc.read({}, "ui", "curses", md.DOODADS_MAPPING_FILE)
+    main_dungeon[md.ITEM_MAP] = misc.read({}, "ui", "curses", md.ITEMS_MAPPING_FILE)
+    main_dungeon[md.MONSTER_MAP] = misc.read({}, "ui", "curses", md.MONSTERS_MAPPING_FILE)
+    res[const.MAIN_DUNGEON] = main_dungeon
     res[const.MAIN_MENU] = misc.read({}, "ui", "curses", mm.DATA_FILE)
     res[const.MAIN_OVERWORLD] = misc.read({}, "ui", "curses", mo.DATA_FILE)
     res[const.SPECIES_SELECTION] = misc.read({}, "ui", "curses", ss.DATA_FILE)

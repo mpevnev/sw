@@ -1,0 +1,2 @@
+
+stone wall: {char: '#', color: {fg: white, bg: black}}

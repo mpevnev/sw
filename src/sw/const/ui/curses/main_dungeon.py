@@ -2,17 +2,41 @@
 Main dungeon view contants. 
 """
 
-
 DATA_FILE = "main_dungeon.yaml"
+DOODADS_MAPPING_FILE = "doodads.yaml"
+ITEMS_MAPPING_FILE = "items.yaml"
+MONSTERS_MAPPING_FILE = "monsters.yaml"
 
+# Some configuration variables
+MODERATE_HEALTH = "moderate health threshold"
+LOW_HEALTH = "low health threshold"
 
-# Strings
+# Strings - dungeon view
 EMPTY_SPACE_CHAR = "empty space char"
 PLAYER_CHAR = "player char"
 UNSEEN_ENTITY_COLOR = "unseen entity color"
 SENSED_DOODAD_CHAR = "sensed doodad char"
 SENSED_ITEM_CHAR = "sensed item char"
 SENSED_MONSTER_CHAR = "sensed monster char"
+
+# Strings - status box
+HEALTH_BAR_CHAR = "bar char"
+LOW_HEALTH_COLOR = "low health"
+MODERATE_HEALTH_COLOR = "moderate health"
+HIGH_HEALTH_COLOR = "high health"
+HEALTH = "health"
+XP = "experience"
+#
+STRENGTH = "strength"
+DEXTERITY = "dexterity"
+INTELLIGENCE = "intelligence"
+SPIRIT = "spirit"
+#
+SLOT_SEPARATOR = "slot separator"
+#
+TO_HIT = "to hit"
+DODGE = "dodge"
+ARMOR = "armor"
 
 # Mappings
 DOODAD_MAP = "doodad map"
@@ -23,7 +47,7 @@ MAP_COLOR = "color"
 
 # Geometry
 MESSAGE_BOX_HEIGHT = "message box height"
-PLAYER_STATUS_BOX_WIDTH = "status box width"
+STATUS_BOX_WIDTH = "status box width"
 
 # Keybindings
 KEY_RIGHT = "right"

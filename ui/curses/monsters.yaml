@@ -1,0 +1,2 @@
+
+debug melee zombie: {char: 'z', color: {fg: white, bg: black}}

@@ -48,14 +48,3 @@ right down: ['n', '3']
 ascend: ['<']
 descend: ['>']
 wait: ['5']
-
-# Doodad mappings
-doodad map: 
-    stone wall: {char: '#', color: {fg: white, bg: black}}
-
-# Item mappings
-item map: {}
-
-# Monster mappings
-monster map:
-    debug melee zombie: {char: 'z', color: {fg: white, bg: black}}
