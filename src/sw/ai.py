@@ -110,6 +110,7 @@ def evaluate_ai_action(ai, monster, state):
     player = state.player
     if state.area.can_see(monster, *player.position):
         ai.alarmed = True
+        ai.alarm_coordinates = player.position
         if monster.distance(player) == 1:
             return (const.Task.ATTACK, player)
         return (const.Task.PURSUE, player)
