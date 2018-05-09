@@ -178,7 +178,7 @@ class Character(Entity, Modifiable):
             old_len = len(inventory_list)
             new_len = self.total_secondary[misc.slot_stat(slot_type)]
             if new_len > old_len:
-                inventory_list.extend([None] * (new_len - old_len))
+                inventory_list.extend((None for _ in range(new_len - old_len)))
 
     def within_sight(self, x, y):
         """

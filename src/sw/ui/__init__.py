@@ -70,6 +70,17 @@ class UISpawner():
         """
         raise NotImplementedError
 
+    def spawn_item_view(self, state, item):
+        """
+        Spawn an item view.
+
+        :param state: global game state.
+        :type state: sw.gamestate.GameState
+        :param item: an item to view.
+        :type item: sw.item.Item
+        """
+        raise NotImplementedError
+
     def spawn_main_dungeon_window(self, state):
         """
         Spawn a dungeon view.

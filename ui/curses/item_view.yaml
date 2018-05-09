@@ -1,0 +1,23 @@
+
+# Strings
+hint drink: Press 'd' to drink.
+hint drop: Press 'D' to drop.
+hint equip: Press 'e' to equip.
+hint read: Press 'r' to read.
+hint unequip: Press 'R' to remove.
+hint use: Press 'u' to use.
+
+hint big quit: Press 'Q' to quit from inventory altogether.
+hint quit: Press Esc to quit the item view.
+
+# Keybindings
+
+big quit: ['Q']
+quit: ['^[']
+
+drink: ['d']
+drop: ['D']
+equip: ['e']
+read: ['r']
+unequip: ['R']
+use: ['u']

@@ -1,9 +1,19 @@
 
 # Strings
 
+small tab: Small
+medium tab: Medium
+big tab: Big
+huge tab: Huge
+
 hint: > 
     Use "Tab" to switch between item tabs, a-z and A-Z to select items and
     "!" to exit.
+
+# Colors
+
+selected tab color: {fg: black, bg: white}
+unselected tab color: {fg: white, bg: black}
 
 # Keybindings
 

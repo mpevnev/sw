@@ -83,12 +83,13 @@ class MainDungeon(flow.SWFlow):
         if ev[0] != event.INVENTORY:
             return False
         import sw.stage.inventory as inv
-        new_flow = inv.Inventory(self.state,
-                                 self.ui_spawner,
-                                 self.ui_spawner.spawn_inventory(self.state),
-                                 self,
-                                 FROM_INVENTORY)
-        raise flow.ChangeFlow(new_flow, inv.ENTRY_POINT)
+        inventory_flow = inv.Inventory(self.state,
+                                       self.ui_spawner,
+                                       self.ui_spawner.spawn_inventory(self.state))
+        inventory_event = flow.execute(inventory_flow, inv.ENTRY_POINT)
+        if inventory_event is None:
+            return
+        self.process_event(inventory_event)
 
     def move(self, ev):
         """ Handle 'move' event. """
