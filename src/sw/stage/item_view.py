@@ -21,11 +21,18 @@ class ItemView(flow.SWFlow):
     return them to other flows, which will handle them as required.
     """
 
-    def __init__(self, state, ui_spawner, ui):
+    def __init__(self, state, ui_spawner, ui, item):
         super().__init__(state, ui_spawner, ui)
         self.register_entry_point(ENTRY_POINT, self.entry_point)
+        self.register_event_handler(self.drink)
+        self.register_event_handler(self.drop)
+        self.register_event_handler(self.equip)
+        self.register_event_handler(self.read)
+        self.register_event_handler(self.unequip)
+        self.register_event_handler(self.use)
         self.register_event_handler(self.quit_altogether)
         self.register_event_handler(self.quit_to_inventory)
+        self.item = item
 
     #--------- entry points ---------#
 
@@ -34,6 +41,42 @@ class ItemView(flow.SWFlow):
         pass
 
     #--------- event handlers ---------#
+
+    def drink(self, ev):
+        """ Handle 'drink' event. """
+        if ev[0] != event.DRINK:
+            return False
+        raise flow.EndFlow((output_event.DRINK, self.item))
+
+    def drop(self, ev):
+        """ Handle 'drop' event. """
+        if ev[0] != event.DROP:
+            return False
+        raise flow.EndFlow((output_event.DROP, self.item))
+
+    def equip(self, ev):
+        """ Handle 'equip' event. """
+        if ev[0] != event.EQUIP:
+            return False
+        raise flow.EndFlow((output_event.DROP, self.item))
+
+    def read(self, ev):
+        """ Handle 'read' event. """
+        if ev[0] != event.READ:
+            return False
+        raise flow.EndFlow((output_event.READ, self.item))
+
+    def unequip(self, ev):
+        """ Handle 'unequip' event. """
+        if ev[0] != event.UNEQUIP:
+            return False
+        raise flow.EndFlow((output_event.UNEQUIP, self.item))
+
+    def use(self, ev):
+        """ Handle 'use' event. """
+        if ev[0] != event.USE:
+            return False
+        raise flow.EndFlow((output_event.USE, self.item))
 
     def quit_altogether(self, ev):
         """
