@@ -80,7 +80,7 @@ class Character(Entity, Modifiable):
         :rtype: int
         """
         inv_list = self.inventory[slot_type]
-        num_items = len(filter(None, inv_list))
+        num_items = len(list(filter(None, inv_list)))
         num_slots = self.total_secondary[misc.slot_stat(slot_type)]
         return num_slots - num_items
 

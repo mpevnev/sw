@@ -87,7 +87,7 @@ class MainDungeon(flow.SWFlow):
             return False
         area = self.state.area
         player = self.state.player
-        items = list(area.items_at(*player.position))
+        items = list(area.items_at(*player.position, True))
         if len(items) == 0:
             self.ui.message("TEMP DEBUG: nothing to pick up here", None)
         elif len(items) == 1:
@@ -114,9 +114,9 @@ class MainDungeon(flow.SWFlow):
         """
         area = self.state.area
         player = self.state.player
-        blockers = area.blockers_at(player, *target)
+        blockers = area.blockers_at(player, x, y)
+        weapon = player.melee_weapons[0]
         for blocker in blockers:
-            weapon = player.melee_weapons[0]
             if weapon is None:
                 # TODO: unarmed combat
                 pass

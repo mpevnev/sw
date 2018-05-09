@@ -82,6 +82,7 @@ class Dagger(MeleeWeapon):
         super().__init__(recipe_id)
         self.stab_damage_bonus = None
         self.stab_to_hit_bonus = None
+        self.carrying_slot = const.InventorySlot.MEDIUM
 
 
 #--------- reading ---------#
