@@ -20,6 +20,7 @@ class Item(Entity):
     def __init__(self, recipe_id):
         super().__init__()
         self.recipe_id = recipe_id
+        self._alive = True
         self.carrying_slot = None
         self.cursed = False
         self.known_cursed = False
@@ -29,7 +30,10 @@ class Item(Entity):
     #--------- inherited stuff ---------#
 
     def alive(self):
-        return True
+        return self._alive
+
+    def die(self):
+        self._alive = False
 
     def tick(self, state):
         pass
