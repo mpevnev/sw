@@ -38,10 +38,10 @@ class CursesSpawner(ui.UISpawner):
         uidata = self.uidata[const.CHAR_NAME_PROMPT]
         return CharNamePrompt(self.screen, self.colors, uidata)
 
-    def spawn_inventory(self, state):
+    def spawn_inventory(self, inventory):
         from sw.ui.curses.inventory import Inventory
         uidata = self.uidata[const.INVENTORY]
-        return Inventory(self.screen, self.colors, uidata, state)
+        return Inventory(self.screen, self.colors, uidata, inventory)
 
     def spawn_item_view(self, item):
         from sw.ui.curses.item_view import ItemView

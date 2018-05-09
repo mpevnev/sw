@@ -61,12 +61,12 @@ class UISpawner():
         """
         raise NotImplementedError
 
-    def spawn_inventory(self, state):
+    def spawn_inventory(self, inventory):
         """
         Spawn an inventory view.
 
-        :param state: global game state.
-        :type state: sw.gamestate.GameState
+        :param inventory: an inventory dict.
+        :type inventory: dict(sw.const.item.InventorySlot, sw.item.Item)
         """
         raise NotImplementedError
 
@@ -74,8 +74,6 @@ class UISpawner():
         """
         Spawn an item view.
 
-        :param state: global game state.
-        :type state: sw.gamestate.GameState
         :param item: an item to view.
         :type item: sw.item.Item
         """

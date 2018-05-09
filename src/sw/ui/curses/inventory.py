@@ -3,6 +3,9 @@ Curses-based UI for the inventory view.
 """
 
 
+from itertools import chain
+
+
 import mofloc
 
 
@@ -19,16 +22,17 @@ import sw.ui.curses as curses
 class Inventory(mofloc.EventSource):
     """ Inventory view. """
 
-    def __init__(self, screen, colors, uidata, state):
+    def __init__(self, screen, colors, uidata, inventory):
         mofloc.EventSource.__init__(self)
         self.screen = screen
         self.colors = colors
         self.uidata = uidata
-        self.state = state
-        self.active_tab = ic.InventorySlot.SMALL
+        self.inventory = inventory
         h, w = screen.getmaxyx()
         self.header = screen.derwin(1, w, 0, 0)
-        self.tabs = {tab: screen.derwin(h - 3, w, 1, 0) for tab in ic.InventorySlot}
+        self.panel = {
+            slot: screen.derwin(h - 2, w // 4, 0, i * w // 4)
+            for i, slot in zip(range(4), ic.InventorySlot)}
         self.hint_panel = screen.derwin(2, w, h - 2, 0)
 
     def draw(self):
@@ -93,8 +97,10 @@ class Inventory(mofloc.EventSource):
 
     def enumerate_items(self):
         """
-        Return a generator with letters and items in the current tab.
+        Return a generator with letters and items.
         """
+        inventory = self.state
+        items = chain.from_iterable((self.state.player.inventory[slot]
         item_list = self.state.player.inventory[self.active_tab]
         item_list = filter(None, item_list)
         return misc.enumerate_with_letters(item_list)
