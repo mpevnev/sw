@@ -19,4 +19,5 @@ UNSELECTED_COLOR = "unselected tab color"
 
 # Keybindings
 KEY_CHANGE_TAB = "change tab"
+KEY_CONFIRM_SELECTION = "confirm"
 KEY_QUIT = "quit"

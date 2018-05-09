@@ -18,4 +18,5 @@ unselected tab color: {fg: white, bg: black}
 # Keybindings
 
 change tab: ["\t"]
+confirm: ["\n", "\r"]
 quit: ["!"]

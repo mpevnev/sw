@@ -4,6 +4,7 @@ Curses-based UI for the inventory view.
 
 
 from itertools import chain
+import string
 
 
 import mofloc
@@ -29,26 +30,38 @@ class Inventory(mofloc.EventSource):
         self.uidata = uidata
         self.inventory = inventory
         h, w = screen.getmaxyx()
-        self.header = screen.derwin(1, w, 0, 0)
         self.panel = {
             slot: screen.derwin(h - 2, w // 4, 0, i * w // 4)
-            for i, slot in zip(range(4), ic.InventorySlot)}
+            for i, slot in enumerate(ic.InventorySlot)}
         self.hint_panel = screen.derwin(2, w, h - 2, 0)
+        self.filter_text = ""
+        self.filtered_items = list(self.enumerate_items())
 
     def draw(self):
         """ Draw the UI piece. """
         self.screen.erase()
-        self.draw_active_tab()
-        self.draw_header()
         self.draw_hint_panel()
+        self.draw_panels()
         self.screen.refresh()
         curses.doupdate()
 
     def get_event(self):
         ch = self.screen.getkey()
-        for letter, item in self.enumerate_items():
-            if letter == ch:
-                return (event.EXAMINE_ITEM, item)
+        if ch in string.ascii_letters:
+            self.filter_text += ch
+            self.filter_items()
+            filter_length = len(self.filtered_items)
+            if filter_length == 1:
+                return (event.EXAMINE_ITEM, self.filtered_items[0][1])
+            if filter_length == 0:
+                self.filter_text = ""
+                self.filter_items()
+            raise mofloc.NoEvent
+        if ch == self.uidata[inv.KEY_CONFIRM_SELECTION]:
+            for code, item in self.filtered_items:
+                if code == self.filter_text:
+                    return (event.EXAMINE_ITEM, item)
+            raise mofloc.NoEvent
         if ch in self.uidata[inv.KEY_CHANGE_TAB]:
             self.advance_active_tab()
             raise mofloc.NoEvent
@@ -58,49 +71,40 @@ class Inventory(mofloc.EventSource):
 
     #--------- drawing ---------#
 
-    def draw_active_tab(self):
-        """ Draw the active tab. """
-        tab = self.tabs[self.active_tab]
-        y = 1
-        for letter, item in self.enumerate_items():
-            curses.print_centered(tab, y, f"{letter} - ITEM")
-            y += 1
-        tab.box()
-
-    def draw_header(self):
-        """ Draw the header with tab names. """
-        headers = [
-            self.uidata[inv.SMALL_TAB],
-            self.uidata[inv.MEDIUM_TAB],
-            self.uidata[inv.BIG_TAB],
-            self.uidata[inv.HUGE_TAB]
-            ]
-        self.header.move(0, 1)
-        for header, item_slot in zip(headers, ic.InventorySlot):
-            if item_slot is self.active_tab:
-                color = curses.color_from_dict(self.colors, self.uidata[inv.SELECTED_COLOR])
-            else:
-                color = curses.color_from_dict(self.colors, self.uidata[inv.UNSELECTED_COLOR])
-            self.header.addstr(header, color)
-            self.header.addch(' ')
-
     def draw_hint_panel(self):
         """ Draw the hint panel. """
         self.hint_panel.addstr(0, 0, self.uidata[inv.HINT])
 
-    #--------- helper things ---------#
+    def draw_panels(self):
+        """ Draw the panels with items. """
+        y = 1
+        for code, item in self.filtered_items:
+            panel = self.panel[item.carrying_slot]
+            try:
+                curses.print_centered(panel, y, f"{code} - ITEM")
+            except curses.error:
+                continue
+            y += 1
+        for panel in self.panel.values():
+            panel.box()
 
-    def advance_active_tab(self):
-        """ Cycle through tabs. """
-        tabs = list(ic.InventorySlot) + [ic.InventorySlot.SMALL]
-        self.active_tab = tabs[tabs.index(self.active_tab) + 1]
+    #--------- helper things ---------#
 
     def enumerate_items(self):
         """
         Return a generator with letters and items.
         """
-        inventory = self.state
-        items = chain.from_iterable((self.state.player.inventory[slot]
-        item_list = self.state.player.inventory[self.active_tab]
-        item_list = filter(None, item_list)
-        return misc.enumerate_with_letters(item_list)
+        inventory = self.inventory
+        items = chain.from_iterable((inventory[slot] for slot in ic.InventorySlot))
+        items = filter(None, items)
+        return misc.enumerate_with_letters(items)
+
+    def filter_items(self):
+        """
+        Filter away some items based on a new filter string.
+        """
+        if self.filter_text == "":
+            self.filtered_items = self.enumerate_items()
+            return
+        cond = lambda t: t[0].startswith(self.filter_text)
+        self.filtered_items = list(filter(cond, self.filtered_items))
