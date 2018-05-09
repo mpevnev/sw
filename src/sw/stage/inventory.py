@@ -36,7 +36,7 @@ class Inventory(flow.SWFlow):
         item = ev[1]
         new_flow = iv.ItemView(self.state,
                                self.ui_spawner,
-                               self.ui_spawner.spawn_item_viewer(item),
+                               self.ui_spawner.spawn_item_viewer(),
                                item)
         raise flow.ChangeFlow(new_flow, iv.ENTRY_POINT)
 
