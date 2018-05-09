@@ -13,47 +13,42 @@ class Entity():
 
     def __init__(self):
         self.position = None
-        self.collision_groups = set()
+        self.blocks = set()
+        self.blocked_by = set()
 
     #--------- collision logic ---------#
 
-    def add_collision_group(self, group):
+    def add_blocked_by(self, group):
         """
-        Add a collision group to the entity.
+        Add a group that will block this entity.
 
         :param group: a collision group to be added.
         :type group: sw.const.entity.CollisionGroup
         """
-        self.collision_groups.add(group)
+        self.blocked_by.add(group)
 
-    def can_collide(self, other):
+    def add_blocks(self, group):
         """
-        Test if the entity can collide with an other entity.
+        Add a group that this entity will block.
+
+        :param group: a collision group to be added.
+        :type group: sw.const.entity.CollisionGroup
+        """
+        self.blocks.add(group)
+
+    def can_be_blocked_by(self, other):
+        """
+        Test if this entity can be blocked by another entity.
 
         :param Entity other: the other entity.
 
-        :return: True if the entity can collide with the other, False
+        :return: True if the entity can be blocked by the other, False
         otherwise.
         :rtype: bool
         """
         if self is other:
             return False
-        return bool(self.collision_groups.intersection(other.collision_groups))
-
-    def collides(self, other):
-        """
-        Test if the entity collides with an other entity.
-
-        :param Entity other: the other entity.
-
-        :return: True if the entity collides with the other, False otherwise.
-        :rtype: bool
-        """
-        if not self.can_collide(other):
-            return False
-        if self.position is None or other.position is None:
-            return False
-        return self.position == other.position
+        return bool(self.blocked_by.intersection(other.blocks))
 
     def distance(self, other):
         """
@@ -80,10 +75,10 @@ class Entity():
         """
         return self.position is None
 
-    def would_collide(self, other, at_x, at_y):
+    def would_be_blocked_by(self, other, at_x, at_y):
         """
-        Test whether the entity would collide with another if placed at a given
-        position.
+        Test whether the entity would be blocked by another if placed at a
+        given position.
 
         :param Entity other: the other entity.
         :param int at_x: the X coordinate of the position to be tested.
@@ -93,11 +88,11 @@ class Entity():
         otherwise.
         :rtype: bool
         """
-        old = self.position
-        self.position = (at_x, at_y)
-        res = self.collides(other)
-        self.position = old
-        return res
+        if not self.can_be_blocked_by(other):
+            return False
+        if other.position is None:
+            return False
+        return (at_x, at_y) == other.position
 
     #--------- death logic ---------#
 

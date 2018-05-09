@@ -96,7 +96,7 @@ def drop_item(item, character, state, force):
         return ci.DropError.WOULD_GET_DESTROYED
     pos = character.position
     for blocker in state.area.entities_at(*pos):
-        if item.would_collide(blocker, *pos):
+        if item.would_be_blocked_by(blocker, *pos):
             return ci.DropError.COLLISION
     character.remove_item_from_slot(item)
     item.position = pos

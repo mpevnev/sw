@@ -89,7 +89,8 @@ class Wall(Doodad):
     def __init__(self, recipe_id):
         super().__init__(recipe_id)
         self.transparent = False
-        self.add_collision_group(CollisionGroup.WALL)
+        self.add_blocked_by(CollisionGroup.WALL)
+        self.add_blocks(CollisionGroup.WALL)
 
     def use_by_monster(self, monster, state):
         return False

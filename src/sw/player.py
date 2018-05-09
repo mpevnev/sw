@@ -14,13 +14,13 @@ class Player(Character):
 
     def __init__(self):
         super().__init__()
-        self.add_collision_group(CollisionGroup.CHARACTER)
-        self.add_collision_group(CollisionGroup.WALL)
         self.name = None
         self.species = None
         self.background = None
         self.xp = 0
-        self.sight_range = 5
+        self.add_blocked_by(CollisionGroup.CHARACTER)
+        self.add_blocked_by(CollisionGroup.WALL)
+        self.add_blocks(CollisionGroup.CHARACTER)
 
     #--------- death logic ---------#
 

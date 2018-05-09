@@ -25,7 +25,7 @@ class Item(Entity):
         self.cursed = False
         self.known_cursed = False
         self.wearing_slot = None
-        self.add_collision_group(CollisionGroup.WALL)
+        self.add_blocked_by(CollisionGroup.WALL)
 
     #--------- inherited stuff ---------#
 

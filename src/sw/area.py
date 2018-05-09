@@ -371,7 +371,7 @@ class Area(HasDoodads, HasItems, HasMonsters):
         :rtype: iter
         """
         potential_blockers = self.entities_at(at_x, at_y, True)
-        return filter(lambda blocker: entity.would_collide(blocker, at_x, at_y),
+        return filter(lambda blocker: entity.would_be_blocked_by(blocker, at_x, at_y),
                       potential_blockers)
 
     def can_place_entity(self, entity, at_x, at_y):
@@ -390,7 +390,7 @@ class Area(HasDoodads, HasItems, HasMonsters):
             return False
         potential_blockers = self.entities_at(at_x, at_y, True)
         for blocker in potential_blockers:
-            if entity.would_collide(blocker, at_x, at_y):
+            if entity.would_be_blocked_by(blocker, at_x, at_y):
                 return False
         return True
 
