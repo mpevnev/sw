@@ -84,19 +84,25 @@ def enumerate_with_letters(iterator):
         Generate an infinite sequence of letters, then pairs of letters, then
         triples of letters and so on.
         """
-        i = 0
+        digits = ['a']
         while True:
-            letters = deque()
-            div, rem = divmod(i, 52)
-            if i == 0:
-                yield 'a'
-                i += 1
+            yield "".join(digits)
+            if digits[-1] == 'z':
+                digits[-1] = 'A'
                 continue
-            while div > 0 or rem > 0:
-                letters.appendleft(string.ascii_letters[rem])
-                div, rem = divmod(div, 52)
-            yield "".join(letters)
-            i += 1
+            if digits[-1] == 'Z':
+                digits[-1] = 'a'
+                carry = True
+                i = -2
+                last_index = -len(digits)
+                while carry and i >= last_index:
+                    carry = digits[i] == 'Z'
+                    digits[i] = 'a'
+                    i -= 1
+                if carry:
+                    digits = ['a'] + digits
+                continue
+            digits[-1] = chr(ord(digits[-1]) + 1)
     return zip(letter_generator(), iterator)
 
 
