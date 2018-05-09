@@ -34,22 +34,22 @@ class HasDoodads():
 
     def all_doodads(self, living_flag):
         """
-        Return a list with all doodads with specified living flag.
+        Return a generator with all doodads with specified living flag.
 
         :param bool living_flag: if set to true, only alive doodads will be
         included, otherwise only dead doodads will be.
 
-        :return: a list with all doodads (including hidden) in the area.
-        :rtype: list[sw.doodad.Doodad]
+        :return: an iterator with all doodads (including hidden) in the area.
+        :rtype: iter[sw.doodad.Doodad]
         """
         cond = lambda d: ((living_flag and d.alive())
                           or (not living_flag and not d.alive()))
-        return [d for d in self.doodads if cond(d)]
+        return filter(cond, self.doodads)
 
     def doodads_at(self, at_x, at_y, living_flag):
         """
-        Return a list with all doodads with specified living flag at the given
-        position.
+        Return a generator with all doodads with specified living flag at the
+        given position.
 
         :param int at_x: the X coordinate of the position to look for doodads
         at.
@@ -58,20 +58,20 @@ class HasDoodads():
         :param bool living_flag: if set to True, only alive doodads will be
         returned, otherwise only dead doodads will be returned.
 
-        :return: a list of doodads at the given position.
-        :rtype: list[sw.doodad.Doodad]
+        :return: an iterator with doodads at the given position.
+        :rtype: iter[sw.doodad.Doodad]
         """
         pos = (at_x, at_y)
         cond = lambda d: ((living_flag and d.alive())
                           or (not living_flag and not d.alive()))
-        return [d for d in self.doodads if cond(d) and d.position == pos]
+        return (d for d in self.doodads if cond(d) and d.position == pos)
 
     def hidden_doodads(self):
         """
-        :return: a list of hidden doodads.
-        :rtype: list[sw.doodad.Doodad]
+        :return: a generator of hidden doodads.
+        :rtype: iter[sw.doodad.Doodad]
         """
-        return [d for d in self.doodads if d.hidden()]
+        return filter(lambda d: d.hidden(), self.doodads)
 
     def remove_dead_doodads(self):
         """ Remove all dead doodads. """
@@ -86,42 +86,42 @@ class HasItems():
 
     def all_items(self, living_flag):
         """
-        Return a list with all items with specified living flag.
+        Return a generator with all items with specified living flag.
 
         :param bool living_flag: if set to true, only alive items will be
         included, otherwise only dead items will be.
 
-        :return: a list with all items (including hidden) in the area.
-        :rtype: list[sw.item.Item]
+        :return: a generator with all items (including hidden) in the area.
+        :rtype: iter[sw.item.Item]
         """
         cond = lambda it: ((living_flag and it.alive())
                            or (not living_flag and not it.alive()))
-        return [it for it in self.items if cond(it)]
+        return filter(cond, self.items)
 
     def hidden_items(self):
         """
-        :return: a list with all hidden items.
-        :rtype: list[sw.item.Item]
+        :return: a generator with all hidden items.
+        :rtype: iter[sw.item.Item]
         """
-        return [it for it in self.items if it.hidden()]
+        return filter(lambda it: it.hidden(), self.items)
 
     def items_at(self, at_x, at_y, living_flag):
         """
-        Return a list with all items with specified living flag at the given
-        position.
+        Return a generator with all items with specified living flag at the
+        given position.
 
         :param int at_x: the X coordinate of the position to look for items at.
         :param int at_y: the Y coordinate of the position to look for items at.
         :param bool living_flag: if set to True, only alive items will be
         returned, otherwise only dead items will be returned.
 
-        :return: a list of items at the given position.
-        :rtype: list[sw.item.Item]
+        :return: a generator of items at the given position.
+        :rtype: iter[sw.item.Item]
         """
         cond = lambda it: ((living_flag and it.alive())
                            or (not living_flag and not it.alive()))
         pos = (at_x, at_y)
-        return [it for it in self.items if cond(it) and it.position == pos]
+        return (it for it in self.items if cond(it) and it.position == pos)
 
     def remove_dead_items(self):
         """ Remove all dead items. """
@@ -150,12 +150,12 @@ class HasMonsters():
 
     def hidden_monsters(self):
         """
-        Return a list of all hidden monsters.
+        Return a generator with all hidden monsters.
 
-        :return: a list of monsters.
-        :rtype: list[sw.monster.Monster]
+        :return: a generator of monsters.
+        :rtype: iter[sw.monster.Monster]
         """
-        return [m for m in self.monsters if m.hidden()]
+        return filter(lambda m: m.hidden(), self.monsters)
 
     def monsters_at(self, at_x, at_y, living_flag):
         """
@@ -397,11 +397,11 @@ class Area(HasDoodads, HasItems, HasMonsters):
     def entities(self, living_flag, ignore_doodads=False, ignore_items=False,
                  ignore_monsters=False, ignore_player=False):
         """
-        Return a list with all entities in the area. Optionally ignore entities
-        of certain types.
+        Return a generator with all entities in the area. Optionally ignore
+        entities of certain types.
 
         :param bool living_flag: if set to true, only alive entities will be
-        included in the list, otherwise only dead entities will be included.
+        included in, otherwise only dead entities will be included.
         :param bool ignore_doodads: if set to true, doodads will not be
         included.
         :param bool ignore_items: if set to true, items will not be included.
@@ -410,26 +410,26 @@ class Area(HasDoodads, HasItems, HasMonsters):
         :param bool ignore_player: if set to true, the player will not be
         included.
 
-        :return: a list with entities from the area.
-        :rtype: list(sw.entity.Entity)
+        :return: a generator with entities from the area.
+        :rtype: iter(sw.entity.Entity)
         """
         player = [] if ignore_player or self.player is None else [self.player]
         doodads = [] if ignore_doodads else self.doodads
         items = [] if ignore_items else self.items
         monsters = [] if ignore_monsters else self.monsters
         cond = lambda e: living_flag and e.alive() or not living_flag and not e.alive()
-        return [e for e in chain(player, doodads, items, monsters) if cond(e)]
+        return filter(cond, chain(player, doodads, items, monsters))
 
     def entities_at(self, x, y, living_flag, ignore_doodads=False, ignore_items=False,
                     ignore_monsters=False, ignore_player=False):
         """
-        Return a list with all entities at the given position in the area.
+        Return a generator with all entities at the given position in the area.
         Optionally ignore entities of certain types.
 
         :param int x: the X coordinate of the position to look for entities at.
         :param int y: the Y coordinate of the position to look for entities at.
         :param bool living_flag: if set to true, only alive entities will be
-        included in the list, otherwise only dead entities will be included.
+        included, otherwise only dead entities will be included.
         :param bool ignore_doodads: if set to true, doodads will not be
         included.
         :param bool ignore_items: if set to true, items will not be included.
@@ -438,8 +438,8 @@ class Area(HasDoodads, HasItems, HasMonsters):
         :param bool ignore_player: if set to true, the player will not be
         included.
 
-        :return: a list with entities at the given position from the area.
-        :rtype: list(sw.entity.Entity)
+        :return: a generator with entities at the given position from the area.
+        :rtype: iter[sw.entity.Entity]
         """
         player = [] if ignore_player or self.player is None else [self.player]
         doodads = [] if ignore_doodads else self.doodads
@@ -448,7 +448,7 @@ class Area(HasDoodads, HasItems, HasMonsters):
         pos = (x, y)
         cond = lambda e: ((living_flag and e.alive() or not living_flag and not e.alive())
                           and (pos == e.position))
-        return [e for e in chain(player, doodads, items, monsters) if cond(e)]
+        return filter(cond, chain(player, doodads, items, monsters))
 
     def place_entity(self, entity, at_x, at_y):
         """
