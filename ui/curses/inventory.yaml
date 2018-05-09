@@ -1,0 +1,11 @@
+
+# Strings
+
+hint: > 
+    Use "Tab" to switch between item tabs, a-z and A-Z to select items and
+    "!" to exit.
+
+# Keybindings
+
+change tab: ["\t"]
+quit: ["!"]

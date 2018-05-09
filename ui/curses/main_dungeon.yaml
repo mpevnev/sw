@@ -47,5 +47,6 @@ right down: ['n', '3']
 
 ascend: ['<']
 descend: ['>']
+inventory: ['i']
 pick up: ['g']
 wait: ['5']

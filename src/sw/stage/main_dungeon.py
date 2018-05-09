@@ -14,6 +14,7 @@ import sw.interaction.item as ii
 import sw.interaction.player as pi
 
 
+FROM_INVENTORY = "from inventory"
 FROM_OVERWORLD = "from overworld"
 
 
@@ -22,14 +23,22 @@ class MainDungeon(flow.SWFlow):
 
     def __init__(self, state, ui_spawner):
         super().__init__(state, ui_spawner, ui_spawner.spawn_main_dungeon(state))
+        self.register_entry_point(FROM_INVENTORY, self.from_inventory)
         self.register_entry_point(FROM_OVERWORLD, self.from_overworld)
         self.register_event_handler(self.ascend)
         self.register_event_handler(self.descend)
+        self.register_event_handler(self.inventory)
         self.register_event_handler(self.move)
         self.register_event_handler(self.pick_up_handler)
         self.register_event_handler(self.wait)
 
     #--------- entry points ---------#
+
+    def from_inventory(self):
+        """
+        Do nothing special.
+        """
+        pass
 
     def from_overworld(self, area):
         """
@@ -68,6 +77,18 @@ class MainDungeon(flow.SWFlow):
         if ev[0] != event.DESCEND:
             return False
         return True
+
+    def inventory(self, ev):
+        """ Handle 'inventory' event. """
+        if ev[0] != event.INVENTORY:
+            return False
+        import sw.stage.inventory as inv
+        new_flow = inv.Inventory(self.state,
+                                 self.ui_spawner,
+                                 self.ui_spawner.spawn_inventory(self.state),
+                                 self,
+                                 FROM_INVENTORY)
+        raise flow.ChangeFlow(new_flow, inv.ENTRY_POINT)
 
     def move(self, ev):
         """ Handle 'move' event. """

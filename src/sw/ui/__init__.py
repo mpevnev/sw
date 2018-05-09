@@ -61,6 +61,15 @@ class UISpawner():
         """
         raise NotImplementedError
 
+    def spawn_inventory(self, state):
+        """
+        Spawn an inventory view.
+
+        :param state: global game state.
+        :type state: sw.gamestate.GameState
+        """
+        raise NotImplementedError
+
     def spawn_main_dungeon_window(self, state):
         """
         Spawn a dungeon view.

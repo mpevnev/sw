@@ -38,6 +38,11 @@ class CursesSpawner(ui.UISpawner):
         uidata = self.uidata[const.CHAR_NAME_PROMPT]
         return CharNamePrompt(self.screen, self.colors, uidata)
 
+    def spawn_inventory(self, state):
+        from sw.ui.curses.inventory import Inventory
+        uidata = self.uidata[const.INVENTORY]
+        return Inventory(self.screen, self.colors, uidata, state)
+
     def spawn_main_dungeon(self, state):
         from sw.ui.curses.main_dungeon import MainDungeon
         uidata = self.uidata[const.MAIN_DUNGEON]
@@ -89,6 +94,7 @@ def _read_curses_ui_data():
     """ Read configuration and strings for curses-based interface. """
     import sw.const.ui.curses.background_selection as bs
     import sw.const.ui.curses.char_name_prompt as cnp
+    import sw.const.ui.curses.inventory as i
     import sw.const.ui.curses.main_dungeon as md
     import sw.const.ui.curses.main_menu as mm
     import sw.const.ui.curses.main_overworld as mo
@@ -96,6 +102,7 @@ def _read_curses_ui_data():
     res = {}
     res[const.BACKGROUND_SELECTION] = misc.read({}, "ui", "curses", bs.DATA_FILE)
     res[const.CHAR_NAME_PROMPT] = misc.read({}, "ui", "curses", cnp.DATA_FILE)
+    res[const.INVENTORY] = misc.read({}, "ui", "curses", i.DATA_FILE)
     main_dungeon = misc.read({}, "ui", "curses", md.DATA_FILE)
     main_dungeon[md.DOODAD_MAP] = misc.read({}, "ui", "curses", md.DOODADS_MAPPING_FILE)
     main_dungeon[md.ITEM_MAP] = misc.read({}, "ui", "curses", md.ITEMS_MAPPING_FILE)

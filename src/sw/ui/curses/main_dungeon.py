@@ -61,6 +61,8 @@ class MainDungeon(mofloc.EventSource, ui.MainDungeonWindow):
             return (event.ASCEND,)
         if ch in self.uidata[md.KEY_DESCEND]:
             return (event.DESCEND,)
+        if ch in self.uidata[md.KEY_INVENTORY]:
+            return (event.INVENTORY,)
         if ch in self.uidata[md.KEY_PICK_UP]:
             return (event.PICK_UP,)
         if ch in self.uidata[md.KEY_WAIT]:
