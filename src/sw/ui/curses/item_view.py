@@ -41,17 +41,17 @@ class ItemView(mofloc.EventSource):
             return (event.BIG_QUIT,)
         if ch in self.uidata[iv.KEY_QUIT]:
             return (event.QUIT,)
-        if ch in self.uidata[KEY_DRINK]:
+        if ch in self.uidata[iv.KEY_DRINK]:
             return (event.DRINK,)
-        if ch in self.uidata[KEY_DROP]:
+        if ch in self.uidata[iv.KEY_DROP]:
             return (event.DROP,)
-        if ch in self.uidata[KEY_EQUIP]:
+        if ch in self.uidata[iv.KEY_EQUIP]:
             return (event.EQUIP,)
-        if ch in self.uidata[KEY_READ]:
+        if ch in self.uidata[iv.KEY_READ]:
             return (event.READ,)
-        if ch in self.uidata[KEY_UNEQUIP]:
+        if ch in self.uidata[iv.KEY_UNEQUIP]:
             return (event.UNEQUIP,)
-        if ch in self.uidata[KEY_USE]:
+        if ch in self.uidata[iv.KEY_USE]:
             return (event.USE,)
         raise mofloc.NoEvent
 
