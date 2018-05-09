@@ -3,8 +3,9 @@ A module for things that don't fit anywhere else.
 """
 
 
-from itertools import chain
+from collections import deque
 from pathlib import Path
+import string
 import sys
 
 
@@ -69,16 +70,34 @@ def dist(a, b):
 
 def enumerate_with_letters(iterator):
     """
-    Iterate over all items in a given iterator, yielding a pair of a letter of
-    the latin alphabet and an item from the iterator.
+    Iterate over all items in a given iterator, yielding a pair with a letter 
+    of the latin alphabet and an item from the iterator. If there are more
+    items in the iterator than fits in the alphabet, use uppercase letters,
+    then pairs of letters, then triples, and so on.
 
     :param iterator: an iterator supplying the items.
 
-    :return: pairs (letter, item).
+    :return: pairs (letter(s), item).
     """
-    lower = (chr(i) for i in range(ord('a'), ord('z') + 1))
-    upper = (chr(i) for i in range(ord('A'), ord('Z') + 1))
-    return zip(chain(lower, upper), iterator)
+    def letter_generator():
+        """
+        Generate an infinite sequence of letters, then pairs of letters, then
+        triples of letters and so on.
+        """
+        i = 0
+        while True:
+            letters = deque()
+            div, rem = divmod(i, 52)
+            if i == 0:
+                yield 'a'
+                i += 1
+                continue
+            while div > 0 or rem > 0:
+                letters.appendleft(string.ascii_letters[rem])
+                div, rem = divmod(div, 52)
+            yield "".join(letters)
+            i += 1
+    return zip(letter_generator(), iterator)
 
 
 def empty_equipment_dict():
