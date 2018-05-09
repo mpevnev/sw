@@ -6,6 +6,8 @@ Main dungeon stage (well, and non-dungeon area exploration too).
 import sw.ai as ai
 import sw.flow as flow
 
+import sw.const.item as ic
+
 import sw.event.main_dungeon as event
 
 import sw.interaction.item as ii
@@ -24,7 +26,7 @@ class MainDungeon(flow.SWFlow):
         self.register_event_handler(self.ascend)
         self.register_event_handler(self.descend)
         self.register_event_handler(self.move)
-        self.register_event_handler(self.pick_up_eh)
+        self.register_event_handler(self.pick_up_handler)
         self.register_event_handler(self.wait)
 
     #--------- entry points ---------#
@@ -81,7 +83,7 @@ class MainDungeon(flow.SWFlow):
             self.attack(player.position[0] + delta[0], player.position[1] + delta[1])
         return True
 
-    def pick_up_eh(self, ev):
+    def pick_up_handler(self, ev):
         """ Handle 'pick up' event. """
         if ev[0] != event.PICK_UP:
             return False
@@ -115,7 +117,7 @@ class MainDungeon(flow.SWFlow):
         area = self.state.area
         player = self.state.player
         blockers = area.blockers_at(player, x, y)
-        weapon = player.melee_weapons[0]
+        weapon = player.melee_weapons()[0]
         for blocker in blockers:
             if weapon is None:
                 # TODO: unarmed combat
@@ -131,8 +133,11 @@ class MainDungeon(flow.SWFlow):
         """
         player = self.state.player
         for item in items:
-            ii.pick_up_item(item, player, self.state, False)
-            self.ui.message("TEMP DEBUG: pick up an item", None)
+            res = ii.pick_up_item(item, player, self.state, False)
+            if res is ic.PickUpError.NO_SLOTS:
+                self.ui.message("TEMP DEBUG: no slots", None)
+            else:
+                self.ui.message("TEMP DEBUG: pick up an item", None)
 
     def tick(self):
         """ Process a single game turn. """
