@@ -54,30 +54,3 @@ def attack(player, dagger, monster, state, force):
     state.ai_action_points += dagger.action_points_cost
     state.ui.message(f"TEMP DEBUG: stab {monster.recipe_id} for {damage} damage",
                      msg.Channel.PLAYER_ATTACK)
-
-
-#--------- picking up items ---------#
-
-
-@dispatch(p.Player, i.Item, gs.GameState, bool)
-def pick_up(player, item, state, force):
-    """
-    Pick up an item.
-
-    :param player: a player to pick up an item.
-    :type player: sw.player.Player
-    :param item: an item to pick up.
-    :type item: sw.item.Item
-    :param state: a global environment.
-    :type state: sw.gamestate.GameState
-    :param bool force: if set to true, pick up the item if it's dangerous.
-
-    :return: True on success, an error code on failure.
-    :rtype: bool or sw.const.item.PickUpError
-    """
-    free_slots = player.free_inventory_slots(item.carrying_slot)
-    if free_slots == 0:
-        return ci.PickUpError.NO_SLOTS
-    player.add_item_to_inventory_slot(item)
-    state.ui.message("TEMP DEBUG: pick up an item", None)
-    return True
