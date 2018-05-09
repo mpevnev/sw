@@ -3,8 +3,8 @@ Item view events.
 """
 
 
-BIG_QUIT = "big quit"
-QUIT = "quit"
+QUIT_ALTOGETHER = "big quit"
+QUIT_TO_INVENTORY = "quit"
 
 DRINK = "drink"
 DROP = "drop"

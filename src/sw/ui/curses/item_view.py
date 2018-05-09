@@ -38,9 +38,9 @@ class ItemView(mofloc.EventSource):
     def get_event(self):
         ch = self.screen.getkey()
         if ch in self.uidata[iv.KEY_BIG_QUIT]:
-            return (event.BIG_QUIT,)
+            return (event.QUIT_ALTOGETHER,)
         if ch in self.uidata[iv.KEY_QUIT]:
-            return (event.QUIT,)
+            return (event.QUIT_TO_INVENTORY,)
         if ch in self.uidata[iv.KEY_DRINK]:
             return (event.DRINK,)
         if ch in self.uidata[iv.KEY_DROP]:
