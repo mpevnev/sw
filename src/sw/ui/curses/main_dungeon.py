@@ -39,6 +39,7 @@ class MainDungeon(mofloc.EventSource, ui.MainDungeonWindow):
 
     def get_event(self):
         ch = self.screen.getkey()
+        # Move commands
         if ch in self.uidata[md.KEY_RIGHT]:
             return (event.MOVE, (1, 0))
         if ch in self.uidata[md.KEY_RIGHT_UP]:
@@ -55,10 +56,13 @@ class MainDungeon(mofloc.EventSource, ui.MainDungeonWindow):
             return (event.MOVE, (0, 1))
         if ch in self.uidata[md.KEY_RIGHT_DOWN]:
             return (event.MOVE, (1, 1))
+        # Other commands
         if ch in self.uidata[md.KEY_ASCEND]:
             return (event.ASCEND,)
         if ch in self.uidata[md.KEY_DESCEND]:
             return (event.DESCEND,)
+        if ch in self.uidata[md.KEY_PICK_UP]:
+            return (event.PICK_UP,)
         if ch in self.uidata[md.KEY_WAIT]:
             return (event.WAIT,)
         raise mofloc.NoEvent

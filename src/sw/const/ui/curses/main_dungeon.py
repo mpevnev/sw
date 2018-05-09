@@ -61,4 +61,5 @@ KEY_RIGHT_DOWN = "right down"
 
 KEY_ASCEND = "ascend"
 KEY_DESCEND = "descend"
+KEY_PICK_UP = "pick up"
 KEY_WAIT = "wait"

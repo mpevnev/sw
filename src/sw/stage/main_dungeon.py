@@ -8,6 +8,7 @@ import sw.flow as flow
 
 import sw.event.main_dungeon as event
 
+import sw.interaction.item as ii
 import sw.interaction.player as pi
 
 
@@ -23,6 +24,7 @@ class MainDungeon(flow.SWFlow):
         self.register_event_handler(self.ascend)
         self.register_event_handler(self.descend)
         self.register_event_handler(self.move)
+        self.register_event_handler(self.pick_up_eh)
         self.register_event_handler(self.wait)
 
     #--------- entry points ---------#
@@ -79,6 +81,21 @@ class MainDungeon(flow.SWFlow):
             self.attack(player.position[0] + delta[0], player.position[1] + delta[1])
         return True
 
+    def pick_up_eh(self, ev):
+        """ Handle 'pick up' event. """
+        if ev[0] != event.PICK_UP:
+            return False
+        area = self.state.area
+        player = self.state.player
+        items = list(area.items_at(*player.position))
+        if len(items) == 0:
+            self.ui.message("TEMP DEBUG: nothing to pick up here", None)
+        elif len(items) == 1:
+            self.ui.message("TEMP DEBUG: picking up one item", None)
+            self.pick_up(items)
+        else:
+            self.ui.message("TEMP DEBUG: picking up several items", None)
+
     def wait(self, ev):
         """ Handle 'wait' event. """
         if ev[0] != event.WAIT:
@@ -95,12 +112,27 @@ class MainDungeon(flow.SWFlow):
         :param int x: the X coordinate of a point to attack.
         :param int y: the Y coordinate of a point to attack.
         """
+        area = self.state.area
         player = self.state.player
         blockers = area.blockers_at(player, *target)
         for blocker in blockers:
-            for weapon in player.melee_weapons():
+            weapon = player.melee_weapons[0]
+            if weapon is None:
+                # TODO: unarmed combat
+                pass
+            else:
                 pi.attack(player, weapon, blocker, self.state, False)
 
+    def pick_up(self, items):
+        """
+        Make player pick up some items.
+
+        :param items: items to pick up.
+        """
+        player = self.state.player
+        for item in items:
+            ii.pick_up_item(item, player, self.state, False)
+            self.ui.message("TEMP DEBUG: pick up an item", None)
 
     def tick(self):
         """ Process a single game turn. """

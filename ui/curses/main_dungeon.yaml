@@ -47,4 +47,5 @@ right down: ['n', '3']
 
 ascend: ['<']
 descend: ['>']
+pick up: ['g']
 wait: ['5']
