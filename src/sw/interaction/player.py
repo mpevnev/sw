@@ -16,9 +16,9 @@ import sw.monster as m
 import sw.player as p
 
 
-from sw.const.message import Channel
-import sw.const.player as pconst
-from sw.const.skill import Skill
+import sw.const.item as ci
+import sw.const.message as msg
+import sw.const.skill as skill
 import sw.const.stat as stat
 
 
@@ -44,11 +44,40 @@ def attack(player, dagger, monster, state, force):
     :rtype: bool or sw.const.player.AttackError
     """
     # TODO: a to-hit calculation, check if the target is friendly, stabbing, etc...
-    weapon_skill = player.total_skill[Skill.DAGGER]
+    weapon_skill = player.total_skill[skill.Skill.DAGGER]
     damage = rand.randint(weapon.min_damage, weapon.max_damage)
     damage_bonus = weapon_skill * 0.75 if weapon_skill < 10 else 2.5 + weapon_skill * 0.50
     damage += damage_bonus
     damage -= monster.total_secondary[stat.SecondaryStat.ARMOR]
     damage = max(damage, 0)
     monster.health -= damage
-    state.ui.message(f"TEMP DEBUG: stab {monster.recipe_id} for {damage} damage")
+    state.ai_action_points += dagger.action_points_cost
+    state.ui.message(f"TEMP DEBUG: stab {monster.recipe_id} for {damage} damage",
+                     msg.Channel.PLAYER_ATTACK)
+
+
+#--------- picking up items ---------#
+
+
+@dispatch(p.Player, i.Item, gs.GameState, bool)
+def pick_up(player, item, state, force):
+    """
+    Pick up an item.
+
+    :param player: a player to pick up an item.
+    :type player: sw.player.Player
+    :param item: an item to pick up.
+    :type item: sw.item.Item
+    :param state: a global environment.
+    :type state: sw.gamestate.GameState
+    :param bool force: if set to true, pick up the item if it's dangerous.
+
+    :return: True on success, an error code on failure.
+    :rtype: bool or sw.const.item.PickUpError
+    """
+    free_slots = player.free_inventory_slots(item.carrying_slot)
+    if free_slots == 0:
+        return ci.PickUpError.NO_SLOTS
+    player.add_item_to_inventory_slot(item)
+    state.ui.message("TEMP DEBUG: pick up an item", None)
+    return True
