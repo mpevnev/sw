@@ -43,10 +43,10 @@ class CursesSpawner(ui.UISpawner):
         uidata = self.uidata[const.INVENTORY]
         return Inventory(self.screen, self.colors, uidata, state)
 
-    def spawn_item_view(self, state, item):
+    def spawn_item_view(self, item):
         from sw.ui.curses.item_view import ItemView
         uidata = self.uidata[const.ITEM_VIEW]
-        return ItemView(self.screen, self.colors, uidata, state, item)
+        return ItemView(self.screen, self.colors, uidata, item)
 
     def spawn_main_dungeon(self, state):
         from sw.ui.curses.main_dungeon import MainDungeon

@@ -70,7 +70,7 @@ class UISpawner():
         """
         raise NotImplementedError
 
-    def spawn_item_view(self, state, item):
+    def spawn_item_view(self, item):
         """
         Spawn an item view.
 
