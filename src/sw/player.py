@@ -82,7 +82,7 @@ def _apply_species(player):
     """
     player.base_stats = deepcopy(player.species.base_stats)
     player.equipment = deepcopy(player.species.slots)
-    player.add_innate_modifiers(*player.species.modifiers)
+    player.add_innate_modifiers(*deepcopy(player.species.modifiers))
 
 def _apply_background(player):
     """
@@ -91,4 +91,4 @@ def _apply_background(player):
     :param player: a player to apply the background's modifiers to.
     :type player: Player
     """
-    player.add_temp_modifiers(*player.background.modifiers)
+    player.add_temp_modifiers(*deepcopy(player.background.modifiers))
