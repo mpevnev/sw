@@ -29,6 +29,9 @@ class SecondaryStat(Enum):
     DODGE = "dodge"
     TO_HIT = "to hit"
 
+    MOVEMENT_SPEED = "move speed"
+    SPEED = "speed"
+
     HEALTH = "health"
     HEALTH_REGEN = "health regen"
 

@@ -84,6 +84,20 @@ class Character(Entity, Modifiable):
         num_slots = self.total_secondary[misc.slot_stat(slot_type)]
         return num_slots - num_items
 
+    def has_melee_weapon_equipped(self):
+        """
+        :return: True if the character wields a melee weapon, False otherwise.
+        :rtype: bool
+        """
+        return any(map(lambda i: i is not None, self.melee_weapons()))
+
+    def has_ranged_weapon_equipped(self):
+        """
+        :return: True if the character wields a ranged weapon, False otherwise.
+        :rtype: bool
+        """
+        return any(map(lambda i: i is not None, self.ranged_weapons()))
+
     def melee_weapons(self):
         """
         :return: a list of wielded melee weapons.

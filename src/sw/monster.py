@@ -52,23 +52,14 @@ class Monster(Character):
             state.ui.message(self.death_message, Channel.MONSTER_DEATH)
             state.ui.death_animation(self)
         elif self.do_award_xp:
-            state.ui.message(state.data.strings[conststr.FEEL_MORE_EXPERIENCED], Channel.NORMAL)
+            state.ui.message(state.data.strings[conststr.FEEL_MORE_EXPERIENCED], 
+                             Channel.MONSTER_DEATH)
 
     #--------- other logic ---------#
 
     def alarm(self):
         """ Raise the AI 'alarmed' flag. """
         self.ai.alarmed = True
-
-    #--------- action points calculations ---------#
-
-    def movement_ap_cost(self):
-        """
-        :return: amount of action points required to move.
-        :rtype: int
-        """
-        # TODO: movement AP cost calculations
-        return 0
 
 
 #--------- subclasses ---------#

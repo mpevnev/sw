@@ -70,7 +70,7 @@ def dist(a, b):
 
 def enumerate_with_letters(iterator):
     """
-    Iterate over all items in a given iterator, yielding a pair with a letter 
+    Iterate over all items in a given iterator, yielding a pair with a letter
     of the latin alphabet and an item from the iterator. If there are more
     items in the iterator than fits in the alphabet, use uppercase letters,
     then pairs of letters, then triples, and so on.
@@ -167,6 +167,29 @@ def read(default, *filename):
     except FileNotFoundError:
         pass
     return _try_read(Path("/", "usr", "share", INSTALLDIR, f), default=default)
+
+
+def segment_interpolation(x, *points):
+    """
+    Perform a segment interpolation.
+    Find a segment between two points such that
+    'left_x <= x <= right_x' and return a value based on linear interpolation
+    between those two points.
+    If no such segment is found, use Y value of leftmost or rightmost segment.
+
+    :raises IndexError: if 'points' has less than two elements.
+    """
+    if len(points) < 2:
+        raise IndexError
+    left_x, left_y = points[0]
+    if x < left_x:
+        return left_y
+    for point in points[1:]:
+        right_x, right_y = point
+        if left_x <= x <= right_x:
+            return (x - left_x) / (right_x - left_x) * (right_y - left_y) + left_y
+        left_x, left_y = right_x, right_y
+    return right_y
 
 
 def slot_stat(slot_type):

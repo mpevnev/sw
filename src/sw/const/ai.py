@@ -22,6 +22,7 @@ class Task(Enum):
     REST = "rest"
     RETREAT = "retreat"
     STEP_ASIDE = "step aside"
+    WAIT = "wait"
 
 
 class AIType(Enum):

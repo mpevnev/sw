@@ -40,10 +40,14 @@ def ai_turn(state):
             continue
         monster.action_points += state.ai_action_points
         task = evaluate_ai_action(monster.ai, monster, state)
-        if task[0] is const.Task.CARRY_ON:
-            mi.carry_on(monster, state)
-        else:
-            mi.start_new_task(monster, task, state)
+        required_action_points = 0
+        while required_action_points is not None:
+            monster.action_points -= required_action_points
+            if task[0] is const.Task.CARRY_ON:
+                required_action_points = mi.carry_on(monster, state)
+            else:
+                required_action_points = mi.start_new_task(monster, task, state)
+            task = evaluate_ai_action(monster.ai, monster, state)
     state.ai_action_points = 0
 
 
@@ -103,7 +107,7 @@ def evaluate_ai_action(ai, monster, state):
     """
     AI evaluation, generic version.
 
-    This thing is boring, it just rests always.
+    This thing is boring, it just always skips the turn.
 
     :param AI ai: an AI to use.
     :param monster: a monster to evaluate a move for.
@@ -115,7 +119,7 @@ def evaluate_ai_action(ai, monster, state):
     should carry on with whatever it's doing at the moment.
     :rtype: tuple or None
     """
-    return (const.Task.REST,)
+    return (const.Task.WAIT,)
 
 
 #--------- evaluators - Melee Zombie ---------#
