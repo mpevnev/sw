@@ -6,7 +6,8 @@ Main dungeon stage (well, and non-dungeon area exploration too).
 import sw.ai as ai
 import sw.flow as flow
 
-import sw.const.item as ic
+import sw.const.item as ci
+import sw.const.player as cp
 
 import sw.event.main_dungeon as event
 
@@ -59,7 +60,9 @@ class MainDungeon(flow.SWFlow):
         mon.tick(self.state)
         mon.health = 1
         item_recipe = self.state.data.item_recipe_by_id("debug dagger")
-        dagger = item.item_from_recipe(item_recipe, self.state.data)
+        for i in range(80):
+            dagger = item.item_from_recipe(item_recipe, self.state.data)
+            ii.pick_up_item(dagger, self.state.player, self.state, False)
         self.mon = mon
         self.state.area.add_entity(mon, 3, 3)
         self.state.area.add_entity(dagger, 3, 6)
@@ -97,14 +100,12 @@ class MainDungeon(flow.SWFlow):
         if ev[0] != event.MOVE:
             return False
         delta = ev[1]
-        area = self.state.area
         player = self.state.player
-        if area.shift_entity(player, *delta):
-            area.update_visibility_matrix()
-            self.tick()
-        else:
-            self.attack(player.position[0] + delta[0], player.position[1] + delta[1])
-        return True
+        maybe_move = pi.move(player, *delta, self.state, False)
+        if not maybe_move:
+            if maybe_move is cp.MoveError.BLOCKED:
+                self.attack(player.position[0] + delta[0], player.position[1] + delta[1])
+        self.tick()
 
     def pick_up_handler(self, ev):
         """ Handle 'pick up' event. """
@@ -125,6 +126,7 @@ class MainDungeon(flow.SWFlow):
         """ Handle 'wait' event. """
         if ev[0] != event.WAIT:
             return False
+        self.state.ai_action_points += cp.AP_PER_WAIT
         self.tick()
         return True
 
@@ -157,7 +159,7 @@ class MainDungeon(flow.SWFlow):
         player = self.state.player
         for item in items:
             res = ii.pick_up_item(item, player, self.state, False)
-            if res is ic.PickUpError.NO_SLOTS:
+            if res is ci.PickUpError.NO_SLOTS:
                 self.ui.message("TEMP DEBUG: no slots", None)
             else:
                 self.ui.message("TEMP DEBUG: pick up an item", None)
