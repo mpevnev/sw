@@ -5,6 +5,9 @@ Provides Player class used to represent the player character.
 """
 
 
+from copy import deepcopy
+
+
 from sw.const.entity import CollisionGroup
 from sw.character import Character
 
@@ -77,7 +80,8 @@ def _apply_species(player):
     :param player: a player to apply the species modifiers to.
     :type player: Player
     """
-    player.base_stats = player.species.base_stats
+    player.base_stats = deepcopy(player.species.base_stats)
+    player.equipment = deepcopy(player.species.slots)
     player.add_innate_modifiers(*player.species.modifiers)
 
 def _apply_background(player):

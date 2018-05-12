@@ -4,10 +4,11 @@ Species module.
 Provides Species class.
 """
 
-import sw.const.species as const
 import sw.misc as misc
 import sw.modifier as mod
 
+import sw.const.item as ci
+import sw.const.species as const
 
 class Species():
     """
@@ -28,3 +29,20 @@ class Species():
         self.modifiers = [mod.modifier_from_recipe(d) for d in data[const.MODIFIERS]]
         self.name = data[const.NAME]
         self.shortname = data[const.SHORTNAME]
+        self.slots = _read_slots(data[const.SLOTS])
+
+
+#--------- helper things ---------#
+
+
+def _read_slots(data):
+    """
+    Read distribution of equipment slots from a dictionary.
+
+    :param dict data: a dictionary to read from.
+    
+    :return: a dictionary with empty slot lists of length read from the dict.
+    :rtype: dict(sw.const.item.EquipmentSlot, list)
+    """
+    new_list = lambda length: list((0 for _ in range(length)))
+    return {slot: new_list(data[slot.value]) for slot in ci.EquipmentSlot}

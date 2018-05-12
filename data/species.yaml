@@ -3,4 +3,31 @@
   name: Human
   short name: Hu
   forbidden: []
+  slots:
+      amulet: 1
+      armor: 1
+      boots: 1
+      hat: 1
+      weapon: 1
+      ranged weapon: 1
+      ring: 2
+  stats:
+      primary:
+          str: 10
+          dex: 10
+          int: 10
+          spi: 10
+      secondary:
+          health: 15
+          health regen: 0.25
+
+          speed: 10
+          move speed: 10
+
+          sight: 6
+
+          small slots: 12
+          medium slots: 80
+          big slots: 4
+          huge slots: 1
   modifiers: []
