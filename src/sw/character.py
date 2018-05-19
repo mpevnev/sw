@@ -84,6 +84,18 @@ class Character(Entity, Modifiable):
         num_slots = self.total_secondary[misc.slot_stat(slot_type)]
         return num_slots - num_items
 
+    def has_equipped(self, item):
+        """
+        Test if the character has an item equipped.
+
+        :param item: an item to test.
+        :type item: sw.item.Item
+        """
+        for invlist in self.inventory.values():
+            if item in invlist:
+                return True
+        return False
+
     def has_melee_weapon_equipped(self):
         """
         :return: True if the character wields a melee weapon, False otherwise.
