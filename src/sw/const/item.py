@@ -27,7 +27,7 @@ TYPE = "type"
 class WeaponField(Enum):
     """ A field of both ranged and melee weapons. """
 
-    ACTION_POINT_COST = "ap cost"
+    ACTION_POINTS_COST = "ap cost"
     ARMOR_PENETRATION = "armor penetration"
     MIN_DAMAGE = "min damage"
     MAX_DAMAGE = "max damage"
