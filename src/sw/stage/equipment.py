@@ -14,8 +14,8 @@ ENTRY_POINT = "entry point"
 class Equipment(flow.SWFlow):
     """ Equipment handler. """
 
-    def __init__(self, state, ui_spawner, ui):
-        super().__init__(state, ui_spawner, ui)
+    def __init__(self, state, ui_spawner):
+        super().__init__(state, ui_spawner, ui_spawner.spawn_equipment(state.player.equipment))
         self.register_event_handler(self.quit)
         self.register_event_handler(self.view_item)
 
@@ -27,10 +27,7 @@ class Equipment(flow.SWFlow):
             return False
         import sw.stage.item_view as iv
         item = ev[1]
-        new_flow = iv.ItemView(self.state,
-                               self.ui_spawner,
-                               self.ui_spawner.spawn_item_view(item),
-                               item)
+        new_flow = iv.ItemView(self.state, self.ui_spawner, item)
         raise flow.ChangeFlow(new_flow, iv.FROM_EQUIPMENT)
 
     def quit(self, ev):

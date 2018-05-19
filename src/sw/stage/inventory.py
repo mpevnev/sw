@@ -8,23 +8,13 @@ import sw.flow as flow
 import sw.event.inventory as event
 
 
-ENTRY_POINT = "entry point"
-
-
 class Inventory(flow.SWFlow):
     """ Inventory handler. """
 
-    def __init__(self, state, ui_spawner, ui):
-        super().__init__(state, ui_spawner, ui)
-        self.register_entry_point(ENTRY_POINT, self.entry_point)
+    def __init__(self, state, ui_spawner):
+        super().__init__(state, ui_spawner, ui_spawner.spawn_inventory(state.player.inventory))
         self.register_event_handler(self.quit)
         self.register_event_handler(self.view_item)
-
-    #--------- entry points ---------#
-
-    def entry_point(self):
-        """ Enter the flow from a dungeon view. """
-        pass
 
     #--------- event handlers ---------#
 

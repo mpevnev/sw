@@ -22,8 +22,8 @@ class ItemView(flow.SWFlow):
     return them to other flows, which will handle them as required.
     """
 
-    def __init__(self, state, ui_spawner, ui, item):
-        super().__init__(state, ui_spawner, ui)
+    def __init__(self, state, ui_spawner, item):
+        super().__init__(state, ui_spawner, ui_spawner.spawn_item_view(item))
         self.register_entry_point(FROM_EQUIPMENT, self.from_equipment)
         self.register_entry_point(FROM_INVENTORY, self.from_inventory)
         self.register_event_handler(self.drink)
@@ -100,7 +100,5 @@ class ItemView(flow.SWFlow):
             return False
         import sw.stage.inventory as inv
         inventory = self.state.player.inventory
-        new_flow = inv.Inventory(self.state,
-                                 self.ui_spawner,
-                                 self.ui_spawner.spawn_inventory(inventory))
+        new_flow = inv.Inventory(self.state, self.ui_spawner, inventory)
         raise flow.ChangeFlow(new_flow, inv.ENTRY_POINT)

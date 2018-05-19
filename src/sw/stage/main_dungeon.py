@@ -87,10 +87,8 @@ class MainDungeon(flow.SWFlow):
             return False
         import sw.stage.inventory as inv
         inventory = self.state.player.inventory
-        inventory_flow = inv.Inventory(self.state,
-                                       self.ui_spawner,
-                                       self.ui_spawner.spawn_inventory(inventory))
-        inventory_event = flow.execute(inventory_flow, inv.ENTRY_POINT)
+        inventory_flow = inv.Inventory(self.state, self.ui_spawner)
+        inventory_event = flow.execute(inventory_flow, None)
         if inventory_event is None:
             return True
         self.process_event(inventory_event)
