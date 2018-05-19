@@ -53,7 +53,7 @@ def equip_item(item, character, state, force):
     Try to equip an unequipable item.
 
     :param item: an item to equip.
-    :type item: sw.item.Item
+    :type item: sw.item.Equipable
     :param character: a character to do the equipping.
     :type character: sw.character.Character
     :param state: a global environment.
@@ -85,7 +85,7 @@ def equip_item(item, character, state, force):
     if character.free_equipment_slots(item.wearing_slot) == 0:
         return ci.EquipError.NO_SLOTS
     if item.cursed and item.known_cursed and not force:
-        return ci.EquipError.DANGEROUS
+        return ci.EquipError.VISIBLY_CURSED
     character.add_item_to_equipment_slot(item)
     return True
 
@@ -120,3 +120,33 @@ def drop_item(item, character, state, force):
     character.remove_item_from_slot(item)
     item.position = pos
     return True
+
+
+#--------- unequipping ---------#
+
+
+@dispatch(i.Equipable, c.Character, gs.GameState, bool)
+def take_item_off(item, character, state, force):
+    """
+    Take off an item, generic version.
+
+    :param item: an item to take off.
+    :type item: sw.item.Equipable
+    :param character: a character to take off the item.
+    :type character: sw.character.Character
+    :param state: a global environment
+    :type state: sw.gamestate.GameState
+    :param bool force: take off the item even if it's dangerous.
+
+    :return True on success, an error code on failure.
+    :rtype: bool or sw.const.item.TakeOffError
+    """
+    if item.cursed:
+        return ci.TakeOffError.CURSED
+    has_free_slots = character.free_inventory_slots(item.carrying_slot) > 0
+    if not has_free_slots:
+        return ci.TakeOffError.NO_SLOTS
+    character.remove_item_from_slot(item)
+    character.add_item_to_inventory_slot(item)
+    return True
+
