@@ -13,7 +13,7 @@ hint quit: Press Esc to quit the item view.
 # Keybindings
 
 big quit: ['Q']
-quit: ['^[']
+quit: ["\x1b"]
 
 drink: ['d']
 drop: ['D']

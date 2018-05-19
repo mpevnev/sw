@@ -94,7 +94,8 @@ class ItemView(flow.SWFlow):
         if ev[0] != event.QUIT_TO_INVENTORY:
             return False
         import sw.stage.inventory as inv
+        inventory = self.state.player.inventory
         new_flow = inv.Inventory(self.state,
                                  self.ui_spawner,
-                                 self.ui_spawner.spawn_inventory(self.state))
+                                 self.ui_spawner.spawn_inventory(inventory))
         raise flow.ChangeFlow(new_flow, inv.ENTRY_POINT)
