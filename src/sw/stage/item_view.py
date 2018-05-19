@@ -30,7 +30,7 @@ class ItemView(flow.SWFlow):
         self.register_event_handler(self.drop)
         self.register_event_handler(self.equip)
         self.register_event_handler(self.read)
-        self.register_event_handler(self.unequip)
+        self.register_event_handler(self.take_off)
         self.register_event_handler(self.use)
         self.register_event_handler(self.quit_altogether)
         self.item = item
@@ -63,7 +63,7 @@ class ItemView(flow.SWFlow):
         """ Handle 'equip' event. """
         if ev[0] != event.EQUIP:
             return False
-        raise flow.EndFlow((output_event.DROP, self.item))
+        raise flow.EndFlow((output_event.EQUIP, self.item))
 
     def read(self, ev):
         """ Handle 'read' event. """
@@ -71,11 +71,11 @@ class ItemView(flow.SWFlow):
             return False
         raise flow.EndFlow((output_event.READ, self.item))
 
-    def unequip(self, ev):
-        """ Handle 'unequip' event. """
-        if ev[0] != event.UNEQUIP:
+    def take_off(self, ev):
+        """ Handle 'take_off' event. """
+        if ev[0] != event.TAKE_OFF:
             return False
-        raise flow.EndFlow((output_event.UNEQUIP, self.item))
+        raise flow.EndFlow((output_event.TAKE_OFF, self.item))
 
     def use(self, ev):
         """ Handle 'use' event. """
