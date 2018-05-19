@@ -9,6 +9,7 @@
       boots: 1
       hat: 1
       weapon: 1
+      quiver: 1
       ranged weapon: 1
       ring: 2
   stats:
@@ -27,7 +28,7 @@
           sight: 6
 
           small slots: 12
-          medium slots: 80
-          big slots: 4
-          huge slots: 1
+          medium slots: 8
+          big slots: 6
+          huge slots: 2
   modifiers: []
