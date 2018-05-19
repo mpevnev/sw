@@ -1,6 +1,5 @@
 
 # Strings
-
 small tab: Small
 medium tab: Medium
 big tab: Big
@@ -8,15 +7,14 @@ huge tab: Huge
 
 hint: > 
     Use "Tab" to switch between item tabs, a-z and A-Z to select items and
-    "!" to exit.
+    "!" to exit, 'Enter' to confirm selection and 'Esc' to abort it.
 
 # Colors
-
-selected tab color: {fg: black, bg: white}
-unselected tab color: {fg: white, bg: black}
+chosen item: {fg: black, bg: white}
+unchosen item: {fg: white, bg: black}
 
 # Keybindings
-
+abort selection: ["^["]
 change tab: ["\t"]
 confirm: ["\n", "\r"]
 quit: ["!"]

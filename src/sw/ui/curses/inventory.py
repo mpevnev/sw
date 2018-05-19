@@ -51,13 +51,13 @@ class Inventory(mofloc.EventSource):
             self.filter_text += ch
             self.filter_items()
             filter_length = len(self.filtered_items)
-            if filter_length == 1:
-                return (event.EXAMINE_ITEM, self.filtered_items[0][1])
             if filter_length == 0:
-                self.filter_text = ""
-                self.filter_items()
+                self.reset_filter()
             raise mofloc.NoEvent
-        if ch == self.uidata[inv.KEY_CONFIRM_SELECTION]:
+        if ch in self.uidata[inv.KEY_ABORT_SELECTION]:
+            self.reset_filter
+            raise mofloc.NoEvent
+        if ch in self.uidata[inv.KEY_CONFIRM_SELECTION]:
             for code, item in self.filtered_items:
                 if code == self.filter_text:
                     return (event.EXAMINE_ITEM, item)
@@ -77,14 +77,19 @@ class Inventory(mofloc.EventSource):
 
     def draw_panels(self):
         """ Draw the panels with items. """
-        y = 1
+        ys = {slot: 1 for slot in ic.InventorySlot}
         for code, item in self.filtered_items:
-            panel = self.panel[item.carrying_slot]
-            try:
-                curses.print_centered(panel, y, f"{code} - ITEM")
-            except curses.error:
+            if code == self.filter_text:
+                color_mapping = self.uidata[inv.CHOSEN_ITEM_COLOR]
+            else:
+                color_mapping = self.uidata[inv.UNCHOSEN_ITEM_COLOR]
+            attr = curses.color_from_dict(self.colors, color_mapping)
+            slot = item.carrying_slot
+            panel = self.panel[slot]
+            if ys[slot] >= panel.getmaxyx()[0]:
                 continue
-            y += 1
+            curses.print_centered(panel, ys[slot], f"{code} - ITEM", attr)
+            ys[slot] += 1
         for panel in self.panel.values():
             panel.box()
 
@@ -103,8 +108,12 @@ class Inventory(mofloc.EventSource):
         """
         Filter away some items based on a new filter string.
         """
-        if self.filter_text == "":
-            self.filtered_items = self.enumerate_items()
-            return
         cond = lambda t: t[0].startswith(self.filter_text)
-        self.filtered_items = list(filter(cond, self.filtered_items))
+        self.filtered_items = list(filter(cond, self.enumerate_items()))
+
+    def reset_filter(self):
+        """
+        Reset item filter.
+        """
+        self.filter_text = ""
+        self.filter_items()

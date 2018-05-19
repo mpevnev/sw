@@ -14,10 +14,11 @@ HUGE_TAB = "huge tab"
 HINT = "hint"
 
 # Colors
-SELECTED_COLOR = "selected tab color"
-UNSELECTED_COLOR = "unselected tab color"
+CHOSEN_ITEM_COLOR = "chosen item"
+UNCHOSEN_ITEM_COLOR = "unchosen item"
 
 # Keybindings
+KEY_ABORT_SELECTION = "abort selection"
 KEY_CHANGE_TAB = "change tab"
 KEY_CONFIRM_SELECTION = "confirm"
 KEY_QUIT = "quit"
