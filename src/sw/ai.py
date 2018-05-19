@@ -30,7 +30,7 @@ def ai_turn(state):
 
     :param state: game state to be modified by the active entities.
     :type state: sw.gamestate.GameState
-    :param int actions: the amount of action points to be added to the
+    :param float actions: the amount of action points to be added to the
     entities' action point pools.
     """
     if state.area is None:
