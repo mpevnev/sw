@@ -101,4 +101,4 @@ class ItemView(flow.SWFlow):
         import sw.stage.inventory as inv
         inventory = self.state.player.inventory
         new_flow = inv.Inventory(self.state, self.ui_spawner)
-        raise flow.ChangeFlow(new_flow, inv.ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, None)
