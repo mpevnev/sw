@@ -4,11 +4,17 @@ Constants for modifier module.
 
 from enum import Enum
 
-# Modifier header info
+# Common fields - main
 ID = "id"
 TYPE = "type"
-PRIORITY = "priority"
+
+# Common fields - secondary
+ATTACH_MESSAGE = "attach message"
+DISSIPATE_MESSAGE = "dissipate message"
 DURATION = "duration"
+PRIORITY = "priority"
+TICK_MESSAGE = "tick message"
+
 
 # Types
 class ModifierType(Enum):
