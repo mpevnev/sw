@@ -24,7 +24,6 @@ class Item(Entity):
         self.carrying_slot = None
         self.cursed = False
         self.known_cursed = False
-        self.wearing_slot = None
         self.add_blocked_by(CollisionGroup.WALL)
 
     #--------- inherited stuff ---------#
@@ -42,7 +41,15 @@ class Item(Entity):
 #--------- abstract subclasses ---------#
 
 
-class Weapon(Item):
+class Equipable(Item):
+    """ An item that can be equipped. """
+
+    def __init__(self, recipe_id):
+        super().__init__(recipe_id)
+        self.wearing_slot = None
+
+
+class Weapon(Equipable):
     """ A weapon, either melee or ranged. """
 
     def __init__(self, recipe_id):

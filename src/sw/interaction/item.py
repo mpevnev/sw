@@ -50,6 +50,25 @@ def pick_up_item(item, character, state, force):
 @dispatch(i.Item, c.Character, gs.GameState, bool)
 def equip_item(item, character, state, force):
     """
+    Try to equip an unequipable item.
+
+    :param item: an item to equip.
+    :type item: sw.item.Item
+    :param character: a character to do the equipping.
+    :type character: sw.character.Character
+    :param state: a global environment.
+    :type state: sw.gamestate.GameState
+    :param bool force: if set to True, equip the item if it's dangerous.
+
+    :return: always EquipError.UNEQUIPABLE
+    :rtype: sw.const.item.EquipError
+    """
+    return ci.EquipError.UNEQUIPABLE
+
+
+@dispatch(i.Equipable, c.Character, gs.GameState, bool)
+def equip_item(item, character, state, force):
+    """
     Equip an item, generic version.
 
     :param item: an item to equip.
@@ -60,8 +79,8 @@ def equip_item(item, character, state, force):
     :type state: sw.gamestate.GameState
     :param bool force: if set to True, equip the item if it's dangerous.
 
-    :return: True on success, an error code on failure.
-    :rtype: sw.const.item.PickUpError or bool
+    :return: True on success, an error code on failure
+    :rtype: bool or sw.const.item.EquipError
     """
     if character.free_equipment_slots(item.wearing_slot) == 0:
         return ci.EquipError.NO_SLOTS
