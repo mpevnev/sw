@@ -37,6 +37,11 @@ class CursesSpawner(ui.UISpawner):
         from sw.ui.curses.char_name_prompt import CharNamePrompt
         uidata = self.uidata[const.CHAR_NAME_PROMPT]
         return CharNamePrompt(self.screen, self.colors, uidata)
+    
+    def spawn_equipment(self, equipment):
+        from sw.ui.curses.equipment import Equipment
+        uidata = self.uidata[const.EQUIPMENT]
+        return Equipment(self.screen, self.colors, uidata, equipment)
 
     def spawn_inventory(self, inventory):
         from sw.ui.curses.inventory import Inventory
@@ -99,6 +104,7 @@ def _read_curses_ui_data():
     """ Read configuration and strings for curses-based interface. """
     import sw.const.ui.curses.background_selection as bs
     import sw.const.ui.curses.char_name_prompt as cnp
+    import sw.const.ui.curses.equipment as equ
     import sw.const.ui.curses.inventory as i
     import sw.const.ui.curses.item_view as iv
     import sw.const.ui.curses.main_dungeon as md
@@ -108,6 +114,7 @@ def _read_curses_ui_data():
     res = {}
     res[const.BACKGROUND_SELECTION] = misc.read({}, "ui", "curses", bs.DATA_FILE)
     res[const.CHAR_NAME_PROMPT] = misc.read({}, "ui", "curses", cnp.DATA_FILE)
+    res[const.EQUIPMENT] = misc.read({}, "ui", "curses", equ.DATA_FILE)
     res[const.INVENTORY] = misc.read({}, "ui", "curses", i.DATA_FILE)
     res[const.ITEM_VIEW] = misc.read({}, "ui", "curses", iv.DATA_FILE)
     main_dungeon = misc.read({}, "ui", "curses", md.DATA_FILE)

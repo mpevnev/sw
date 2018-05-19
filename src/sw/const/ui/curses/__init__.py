@@ -5,6 +5,7 @@ Constants for curses-based interface.
 
 BACKGROUND_SELECTION = "background selection"
 CHAR_NAME_PROMPT = "char name prompt"
+EQUIPMENT = "equipment"
 INVENTORY = "inventory"
 ITEM_VIEW = "item view"
 MAIN_DUNGEON = "main dungeon"

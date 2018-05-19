@@ -61,6 +61,15 @@ class UISpawner():
         """
         raise NotImplementedError
 
+    def spawn_equipment(self, equipment):
+        """
+        Spawn an equipment view.
+
+        :param equipment: an equipment dict.
+        :type equipment: dict(sw.const.item.EquipmentSlot, sw.item.Item)
+        """
+        raise NotImplementedError
+
     def spawn_inventory(self, inventory):
         """
         Spawn an inventory view.
