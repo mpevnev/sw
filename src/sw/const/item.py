@@ -126,6 +126,7 @@ class EquipmentSlot(Enum):
     BOOTS = "boots"
     HAT = "hat"
     MELEE_WEAPON = "weapon"
+    QUIVER = "quiver"
     RANGED_WEAPON = "ranged weapon"
     RING = "ring"
 
