@@ -28,4 +28,4 @@ def init_game(ui_type):
     data = GameData()
     state = game_state_from_scratch(data)
     spawner = make_spawner(ui_type)
-    raise mofloc.ChangeFlow(mm.MainMenu(state, spawner), mm.ENTRY_POINT)
+    raise mofloc.ChangeFlow(mm.MainMenu(state, spawner), None)

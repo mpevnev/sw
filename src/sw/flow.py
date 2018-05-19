@@ -29,4 +29,5 @@ class SWFlow(Flow):
 
     def draw(self):
         """ Draw the UI. """
-        self.ui.draw()
+        if self.ui is not None:
+            self.ui.draw()
