@@ -92,8 +92,9 @@ class MainDungeon(flow.SWFlow):
                                        self.ui_spawner.spawn_inventory(inventory))
         inventory_event = flow.execute(inventory_flow, inv.ENTRY_POINT)
         if inventory_event is None:
-            return
+            return True
         self.process_event(inventory_event)
+        return True
 
     def move(self, ev):
         """ Handle 'move' event. """
@@ -106,6 +107,7 @@ class MainDungeon(flow.SWFlow):
             if maybe_move is cp.MoveError.BLOCKED:
                 self.attack(player.position[0] + delta[0], player.position[1] + delta[1])
         self.tick()
+        return True
 
     def pick_up_handler(self, ev):
         """ Handle 'pick up' event. """
@@ -114,13 +116,14 @@ class MainDungeon(flow.SWFlow):
         area = self.state.area
         player = self.state.player
         items = list(area.items_at(*player.position, True))
-        if len(items) == 0:
+        if not items:
             self.ui.message("TEMP DEBUG: nothing to pick up here", None)
         elif len(items) == 1:
             self.ui.message("TEMP DEBUG: picking up one item", None)
             self.pick_up(items)
         else:
             self.ui.message("TEMP DEBUG: picking up several items", None)
+        return True
 
     def wait(self, ev):
         """ Handle 'wait' event. """
