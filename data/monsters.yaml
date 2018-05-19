@@ -12,5 +12,6 @@
           int: 0
           spi: 0
       secondary:
+          health: 10
           sight: 5
   xp: 3

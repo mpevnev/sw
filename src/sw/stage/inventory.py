@@ -6,7 +6,6 @@ Inventory stage.
 import sw.flow as flow
 
 import sw.event.inventory as event
-import sw.event.item_events as output_event
 
 
 ENTRY_POINT = "entry point"
