@@ -92,6 +92,16 @@ class ItemView(flow.SWFlow):
             return False
         raise flow.EndFlow(None)
 
+    def quit_to_equipment(self, ev):
+        """
+        Quit the item view back to equipment screen.
+        """
+        if ev[0] != event.QUIT_TO_INVENTORY:
+            return False
+        import sw.stage.equipment as equ
+        new_flow = equ.Equipment(self.state, self.ui_spawner)
+        raise flow.ChangeFlow(new_flow, None)
+
     def quit_to_inventory(self, ev):
         """
         Quit the item view back to inventory.
@@ -99,6 +109,5 @@ class ItemView(flow.SWFlow):
         if ev[0] != event.QUIT_TO_INVENTORY:
             return False
         import sw.stage.inventory as inv
-        inventory = self.state.player.inventory
         new_flow = inv.Inventory(self.state, self.ui_spawner)
         raise flow.ChangeFlow(new_flow, None)
