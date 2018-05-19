@@ -6,7 +6,8 @@ Item view UI.
 import mofloc
 
 
-import sw.const.item as ic
+import sw.interaction.item_tests as test
+
 import sw.const.ui.curses.item_view as iv
 
 import sw.event.item_view as event
@@ -17,11 +18,12 @@ import sw.ui.curses as curses
 class ItemView(mofloc.EventSource):
     """ An item view. """
 
-    def __init__(self, screen, colors, uidata, item):
+    def __init__(self, screen, colors, uidata, state, item):
         mofloc.EventSource.__init__(self)
         self.screen = screen
         self.colors = colors
         self.uidata = uidata
+        self.state = state
         self.item = item
         h, w = screen.getmaxyx()
         self.info_panel = screen.derwin(h - iv.NUM_HINTS, w, 0, 0)
@@ -50,7 +52,7 @@ class ItemView(mofloc.EventSource):
         if ch in self.uidata[iv.KEY_READ]:
             return (event.READ,)
         if ch in self.uidata[iv.KEY_UNEQUIP]:
-            return (event.UNEQUIP,)
+            return (event.TAKE_OFF,)
         if ch in self.uidata[iv.KEY_USE]:
             return (event.USE,)
         raise mofloc.NoEvent
@@ -59,16 +61,23 @@ class ItemView(mofloc.EventSource):
 
     def draw_hints(self):
         """ Draw the hints panel. """
-        # TODO: filter out irrelevant hints
-        self.hints_panel.addstr(0, 0, self.uidata[iv.HINT_DRINK])
-        self.hints_panel.addstr(1, 0, self.uidata[iv.HINT_DROP])
-        self.hints_panel.addstr(2, 0, self.uidata[iv.HINT_EQUIP])
-        self.hints_panel.addstr(3, 0, self.uidata[iv.HINT_READ])
-        self.hints_panel.addstr(4, 0, self.uidata[iv.HINT_UNEQUIP])
-        self.hints_panel.addstr(5, 0, self.uidata[iv.HINT_USE])
-
-        self.hints_panel.addstr(6, 0, self.uidata[iv.HINT_BIG_QUIT])
-        self.hints_panel.addstr(7, 0, self.uidata[iv.HINT_QUIT])
+        item = self.item
+        state = self.state
+        player = state.player
+        self.hints_panel.move(0, 0)
+        if test.can_drink(player, item, state):
+            self.hints_panel.addstr(f"{self.uidata[iv.HINT_DRINK]}\n")
+        self.hints_panel.addstr(f"{self.uidata[iv.HINT_DROP]}\n")
+        if test.can_equip(player, item, state) and not player.has_equipped(item):
+            self.hints_panel.addstr(f"{self.uidata[iv.HINT_EQUIP]}\n")
+        if test.can_read(player, item, state):
+            self.hints_panel.addstr(f"{self.uidata[iv.HINT_READ]}\n")
+        if player.has_equipped(item):
+            self.hints_panel.addstr(f"{self.uidata[iv.HINT_UNEQUIP]}\n")
+        if test.can_use(player, item, state):
+            self.hints_panel.addstr(f"{self.uidata[iv.HINT_USE]}\n")
+        self.hints_panel.addstr(f"{self.uidata[iv.HINT_BIG_QUIT]}\n")
+        self.hints_panel.addstr(f"{self.uidata[iv.HINT_QUIT]}\n")
 
     def draw_info(self):
         """ Draw the information about the item. """

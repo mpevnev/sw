@@ -79,7 +79,7 @@ class UISpawner():
         """
         raise NotImplementedError
 
-    def spawn_item_view(self, item):
+    def spawn_item_view(self, state, item):
         """
         Spawn an item view.
 
@@ -88,7 +88,7 @@ class UISpawner():
         """
         raise NotImplementedError
 
-    def spawn_main_dungeon_window(self, state):
+    def spawn_main_dungeon(self, state):
         """
         Spawn a dungeon view.
 

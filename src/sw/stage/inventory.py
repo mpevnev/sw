@@ -24,10 +24,7 @@ class Inventory(flow.SWFlow):
             return False
         import sw.stage.item_view as iv
         item = ev[1]
-        new_flow = iv.ItemView(self.state,
-                               self.ui_spawner,
-                               self.ui_spawner.spawn_item_view(item),
-                               item)
+        new_flow = iv.ItemView(self.state, self.ui_spawner, item)
         raise flow.ChangeFlow(new_flow, iv.FROM_INVENTORY)
 
     def quit(self, ev):

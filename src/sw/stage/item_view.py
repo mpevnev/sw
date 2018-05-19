@@ -23,7 +23,7 @@ class ItemView(flow.SWFlow):
     """
 
     def __init__(self, state, ui_spawner, item):
-        super().__init__(state, ui_spawner, ui_spawner.spawn_item_view(item))
+        super().__init__(state, ui_spawner, ui_spawner.spawn_item_view(state, item))
         self.register_entry_point(FROM_EQUIPMENT, self.from_equipment)
         self.register_entry_point(FROM_INVENTORY, self.from_inventory)
         self.register_event_handler(self.drink)
