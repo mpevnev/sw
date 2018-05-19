@@ -117,4 +117,4 @@ def can_use(character, item, state):
     :return: True if the character can use the item, False otherwise.
     :rtype: bool
     """
-    return True
+    return False
