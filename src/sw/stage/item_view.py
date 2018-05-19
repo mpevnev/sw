@@ -10,7 +10,8 @@ import sw.event.item_view as event
 import sw.event.item_events as output_event
 
 
-ENTRY_POINT = "entry point"
+FROM_INVENTORY = "from inventory"
+FROM_EQUIPMENT = "from equipment"
 
 
 class ItemView(flow.SWFlow):
@@ -23,7 +24,8 @@ class ItemView(flow.SWFlow):
 
     def __init__(self, state, ui_spawner, ui, item):
         super().__init__(state, ui_spawner, ui)
-        self.register_entry_point(ENTRY_POINT, self.entry_point)
+        self.register_entry_point(FROM_EQUIPMENT, self.from_equipment)
+        self.register_entry_point(FROM_INVENTORY, self.from_inventory)
         self.register_event_handler(self.drink)
         self.register_event_handler(self.drop)
         self.register_event_handler(self.equip)
@@ -31,14 +33,17 @@ class ItemView(flow.SWFlow):
         self.register_event_handler(self.unequip)
         self.register_event_handler(self.use)
         self.register_event_handler(self.quit_altogether)
-        self.register_event_handler(self.quit_to_inventory)
         self.item = item
 
     #--------- entry points ---------#
 
-    def entry_point(self):
-        """ A stub, all processing is in the events section. """
-        pass
+    def from_inventory(self):
+        """ Entered from inventory, will return to it on exit. """
+        self.register_event_handler(self.quit_to_inventory)
+
+    def from_equipment(self):
+        """ Entered from the equipment menu, will return there on exit. """
+        self.register_event_handler(self.quit_to_equipment)
 
     #--------- event handlers ---------#
 

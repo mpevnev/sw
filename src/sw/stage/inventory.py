@@ -38,7 +38,7 @@ class Inventory(flow.SWFlow):
                                self.ui_spawner,
                                self.ui_spawner.spawn_item_view(item),
                                item)
-        raise flow.ChangeFlow(new_flow, iv.ENTRY_POINT)
+        raise flow.ChangeFlow(new_flow, iv.FROM_INVENTORY)
 
     def quit(self, ev):
         """ Handle 'quit' event. """
