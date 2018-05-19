@@ -6,15 +6,15 @@ big tab: Big
 huge tab: Huge
 
 hint: > 
-    Use "Tab" to switch between item tabs, a-z and A-Z to select items and
-    "!" to exit, 'Enter' to confirm selection and 'Esc' to abort it.
+    Use a-z and A-Z to select items and "!" to exit, 'Enter' to confirm
+    selection and 'Esc' to abort it.
 
 # Colors
 chosen item: {fg: black, bg: white}
 unchosen item: {fg: white, bg: black}
 
 # Keybindings
-abort selection: ["^["]
+abort selection: ["\x1b"]
 change tab: ["\t"]
 confirm: ["\n", "\r"]
 quit: ["!"]

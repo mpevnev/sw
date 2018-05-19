@@ -55,7 +55,7 @@ class Inventory(mofloc.EventSource):
                 self.reset_filter()
             raise mofloc.NoEvent
         if ch in self.uidata[inv.KEY_ABORT_SELECTION]:
-            self.reset_filter
+            self.reset_filter()
             raise mofloc.NoEvent
         if ch in self.uidata[inv.KEY_CONFIRM_SELECTION]:
             for code, item in self.filtered_items:
